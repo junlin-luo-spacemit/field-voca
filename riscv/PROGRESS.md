@@ -182,10 +182,7 @@
    - 使用示例和代码
 
 9. **✅ 文档与评估** 
-   - 创建ASSESSMENT.md（综合评估）
-   - 创建SESSION_SUMMARY_2026-07-23.md（今日总结）
-   - 创建GLOSSARY_UPDATE_COMPLETE.md（词汇表完成报告）
-   - 创建PROJECT_COMPLETE.md（项目完成证书）
+   - 创建 [[glossary/GLOSSARY_UPDATE_COMPLETE]]（词汇表完成报告）
    - 更新PROGRESS.md（本文档）
 
 ### 📊 今日成果统计
@@ -235,7 +232,7 @@
 ### 📚 推荐使用方式
 
 **对于初学者：**
-1. atoms/ 目录了解核心概念
+1. [[概念地图]] 建立全局框架，或直接看各分支下的 atoms/ 子目录了解核心概念
 2. 01-isa基础/vocabulary.md 学习指令集基础
 3. 02-特权架构/vocabulary.md 理解特权模式和CSR
 4. 03-标准扩展/vocabulary.md 探索M/A/F/D/C扩展
@@ -305,19 +302,18 @@
 
 ```
 riscv/
-├── 01-isa基础/vocabulary.md           (~98 术语) ✅ NEW
-├── 02-特权架构/vocabulary.md    (~87 术语) ✅ 更新
-├── 03-标准扩展/vocabulary.md    (~163 术语) ✅ 完整
-├── 05-调试与工具链/platform/vocabulary.md      (~211 术语) ✅ 扩展
-├── 05-调试与工具链/software/vocabulary.md      (~68 术语) ✅ 扩展
-├── 05-调试与工具链/debug/vocabulary.md         (~40 术语) ✅ 扩展
-├── 04-微架构/vocabulary.md     (~64 术语) ✅ NEW
-├── glossary/master_glossary.md (314 术语) ✅ 100%
-├── PROGRESS.md                 (本文档)
-├── ASSESSMENT.md               (综合评估)
-├── SESSION_SUMMARY_2026-07-23.md
-├── PROJECT_COMPLETE.md         (完成证书)
-└── atoms/                      (核心概念)
+├── 01-isa基础/vocabulary.md              (~98 术语)  + atoms/ (hart/XLEN/RV32I)
+├── 02-特权架构/vocabulary.md              (~87 术语)  + atoms/ (privilege-mode/CSR/trap/Sv39)
+├── 03-标准扩展/vocabulary.md              (~163 术语) + atoms/ (extension-A/C/M/V)
+├── 04-微架构/vocabulary.md                (~64 术语)
+├── 05-调试与工具链/platform/vocabulary.md  (~211 术语)
+├── 05-调试与工具链/software/vocabulary.md  (~68 术语)
+├── 05-调试与工具链/debug/vocabulary.md     (~40 术语)
+├── glossary/master_glossary.md            (314 术语)
+├── learning_path/                         (分步学习课程)
+├── 概念地图.md                             (五分支全局导航)
+├── HOME.md
+└── PROGRESS.md                            (本文档)
 ```
 
 ### 关键特性
