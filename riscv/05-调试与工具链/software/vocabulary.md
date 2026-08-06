@@ -1,4 +1,4 @@
----
+﻿---
 tags: [riscv, software, vocabulary]
 domain: software
 last_updated: 2026-07-22
@@ -85,9 +85,9 @@ Linux 主线从 4.15 版本开始正式支持 RISC-V（RV64GC）。主要架构�
 
 ### OpenSBI / OpenSBI
 
-See [[platform/vocabulary]] for details.
+See [[05-调试与工具链/platform/vocabulary]] for details.
 
-详见 [[platform/vocabulary]]。
+详见 [[05-调试与工具链/platform/vocabulary]]。
 
 ### RTEMS / RTEMS
 
@@ -162,7 +162,7 @@ OpenHW Group 维护的开源 RISC-V 应用处理器核（RV64GC），支持 Linu
 ## 软件生态工具
 
 ### riscv-tests / riscv-tests
-→ 详见 [[debug/vocabulary]]
+→ 详见 [[05-调试与工具链/debug/vocabulary]]
 
 ### riscv-arch-test / 架构一致性测试
 RISC-V International 维护的合规性测试框架，验证处理器实现是否符合规范，通过即可申请 RISC-V 兼容性认证。

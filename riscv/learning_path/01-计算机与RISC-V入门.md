@@ -259,4 +259,4 @@ sw   x5, 0(x10)
 
 - [[../atoms/XLEN|XLEN]]
 - [[../01-isa基础/notes|ISA 笔记]]
-- [[../software/notes|软件生态笔记]]
+- [[../05-调试与工具链/software/notes|软件生态笔记]]

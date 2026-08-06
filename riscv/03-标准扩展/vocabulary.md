@@ -1714,9 +1714,9 @@ S 模式配置计数器溢出中断和过滤。
 
 ### Sdtrig (Debug Triggers) / 调试触发器
 
-Already detailed in [[debug/vocabulary]]. Provides hardware breakpoints and watchpoints.
+Already detailed in [[05-调试与工具链/debug/vocabulary]]. Provides hardware breakpoints and watchpoints.
 
-[[debug/vocabulary]] 中已详细说明。提供硬件断点和观察点。
+[[05-调试与工具链/debug/vocabulary]] 中已详细说明。提供硬件断点和观察点。
 
 ### Sdext (External Debug) / 外部调试
 

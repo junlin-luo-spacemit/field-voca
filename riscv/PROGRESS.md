@@ -242,14 +242,14 @@
 
 **对于中级开发者：**
 1. 03-标准扩展/vocabulary.md 深入V扩展
-2. platform/vocabulary.md 学习SBI和中断控制器
-3. software/vocabulary.md 了解工具链和OS
-4. debug/vocabulary.md 掌握调试工具
+2. 05-调试与工具链/platform/vocabulary.md 学习SBI和中断控制器
+3. 05-调试与工具链/software/vocabulary.md 了解工具链和OS
+4. 05-调试与工具链/debug/vocabulary.md 掌握调试工具
 
 **对于高级开发者：**
 1. 03-标准扩展/vocabulary.md 研究H扩展和密码学扩展
 2. 04-微架构/vocabulary.md 理解OoO执行
-3. platform/vocabulary.md 深入AIA（APLIC+IMSIC）
+3. 05-调试与工具链/platform/vocabulary.md 深入AIA（APLIC+IMSIC）
 4. 探索向量密码学和CFI扩展
 
 ---
@@ -308,9 +308,9 @@ riscv/
 ├── 01-isa基础/vocabulary.md           (~98 术语) ✅ NEW
 ├── 02-特权架构/vocabulary.md    (~87 术语) ✅ 更新
 ├── 03-标准扩展/vocabulary.md    (~163 术语) ✅ 完整
-├── platform/vocabulary.md      (~211 术语) ✅ 扩展
-├── software/vocabulary.md      (~68 术语) ✅ 扩展
-├── debug/vocabulary.md         (~40 术语) ✅ 扩展
+├── 05-调试与工具链/platform/vocabulary.md      (~211 术语) ✅ 扩展
+├── 05-调试与工具链/software/vocabulary.md      (~68 术语) ✅ 扩展
+├── 05-调试与工具链/debug/vocabulary.md         (~40 术语) ✅ 扩展
 ├── 04-微架构/vocabulary.md     (~64 术语) ✅ NEW
 ├── glossary/master_glossary.md (314 术语) ✅ 100%
 ├── PROGRESS.md                 (本文档)

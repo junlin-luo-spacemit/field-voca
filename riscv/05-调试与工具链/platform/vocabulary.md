@@ -1,4 +1,4 @@
----
+﻿---
 tags: [riscv, platform, vocabulary]
 domain: platform
 last_updated: 2026-07-22
@@ -1087,7 +1087,7 @@ Device Tree 中传递启动参数的特殊节点：
 ## RISC-V 平台合规
 
 ### riscv-arch-test framework / 架构一致性测试框架
-→ 详见 [[software/vocabulary]]
+→ 详见 [[05-调试与工具链/software/vocabulary]]
 
 ### RISC-V Compatibility / RISC-V 兼容性认证
 实现通过 riscv-arch-test 测试套件后可向 RISC-V International 申请兼容性认证，证明实现符合 ISA 规范，可使用 RISC-V 商标。

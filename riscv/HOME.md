@@ -53,9 +53,9 @@ date: 2026-07-22
 | 特权架构 | [[02-特权架构/vocabulary\|特权架构词汇]] | [[02-特权架构/notes\|特权架构笔记]] | — | ⬜ 待学习 |
 | 标准扩展 | [[03-标准扩展/vocabulary\|扩展词汇]] | [[03-标准扩展/notes\|扩展笔记]] | — | ⬜ 待学习 |
 | 微架构 | [[04-微架构/vocabulary\|微架构词汇]] | [[04-微架构/notes\|微架构笔记]] | — | ⬜ 待学习 |
-| 平台规范 | [[platform/vocabulary\|平台词汇]] | [[platform/notes\|平台笔记]] | — | ⬜ 待学习 |
-| 软件生态 | [[software/vocabulary\|软件词汇]] | [[software/notes\|软件笔记]] | — | ⬜ 待学习 |
-| 调试与跟踪 | [[debug/vocabulary\|调试词汇]] | [[debug/notes\|调试笔记]] | — | ⬜ 待学习 |
+| 平台规范 | [[05-调试与工具链/platform/vocabulary\|平台词汇]] | [[05-调试与工具链/platform/notes\|平台笔记]] | — | ⬜ 待学习 |
+| 软件生态 | [[05-调试与工具链/software/vocabulary\|软件词汇]] | [[05-调试与工具链/software/notes\|软件笔记]] | — | ⬜ 待学习 |
+| 调试与跟踪 | [[05-调试与工具链/debug/vocabulary\|调试词汇]] | [[05-调试与工具链/debug/notes\|调试笔记]] | — | ⬜ 待学习 |
 | 全局词汇 | [[glossary/master_glossary\|Master Glossary]] | — | — | — |
 
 ---

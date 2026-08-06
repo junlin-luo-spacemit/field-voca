@@ -229,10 +229,10 @@ qemu-system-riscv64 \
 
 ## 深入阅读
 
-- [[../software/notes|软件生态笔记]]（工具链选型、QEMU 调试命令、内核启动路径）
+- [[../05-调试与工具链/software/notes|软件生态笔记]]（工具链选型、QEMU 调试命令、内核启动路径）
 - [[../02-特权架构/notes|特权架构笔记]]（M/S/U 模式详细规则）
 - [[../atoms/Sv39|Sv39]]（Linux 页表格式）
 - [[../atoms/trap|Trap]]（ecall 陷入机制）
-- [[../platform/notes|平台规范笔记]]（SBI 接口、设备树）
+- [[../05-调试与工具链/platform/notes|平台规范笔记]]（SBI 接口、设备树）
 - [Linux 内核 RISC-V 文档](https://www.kernel.org/doc/html/latest/riscv/)
 - [riscv.org Linux 相关博客](https://riscv.org/blog/tag/linux/)
