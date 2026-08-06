@@ -48,7 +48,7 @@ Special register space accessed through dedicated `csr*` instructions (12-bit ad
 
 ## Related Terms / 相关词条
 
-[[02-特权架构/vocabulary#CSR]], [[atoms/privilege-mode]]
+[[02-特权架构/vocabulary#CSR]], [[02-特权架构/atoms/privilege-mode]]
 
 ## Source / 来源文档
 

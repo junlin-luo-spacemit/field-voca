@@ -57,7 +57,7 @@ Trap triggered / 触发 trap
 
 ## Related Terms / 相关词条
 
-[[02-特权架构/vocabulary#trap]], [[atoms/CSR]], [[atoms/privilege-mode]]
+[[02-特权架构/vocabulary#trap]], [[02-特权架构/atoms/CSR]], [[02-特权架构/atoms/privilege-mode]]
 
 ## Source / 来源文档
 

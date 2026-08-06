@@ -41,7 +41,7 @@ Adds hardware multiply and divide instructions to the base integer ISA. Implemen
 
 ## Related Terms / 相关词条
 
-[[03-标准扩展/vocabulary#M Extension]], [[atoms/RV32I]]
+[[03-标准扩展/vocabulary#M Extension]], [[01-isa基础/atoms/RV32I]]
 
 ## Source / 来源文档
 

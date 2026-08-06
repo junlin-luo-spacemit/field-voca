@@ -26,22 +26,22 @@ date: 2026-07-22
 按由浅入深的顺序学习整理好的内容：[[learning_path/README|RISC-V 分步学习路线]]
 
 ### ISA 基础
-- [[atoms/RV32I]] — 32位基础整数指令集，RISC-V 最小完备子集
+- [[01-isa基础/atoms/RV32I]] — 32位基础整数指令集，RISC-V 最小完备子集
 - [[atoms/RV64I]] — 64位基础整数指令集
-- [[atoms/XLEN]] — 整数寄存器宽度，定义地址空间与操作数位宽
-- [[atoms/hart]] — Hardware Thread，RISC-V 的基本执行单元
+- [[01-isa基础/atoms/XLEN]] — 整数寄存器宽度，定义地址空间与操作数位宽
+- [[01-isa基础/atoms/hart]] — Hardware Thread，RISC-V 的基本执行单元
 
 ### 特权架构
-- [[atoms/privilege-mode]] — M/S/U 三级特权模式
-- [[atoms/CSR]] — Control and Status Register，控制与状态寄存器
-- [[atoms/trap]] — 异常与中断的统一处理机制
-- [[atoms/Sv39]] — 64位虚拟内存分页方案（3级页表）
+- [[02-特权架构/atoms/privilege-mode]] — M/S/U 三级特权模式
+- [[02-特权架构/atoms/CSR]] — Control and Status Register，控制与状态寄存器
+- [[02-特权架构/atoms/trap]] — 异常与中断的统一处理机制
+- [[02-特权架构/atoms/Sv39]] — 64位虚拟内存分页方案（3级页表）
 
 ### 重要扩展
-- [[atoms/extension-M]] — 整数乘除法扩展
-- [[atoms/extension-A]] — 原子操作扩展
-- [[atoms/extension-V]] — 向量扩展（SIMD）
-- [[atoms/extension-C]] — 压缩指令扩展（16位编码）
+- [[03-标准扩展/atoms/extension-M]] — 整数乘除法扩展
+- [[03-标准扩展/atoms/extension-A]] — 原子操作扩展
+- [[03-标准扩展/atoms/extension-V]] — 向量扩展（SIMD）
+- [[03-标准扩展/atoms/extension-C]] — 压缩指令扩展（16位编码）
 
 ---
 

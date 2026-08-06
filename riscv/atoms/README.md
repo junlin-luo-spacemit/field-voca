@@ -1,8 +1,11 @@
-# RISC-V Atomic Concepts / RISC-V 原子概念
+﻿# RISC-V Atomic Concepts / RISC-V 原子概念
 
-This folder contains standalone explanatory documents for fundamental RISC-V concepts. Each file provides an in-depth explanation of a single core concept that forms the foundation of RISC-V architecture.
+> **注意**：原子概念文件已迁移到各自所属的分支文件夹下（如 `01-isa基础/atoms/`），本文件现在只是一个跳转索引。
+> **Note**: Atom files have moved into their respective branch folders (e.g. `01-isa基础/atoms/`). This file is now just a jump index.
 
-本文件夹包含 RISC-V 基础概念的独立解释文档。每个文件深入讲解一个构成 RISC-V 架构基础的核心概念。
+This page indexes standalone explanatory documents for fundamental RISC-V concepts. Each file provides an in-depth explanation of a single core concept that forms the foundation of RISC-V architecture.
+
+本页索引 RISC-V 基础概念的独立解释文档。每个文件深入讲解一个构成 RISC-V 架构基础的核心概念。
 
 ---
 
@@ -20,24 +23,22 @@ This folder contains standalone explanatory documents for fundamental RISC-V con
 
 ## Core Concepts / 核心概念
 
-### Execution Model / 执行模型
-- **[hart.md](hart.md)** - Hardware Thread: The basic execution unit in RISC-V / 硬件线程：RISC-V 的基本执行单元
-- **[privilege-mode.md](privilege-mode.md)** - Privilege Levels (M/S/U modes) / 特权级别（M/S/U 模式）
-- **[trap.md](trap.md)** - Exception and Interrupt Handling / 异常和中断处理
+### ① ISA 基础 (Base ISA)
+- **[hart.md](../01-isa基础/atoms/hart.md)** - Hardware Thread: The basic execution unit in RISC-V / 硬件线程：RISC-V 的基本执行单元
+- **[XLEN.md](../01-isa基础/atoms/XLEN.md)** - Integer Register Width (32/64/128-bit) / 整数寄存器宽度（32/64/128 位）
+- **[RV32I.md](../01-isa基础/atoms/RV32I.md)** - Base Integer Instruction Set (32-bit) / 基础整数指令集（32 位）
 
-### ISA Fundamentals / ISA 基础
-- **[XLEN.md](XLEN.md)** - Integer Register Width (32/64/128-bit) / 整数寄存器宽度（32/64/128 位）
-- **[RV32I.md](RV32I.md)** - Base Integer Instruction Set (32-bit) / 基础整数指令集（32 位）
-- **[CSR.md](CSR.md)** - Control and Status Registers / 控制和状态寄存器
+### ② 特权架构 (Privileged Architecture)
+- **[privilege-mode.md](../02-特权架构/atoms/privilege-mode.md)** - Privilege Levels (M/S/U modes) / 特权级别（M/S/U 模式）
+- **[CSR.md](../02-特权架构/atoms/CSR.md)** - Control and Status Registers / 控制和状态寄存器
+- **[trap.md](../02-特权架构/atoms/trap.md)** - Exception and Interrupt Handling / 异常和中断处理
+- **[Sv39.md](../02-特权架构/atoms/Sv39.md)** - 39-bit Virtual Addressing / 39 位虚拟地址
 
-### Standard Extensions / 标准扩展
-- **[extension-M.md](extension-M.md)** - Integer Multiplication and Division / 整数乘除法
-- **[extension-A.md](extension-A.md)** - Atomic Instructions / 原子指令
-- **[extension-C.md](extension-C.md)** - Compressed Instructions (16-bit) / 压缩指令（16 位）
-- **[extension-V.md](extension-V.md)** - Vector Operations / 向量操作
-
-### Memory Management / 内存管理
-- **[Sv39.md](Sv39.md)** - 39-bit Virtual Addressing / 39 位虚拟地址
+### ③ 标准扩展 (Standard Extensions)
+- **[extension-M.md](../03-标准扩展/atoms/extension-M.md)** - Integer Multiplication and Division / 整数乘除法
+- **[extension-A.md](../03-标准扩展/atoms/extension-A.md)** - Atomic Instructions / 原子指令
+- **[extension-C.md](../03-标准扩展/atoms/extension-C.md)** - Compressed Instructions (16-bit) / 压缩指令（16 位）
+- **[extension-V.md](../03-标准扩展/atoms/extension-V.md)** - Vector Operations / 向量操作
 
 ---
 
@@ -49,8 +50,8 @@ This folder contains standalone explanatory documents for fundamental RISC-V con
 
 **Example usage in other docs / 在其他文档中的使用示例:**
 ```markdown
-For more details on hart, see [[atoms/hart]]
-关于 hart 的更多细节，请参见 [[atoms/hart]]
+For more details on hart, see [[01-isa基础/atoms/hart]]
+关于 hart 的更多细节，请参见 [[01-isa基础/atoms/hart]]
 ```
 
 ---
@@ -80,7 +81,8 @@ For more details on hart, see [[atoms/hart]]
 
 ## Related Resources / 相关资源
 
-- **Vocabulary files**: See domain folders (isa/, privileged/, etc.) for term definitions / 词汇表文件：查看领域文件夹（isa/、privileged/ 等）中的术语定义
+- **概念地图**: See [[../概念地图|Concept Map]] for how these atoms fit into the five branches / 查看[[../概念地图|概念地图]]了解这些原子概念如何嵌套在五个分支中
+- **Vocabulary files**: See branch folders (01-isa基础/, 02-特权架构/, etc.) for term definitions / 词汇表文件：查看分支文件夹（01-isa基础/、02-特权架构/ 等）中的术语定义
 - **RISC-V ISA Manual**: https://github.com/riscv/riscv-isa-manual
 - **RISC-V Privileged Spec**: https://github.com/riscv/riscv-isa-manual
 
