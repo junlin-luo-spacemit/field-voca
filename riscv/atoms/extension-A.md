@@ -1,4 +1,4 @@
----
+﻿---
 tags: [riscv, atom, extensions]
 domain: extensions
 aliases: [A extension, 原子操作扩展]
@@ -58,7 +58,7 @@ amoswap.w t0, a1, (a0)   # t0←old value, *a0 = a1 (atomic swap) / t0←旧值�
 
 ## Related Terms / 相关词条
 
-[[isa/vocabulary#LR/SC]], [[isa/vocabulary#AMO]], [[extensions/vocabulary#A Extension]]
+[[01-isa基础/vocabulary#LR/SC]], [[01-isa基础/vocabulary#AMO]], [[extensions/vocabulary#A Extension]]
 
 ## Source / 来源文档
 

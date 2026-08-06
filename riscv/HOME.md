@@ -1,4 +1,4 @@
----
+﻿---
 tags: [home, index, riscv]
 domain: all
 date: 2026-07-22
@@ -49,7 +49,7 @@ date: 2026-07-22
 
 | 领域 | 词汇表 | 笔记 | 词条数 | 状态 |
 |------|--------|------|--------|------|
-| 基础 ISA | [[isa/vocabulary\|ISA 词汇]] | [[isa/notes\|ISA 笔记]] | — | ⬜ 待学习 |
+| 基础 ISA | [[01-isa基础/vocabulary\|ISA 词汇]] | [[01-isa基础/notes\|ISA 笔记]] | — | ⬜ 待学习 |
 | 特权架构 | [[privileged/vocabulary\|特权架构词汇]] | [[privileged/notes\|特权架构笔记]] | — | ⬜ 待学习 |
 | 标准扩展 | [[extensions/vocabulary\|扩展词汇]] | [[extensions/notes\|扩展笔记]] | — | ⬜ 待学习 |
 | 微架构 | [[microarch/vocabulary\|微架构词汇]] | [[microarch/notes\|微架构笔记]] | — | ⬜ 待学习 |

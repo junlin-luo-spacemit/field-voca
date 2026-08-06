@@ -1,4 +1,4 @@
----
+﻿---
 tags: [riscv, atom, isa]
 domain: isa
 aliases: [RV32I, 基础整数指令集]
@@ -46,7 +46,7 @@ LD/SD（64位Load/Store）、ADDW/SUBW/SLLW/SRLW/SRAW（32位操作并符号扩�
 
 ## Related Terms / 相关词条
 
-[[isa/vocabulary#RV32I]], [[atoms/XLEN]]
+[[01-isa基础/vocabulary#RV32I]], [[atoms/XLEN]]
 
 ## Source / 来源文档
 

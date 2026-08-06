@@ -1,4 +1,4 @@
----
+﻿---
 tags: [riscv, atom, isa]
 domain: isa
 aliases: [XLEN, 寄存器宽度]
@@ -36,7 +36,7 @@ RISC-V 中整数寄存器（x0–x31）的位宽，同时决定有效地址的�
 
 ## Related Terms / 相关词条
 
-[[isa/vocabulary#XLEN]], [[atoms/RV32I]]
+[[01-isa基础/vocabulary#XLEN]], [[atoms/RV32I]]
 
 ## Source / 来源文档
 

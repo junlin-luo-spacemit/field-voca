@@ -1,4 +1,4 @@
----
+﻿---
 tags: [riscv, atom, isa]
 domain: isa
 aliases: [C extension, 压缩指令]
@@ -53,7 +53,7 @@ Introduces 16-bit compressed instruction encoding, mixed with 32-bit instruction
 
 ## Related Terms / 相关词条
 
-[[isa/vocabulary#C Extension]], [[microarch/vocabulary#C 扩展对微架构的挑战]]
+[[01-isa基础/vocabulary#C Extension]], [[microarch/vocabulary#C 扩展对微架构的挑战]]
 
 ## Source / 来源文档
 

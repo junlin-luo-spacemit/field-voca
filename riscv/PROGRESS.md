@@ -1,4 +1,4 @@
-# RISC-V 学习进度追踪
+﻿# RISC-V 学习进度追踪
 
 ## 状态说明
 - ⬜ 未开始
@@ -236,7 +236,7 @@
 
 **对于初学者：**
 1. atoms/ 目录了解核心概念
-2. isa/vocabulary.md 学习指令集基础
+2. 01-isa基础/vocabulary.md 学习指令集基础
 3. privileged/vocabulary.md 理解特权模式和CSR
 4. extensions/vocabulary.md 探索M/A/F/D/C扩展
 
@@ -305,7 +305,7 @@
 
 ```
 riscv/
-├── isa/vocabulary.md           (~98 术语) ✅ NEW
+├── 01-isa基础/vocabulary.md           (~98 术语) ✅ NEW
 ├── privileged/vocabulary.md    (~87 术语) ✅ 更新
 ├── extensions/vocabulary.md    (~163 术语) ✅ 完整
 ├── platform/vocabulary.md      (~211 术语) ✅ 扩展

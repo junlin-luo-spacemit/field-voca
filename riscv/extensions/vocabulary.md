@@ -1,4 +1,4 @@
----
+﻿---
 tags: [riscv, extensions, vocabulary]
 domain: extensions
 last_updated: 2026-07-22
@@ -123,7 +123,7 @@ Does not introduce separate floating-point register file; floating-point operati
 
 ### A Extension / 原子操作扩展
 
-→ Core terms detailed in [[isa/vocabulary]] (AMO, LR/SC, acquire/release semantics)
+→ Core terms detailed in [[01-isa基础/vocabulary]] (AMO, LR/SC, acquire/release semantics)
 
 **Instruction list:**
 - `LR.W/D`, `SC.W/D`: Load-reserved/store-conditional
@@ -134,7 +134,7 @@ Does not introduce separate floating-point register file; floating-point operati
 
 All AMO instructions support `.aq` (acquire), `.rl` (release), `.aqrl` (sequentially consistent) modifiers.
 
-→ 核心词条详见 [[isa/vocabulary]]（AMO、LR/SC、acquire/release 语义）
+→ 核心词条详见 [[01-isa基础/vocabulary]]（AMO、LR/SC、acquire/release 语义）
 
 **指令列表：**
 - `LR.W/D`，`SC.W/D`：加载保留/条件存储
@@ -151,11 +151,11 @@ All AMO instructions support `.aq` (acquire), `.rl` (release), `.aqrl` (sequenti
 
 ### C Extension / 压缩指令扩展
 
-→ Core terms detailed in [[isa/vocabulary]] (compressed instruction, CI/CR formats, etc.)
+→ Core terms detailed in [[01-isa基础/vocabulary]] (compressed instruction, CI/CR formats, etc.)
 
 Key design: Compressed instructions use `x8–x15` (s0-s1, a0-a5) as the 8 "most commonly used registers", requiring only 3 bits for addressing in encoding. Code size reduced by approximately 25–30%, providing significant benefits for embedded systems.
 
-→ 核心词条详见 [[isa/vocabulary]]（compressed instruction、CI/CR 等格式）
+→ 核心词条详见 [[01-isa基础/vocabulary]]（compressed instruction、CI/CR 等格式）
 
 关键设计：压缩指令使用 `x8–x15`（s0-s1, a0-a5）这 8 个"最常用寄存器"，编码时只需 3 位来寻址。代码体积减少约 25–30%，对嵌入式系统有显著收益。
 
