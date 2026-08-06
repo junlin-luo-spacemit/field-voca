@@ -1,4 +1,4 @@
----
+﻿---
 tags: [riscv, atom, privileged]
 domain: privileged
 aliases: [trap, exception, interrupt, 陷阱, 异常, 中断]
@@ -57,7 +57,7 @@ Trap triggered / 触发 trap
 
 ## Related Terms / 相关词条
 
-[[privileged/vocabulary#trap]], [[atoms/CSR]], [[atoms/privilege-mode]]
+[[02-特权架构/vocabulary#trap]], [[atoms/CSR]], [[atoms/privilege-mode]]
 
 ## Source / 来源文档
 

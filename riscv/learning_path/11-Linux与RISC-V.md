@@ -1,4 +1,4 @@
-# 11 Linux 与 RISC-V
+﻿# 11 Linux 与 RISC-V
 
 ## 一句话先记住
 
@@ -230,7 +230,7 @@ qemu-system-riscv64 \
 ## 深入阅读
 
 - [[../software/notes|软件生态笔记]]（工具链选型、QEMU 调试命令、内核启动路径）
-- [[../privileged/notes|特权架构笔记]]（M/S/U 模式详细规则）
+- [[../02-特权架构/notes|特权架构笔记]]（M/S/U 模式详细规则）
 - [[../atoms/Sv39|Sv39]]（Linux 页表格式）
 - [[../atoms/trap|Trap]]（ecall 陷入机制）
 - [[../platform/notes|平台规范笔记]]（SBI 接口、设备树）

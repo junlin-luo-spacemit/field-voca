@@ -1,4 +1,4 @@
-# 🎉 100% COVERAGE ACHIEVED - Final Report
+﻿# 🎉 100% COVERAGE ACHIEVED - Final Report
 
 **Date**: 2026-07-23  
 **Status**: **COMPLETE - 100% RISC-V Specification Coverage**
@@ -105,7 +105,7 @@ Your RISC-V vocabulary collection now has **100% coverage** of all 89 ratified R
 ## 📚 **Files Updated**
 
 ### Major Updates
-1. ✅ `privileged/vocabulary.md` - Added 14 new extensions (566 lines)
+1. ✅ `02-特权架构/vocabulary.md` - Added 14 new extensions (566 lines)
 2. ✅ `extensions/vocabulary.md` - Added 14 new extensions (1251 lines)
 3. ✅ `platform/vocabulary.md` - Added Ssqosid QoS extension
 4. ✅ `debug/vocabulary.md` - Added Sdext/Sdtrig formal names

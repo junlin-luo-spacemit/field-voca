@@ -37,7 +37,7 @@ RISC-V 规范中的基本执行单元。每个 hart 拥有独立的程序计数�
 
 ## Related Terms / 相关词条
 
-[[01-isa基础/vocabulary#hart]], [[privileged/vocabulary#mhartid]]
+[[01-isa基础/vocabulary#hart]], [[02-特权架构/vocabulary#mhartid]]
 
 ## Source / 来源文档
 

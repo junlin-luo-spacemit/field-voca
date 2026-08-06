@@ -1,4 +1,4 @@
----
+﻿---
 tags: [riscv, microarch, vocabulary]
 domain: microarch
 last_updated: 2026-07-22
@@ -147,9 +147,9 @@ Separate instruction fetch and data access caches (Harvard cache architecture), 
 
 ### TLB (Translation Lookaside Buffer) / 快表
 
-→ See [[privileged/vocabulary]]
+→ See [[02-特权架构/vocabulary]]
 
-→ 详见 [[privileged/vocabulary]]
+→ 详见 [[02-特权架构/vocabulary]]
 
 ### cache coherency / 缓存一致性
 

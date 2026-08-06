@@ -1,4 +1,4 @@
----
+﻿---
 tags: [riscv, atom, privileged]
 domain: privileged
 aliases: [privilege mode, M-mode, S-mode, U-mode]
@@ -37,7 +37,7 @@ RISC-V 处理器在任意时刻运行于某一特权级别，决定哪些指令�
 
 ## Related Terms / 相关词条
 
-[[privileged/vocabulary#privilege mode]], [[atoms/CSR]], [[atoms/trap]]
+[[02-特权架构/vocabulary#privilege mode]], [[atoms/CSR]], [[atoms/trap]]
 
 ## Source / 来源文档
 

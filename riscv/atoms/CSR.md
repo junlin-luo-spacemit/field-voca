@@ -1,4 +1,4 @@
----
+﻿---
 tags: [riscv, atom, privileged]
 domain: privileged
 aliases: [CSR, Control and Status Register, 控制与状态寄存器]
@@ -48,7 +48,7 @@ Special register space accessed through dedicated `csr*` instructions (12-bit ad
 
 ## Related Terms / 相关词条
 
-[[privileged/vocabulary#CSR]], [[atoms/privilege-mode]]
+[[02-特权架构/vocabulary#CSR]], [[atoms/privilege-mode]]
 
 ## Source / 来源文档
 
