@@ -1,0 +1,8 @@
+{
+  "alwaysUpdateLinks": true,
+  "newFileFolderPath": "atoms",
+  "newLinkFormat": "shortest",
+  "useMarkdownLinks": false,
+  "attachmentFolderPath": "_assets",
+  "templateFolder": "_templates"
+}
