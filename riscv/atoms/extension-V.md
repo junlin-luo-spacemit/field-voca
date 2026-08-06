@@ -1,4 +1,4 @@
----
+﻿---
 tags: [riscv, atom, extensions]
 domain: extensions
 aliases: [V extension, 向量扩展, SIMD]
@@ -59,7 +59,7 @@ for (size_t i = 0; i < n; ) {
 
 ## Related Terms / 相关词条
 
-[[extensions/vocabulary#V Extension]], [[extensions/vocabulary#vsetvli]]
+[[03-标准扩展/vocabulary#V Extension]], [[03-标准扩展/vocabulary#vsetvli]]
 
 ## Source / 来源文档
 

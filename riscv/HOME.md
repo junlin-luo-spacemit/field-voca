@@ -51,7 +51,7 @@ date: 2026-07-22
 |------|--------|------|--------|------|
 | 基础 ISA | [[01-isa基础/vocabulary\|ISA 词汇]] | [[01-isa基础/notes\|ISA 笔记]] | — | ⬜ 待学习 |
 | 特权架构 | [[02-特权架构/vocabulary\|特权架构词汇]] | [[02-特权架构/notes\|特权架构笔记]] | — | ⬜ 待学习 |
-| 标准扩展 | [[extensions/vocabulary\|扩展词汇]] | [[extensions/notes\|扩展笔记]] | — | ⬜ 待学习 |
+| 标准扩展 | [[03-标准扩展/vocabulary\|扩展词汇]] | [[03-标准扩展/notes\|扩展笔记]] | — | ⬜ 待学习 |
 | 微架构 | [[microarch/vocabulary\|微架构词汇]] | [[microarch/notes\|微架构笔记]] | — | ⬜ 待学习 |
 | 平台规范 | [[platform/vocabulary\|平台词汇]] | [[platform/notes\|平台笔记]] | — | ⬜ 待学习 |
 | 软件生态 | [[software/vocabulary\|软件词汇]] | [[software/notes\|软件笔记]] | — | ⬜ 待学习 |

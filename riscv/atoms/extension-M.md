@@ -1,4 +1,4 @@
----
+﻿---
 tags: [riscv, atom, extensions]
 domain: extensions
 aliases: [M extension, 乘除法扩展]
@@ -41,7 +41,7 @@ Adds hardware multiply and divide instructions to the base integer ISA. Implemen
 
 ## Related Terms / 相关词条
 
-[[extensions/vocabulary#M Extension]], [[atoms/RV32I]]
+[[03-标准扩展/vocabulary#M Extension]], [[atoms/RV32I]]
 
 ## Source / 来源文档
 

@@ -106,7 +106,7 @@ Your RISC-V vocabulary collection now has **100% coverage** of all 89 ratified R
 
 ### Major Updates
 1. ✅ `02-特权架构/vocabulary.md` - Added 14 new extensions (566 lines)
-2. ✅ `extensions/vocabulary.md` - Added 14 new extensions (1251 lines)
+2. ✅ `03-标准扩展/vocabulary.md` - Added 14 new extensions (1251 lines)
 3. ✅ `platform/vocabulary.md` - Added Ssqosid QoS extension
 4. ✅ `debug/vocabulary.md` - Added Sdext/Sdtrig formal names
 5. ✅ `PROGRESS.md` - Updated all statistics to reflect 100%

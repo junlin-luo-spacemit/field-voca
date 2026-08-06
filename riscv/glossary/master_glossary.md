@@ -15,7 +15,7 @@ last_updated: 2026-07-23
 - **ABI**（Application Binary Interface）：调用约定、数据布局、寄存器使用规范 → [[01-isa基础/vocabulary]]
 - **Abstract Command**：DM 向 hart 发送的高级操作请求（Access Register/Quick Access/Access Memory）→ [[debug/vocabulary]]
 - **ACPI**：高级配置与电源接口，服务器平台硬件描述标准 → [[platform/vocabulary]]
-- **AES**：高级加密标准，Zkne/Zknd 提供硬件加速 → [[extensions/vocabulary]]
+- **AES**：高级加密标准，Zkne/Zknd 提供硬件加速 → [[03-标准扩展/vocabulary]]
 - **AIA**（Advanced Interrupt Architecture）：PLIC 的现代替代，支持 MSI，包含 APLIC + IMSIC → [[platform/vocabulary]]
 - **ACLINT**：高级核本地中断器，标准化定时器和软件中断，包含 MTIMER/MSWI/SSWI → [[platform/vocabulary]]
 - **ALU**（Arithmetic Logic Unit）：算术逻辑单元，执行整数运算 → [[microarch/vocabulary]]
@@ -24,12 +24,12 @@ last_updated: 2026-07-23
 - **APLIC**：AIA 中的高级平台级中断控制器，支持 Direct 和 MSI 模式 → [[platform/vocabulary]]
 - **ASID**（Address Space Identifier）：TLB 地址空间标识符，用于多进程 TLB 共享 → [[02-特权架构/vocabulary]]
 - **AUIPC**：PC 加高位立即数指令，用于 PC 相对寻址 → [[01-isa基础/vocabulary]]
-- **AVL**（Application Vector Length）：向量扩展中应用请求的元素数 → [[extensions/vocabulary]]
+- **AVL**（Application Vector Length）：向量扩展中应用请求的元素数 → [[03-标准扩展/vocabulary]]
 - **address-translation cache**：TLB，缓存页表遍历结果，对 hart 私有 → [[02-特权架构/vocabulary]]
 
 ## B
 
-- **B Extension**：位操作扩展（Zba/Zbb/Zbc/Zbs）→ [[extensions/vocabulary]]
+- **B Extension**：位操作扩展（Zba/Zbb/Zbc/Zbs）→ [[03-标准扩展/vocabulary]]
 - **BOOM**（Berkeley Out-of-Order Machine）：开源乱序 RISC-V 处理器 → [[software/vocabulary]]
 - **BHT**（Branch History Table）：分支历史预测表 → [[microarch/vocabulary]]
 - **BTB**（Branch Target Buffer）：分支目标缓冲 → [[microarch/vocabulary]]
@@ -45,7 +45,7 @@ last_updated: 2026-07-23
 
 ## D
 
-- **D Extension**：双精度浮点扩展 → [[extensions/vocabulary]]
+- **D Extension**：双精度浮点扩展 → [[03-标准扩展/vocabulary]]
 - **DM**（Debug Module）：调试模块 → [[debug/vocabulary]]
 - **DMI**（Debug Module Interface）：调试模块接口 → [[debug/vocabulary]]
 - **DTB**（Device Tree Blob）：设备树二进制 → [[platform/vocabulary]]
@@ -57,19 +57,19 @@ last_updated: 2026-07-23
 - **ebreak**：调试断点指令 → [[02-特权架构/vocabulary]]
 - **ecall**：环境调用/系统调用指令 → [[02-特权架构/vocabulary]]
 - **EEI**（Execution Environment Interface）：执行环境接口，定义程序运行的完整环境 → [[01-isa基础/vocabulary]]
-- **ELEN**：向量元素最大位宽 → [[extensions/vocabulary]]
+- **ELEN**：向量元素最大位宽 → [[03-标准扩展/vocabulary]]
 - **E-Trace**（Efficient Trace）：RISC-V 高效指令跟踪规范 → [[debug/vocabulary]]
 - **endianness**：字节序，指令始终小端存储 → [[01-isa基础/vocabulary]]
 
 ## F
 
-- **F Extension**：单精度浮点扩展 → [[extensions/vocabulary]]
+- **F Extension**：单精度浮点扩展 → [[03-标准扩展/vocabulary]]
 - **Fatal Trap**：致命陷阱，导致执行环境终止 → [[01-isa基础/vocabulary]]
-- **fcsr**：浮点控制与状态寄存器 → [[extensions/vocabulary]]
+- **fcsr**：浮点控制与状态寄存器 → [[03-标准扩展/vocabulary]]
 - **FENCE**：内存屏障指令，含 predecessor/successor 位域 → [[01-isa基础/vocabulary]]
 - **FENCE.I**：I-cache 同步屏障 → [[01-isa基础/vocabulary]]
 - **FS/VS/XS/SD**：mstatus 扩展上下文状态（Off/Initial/Clean/Dirty）→ [[02-特权架构/vocabulary]]
-- **FMA**（Fused Multiply-Add）：融合乘加 → [[extensions/vocabulary]]
+- **FMA**（Fused Multiply-Add）：融合乘加 → [[03-标准扩展/vocabulary]]
 - **frozen**：规范冻结状态（高度稳定）→ [[01-isa基础/vocabulary]]
 
 ## G
@@ -80,14 +80,14 @@ last_updated: 2026-07-23
 
 ## H
 
-- **H Extension**：虚拟化扩展 → [[extensions/vocabulary]]
+- **H Extension**：虚拟化扩展 → [[03-标准扩展/vocabulary]]
 - **hart**（Hardware Thread）：硬件线程，基本执行单元 → [[01-isa基础/vocabulary]]
-- **hgatp**：Stage-2 地址翻译根页表寄存器 → [[extensions/vocabulary]]
+- **hgatp**：Stage-2 地址翻译根页表寄存器 → [[03-标准扩展/vocabulary]]
 - **HINT instruction**：HINT 指令，不修改架构状态，向微架构传递提示 → [[01-isa基础/vocabulary]]
 - **HiFive Unmatched**：SiFive PC级RISC-V开发板，U740 SoC，16GB DDR4 → [[software/vocabulary]]
 - **HSM**（Hart State Management）：hart 生命周期管理 SBI 扩展（EID 0x48534D），启动/停止/挂起hart → [[platform/vocabulary]]
-- **hstatus**：Hypervisor状态寄存器，控制虚拟化特性 → [[extensions/vocabulary]]
-- **hvip**：Hypervisor虚拟中断挂起寄存器，注入虚拟中断 → [[extensions/vocabulary]]
+- **hstatus**：Hypervisor状态寄存器，控制虚拟化特性 → [[03-标准扩展/vocabulary]]
+- **hvip**：Hypervisor虚拟中断挂起寄存器，注入虚拟中断 → [[03-标准扩展/vocabulary]]
 
 ## I
 
@@ -119,7 +119,7 @@ last_updated: 2026-07-23
 - **LB/LH/LW/LD**：加载字节/半字/字/双字指令，符号扩展 → [[01-isa基础/vocabulary]]
 - **LBU/LHU/LWU**：无符号加载指令，零扩展 → [[01-isa基础/vocabulary]]
 - **little-endian**：小端字节序，RISC-V存储格式，LSB在最低地址 → [[01-isa基础/vocabulary]]
-- **LMUL**（Length Multiplier）：向量寄存器组倍增系数（1/8, 1/4, 1/2, 1, 2, 4, 8）→ [[extensions/vocabulary]]
+- **LMUL**（Length Multiplier）：向量寄存器组倍增系数（1/8, 1/4, 1/2, 1, 2, 4, 8）→ [[03-标准扩展/vocabulary]]
 - **load queue**：加载队列，乱序核心中保存推测性加载 → [[microarch/vocabulary]]
 - **load-store architecture**：加载-存储架构，内存操作仅通过Load/Store → [[01-isa基础/vocabulary]]
 - **lp64d**：64位Linux主流ABI，双精度浮点通过f寄存器传递 → [[01-isa基础/vocabulary]]
@@ -130,7 +130,7 @@ last_updated: 2026-07-23
 
 ## M
 
-- **M Extension**：整数乘除法扩展 → [[extensions/vocabulary]]
+- **M Extension**：整数乘除法扩展 → [[03-标准扩展/vocabulary]]
 - **M-mode**（Machine mode）：最高特权级 → [[02-特权架构/vocabulary]]
 - **march**：GCC 目标指令集选项 → [[software/vocabulary]]
 - **mcontrol**：内存访问触发器类型 → [[debug/vocabulary]]
@@ -248,13 +248,13 @@ last_updated: 2026-07-23
 
 ## V
 
-- **V Extension**：向量扩展 → [[extensions/vocabulary]]
+- **V Extension**：向量扩展 → [[03-标准扩展/vocabulary]]
 - **Verilator**：RTL 周期精确仿真工具 → [[software/vocabulary]]
-- **vl**（Vector Length）：向量操作元素数 → [[extensions/vocabulary]]
-- **VLEN**：向量寄存器位宽 → [[extensions/vocabulary]]
-- **VMID**（Virtual Machine Identifier）：虚拟机标识符 → [[extensions/vocabulary]]
-- **vsetvli**：向量配置指令 → [[extensions/vocabulary]]
-- **vtype**：向量类型寄存器 → [[extensions/vocabulary]]
+- **vl**（Vector Length）：向量操作元素数 → [[03-标准扩展/vocabulary]]
+- **VLEN**：向量寄存器位宽 → [[03-标准扩展/vocabulary]]
+- **VMID**（Virtual Machine Identifier）：虚拟机标识符 → [[03-标准扩展/vocabulary]]
+- **vsetvli**：向量配置指令 → [[03-标准扩展/vocabulary]]
+- **vtype**：向量类型寄存器 → [[03-标准扩展/vocabulary]]
 
 ## W
 
@@ -270,19 +270,19 @@ last_updated: 2026-07-23
 
 - **Z-extension**：Z 前缀扩展，标准化ISA扩展 → [[01-isa基础/vocabulary]]
 - **Zawrs**：等待保留集扩展，wrs.nto/wrs.sto低功耗等待 → [[microarch/vocabulary]]
-- **Zba/Zbb/Zbc/Zbs**：B 扩展子集，位操作指令 → [[extensions/vocabulary]]
-- **Zicbom / Zicboz / Zicbop**：缓存块管理/清零/预取扩展，cbo.*指令 → [[extensions/vocabulary]]
-- **Zicfiss**（Shadow Stack）：影子栈CFI扩展，防护返回地址，防御ROP攻击 → [[extensions/vocabulary]]
-- **Zicfilp**（Landing Pad）：着陆垫CFI扩展，lpad指令，防御JOP攻击 → [[extensions/vocabulary]]
-- **Zicond**：条件操作扩展，czero.eqz/czero.nez → [[extensions/vocabulary]]
-- **Zicsr**：CSR 访问指令扩展，csrrw/csrrs/csrrc → [[extensions/vocabulary]]
-- **Zifencei**：FENCE.I 扩展，I-cache同步 → [[extensions/vocabulary]]
+- **Zba/Zbb/Zbc/Zbs**：B 扩展子集，位操作指令 → [[03-标准扩展/vocabulary]]
+- **Zicbom / Zicboz / Zicbop**：缓存块管理/清零/预取扩展，cbo.*指令 → [[03-标准扩展/vocabulary]]
+- **Zicfiss**（Shadow Stack）：影子栈CFI扩展，防护返回地址，防御ROP攻击 → [[03-标准扩展/vocabulary]]
+- **Zicfilp**（Landing Pad）：着陆垫CFI扩展，lpad指令，防御JOP攻击 → [[03-标准扩展/vocabulary]]
+- **Zicond**：条件操作扩展，czero.eqz/czero.nez → [[03-标准扩展/vocabulary]]
+- **Zicsr**：CSR 访问指令扩展，csrrw/csrrs/csrrc → [[03-标准扩展/vocabulary]]
+- **Zifencei**：FENCE.I 扩展，I-cache同步 → [[03-标准扩展/vocabulary]]
 - **Zihintpause**：pause 暂停提示扩展，自旋等待优化 → [[microarch/vocabulary]]
-- **Zfinx/Zdinx**：浮点使用整数寄存器，节省寄存器地址空间 → [[extensions/vocabulary]]
-- **Zkn / Zks / Zkr / Zkt**：密码学扩展族（NIST/国密/熙源/数据无关延迟）→ [[extensions/vocabulary]]
-- **Zkne/Zknd**：AES加密/解密扩展，aes32*/aes64*指令 → [[extensions/vocabulary]]
-- **Zknh**：SHA-2哈希扩展，sha256*/sha512*指令 → [[extensions/vocabulary]]
-- **Ztso**：全存储序扩展，将 RVWMO 提升为 TSO → [[extensions/vocabulary]]
+- **Zfinx/Zdinx**：浮点使用整数寄存器，节省寄存器地址空间 → [[03-标准扩展/vocabulary]]
+- **Zkn / Zks / Zkr / Zkt**：密码学扩展族（NIST/国密/熙源/数据无关延迟）→ [[03-标准扩展/vocabulary]]
+- **Zkne/Zknd**：AES加密/解密扩展，aes32*/aes64*指令 → [[03-标准扩展/vocabulary]]
+- **Zknh**：SHA-2哈希扩展，sha256*/sha512*指令 → [[03-标准扩展/vocabulary]]
+- **Ztso**：全存储序扩展，将 RVWMO 提升为 TSO → [[03-标准扩展/vocabulary]]
 
 # RISC-V Master Glossary
 
@@ -299,12 +299,12 @@ last_updated: 2026-07-23
 - **AMO**（Atomic Memory Operation）：原子读改写指令 → [[01-isa基础/vocabulary]]
 - **APLIC**：AIA 中的高级 PLIC 组件 → [[platform/vocabulary]]
 - **ASID**（Address Space Identifier）：TLB 地址空间标识符 → [[02-特权架构/vocabulary]]
-- **AVL**（Application Vector Length）：向量扩展中应用请求的元素数 → [[extensions/vocabulary]]
+- **AVL**（Application Vector Length）：向量扩展中应用请求的元素数 → [[03-标准扩展/vocabulary]]
 - **AUIPC**：PC 加高位立即数指令 → [[01-isa基础/vocabulary]]
 
 ## B
 
-- **B Extension**：位操作扩展（Zba/Zbb/Zbc/Zbs）→ [[extensions/vocabulary]]
+- **B Extension**：位操作扩展（Zba/Zbb/Zbc/Zbs）→ [[03-标准扩展/vocabulary]]
 - **BOOM**（Berkeley Out-of-Order Machine）：开源乱序 RISC-V 处理器 → [[software/vocabulary]]
 - **BHT**（Branch History Table）：分支历史预测表 → [[microarch/vocabulary]]
 - **BTB**（Branch Target Buffer）：分支目标缓冲 → [[microarch/vocabulary]]
@@ -318,7 +318,7 @@ last_updated: 2026-07-23
 
 ## D
 
-- **D Extension**：双精度浮点扩展 → [[extensions/vocabulary]]
+- **D Extension**：双精度浮点扩展 → [[03-标准扩展/vocabulary]]
 - **DM**（Debug Module）：调试模块 → [[debug/vocabulary]]
 - **DMI**（Debug Module Interface）：调试模块接口 → [[debug/vocabulary]]
 - **DTB**（Device Tree Blob）：设备树二进制 → [[platform/vocabulary]]
@@ -328,16 +328,16 @@ last_updated: 2026-07-23
 
 - **ebreak**：调试断点指令 → [[02-特权架构/vocabulary]]
 - **ecall**：环境调用/系统调用指令 → [[02-特权架构/vocabulary]]
-- **ELEN**：向量元素最大位宽 → [[extensions/vocabulary]]
+- **ELEN**：向量元素最大位宽 → [[03-标准扩展/vocabulary]]
 - **E-Trace**（Efficient Trace）：RISC-V 高效指令跟踪规范 → [[debug/vocabulary]]
 
 ## F
 
-- **F Extension**：单精度浮点扩展 → [[extensions/vocabulary]]
-- **fcsr**：浮点控制与状态寄存器 → [[extensions/vocabulary]]
+- **F Extension**：单精度浮点扩展 → [[03-标准扩展/vocabulary]]
+- **fcsr**：浮点控制与状态寄存器 → [[03-标准扩展/vocabulary]]
 - **FENCE**：内存屏障指令 → [[01-isa基础/vocabulary]]
 - **FENCE.I**：I-cache 同步屏障 → [[01-isa基础/vocabulary]]
-- **FMA**（Fused Multiply-Add）：融合乘加 → [[extensions/vocabulary]]
+- **FMA**（Fused Multiply-Add）：融合乘加 → [[03-标准扩展/vocabulary]]
 - **frozen**：规范冻结状态（高度稳定）→ [[01-isa基础/vocabulary]]
 
 ## G
@@ -347,9 +347,9 @@ last_updated: 2026-07-23
 
 ## H
 
-- **H Extension**：虚拟化扩展 → [[extensions/vocabulary]]
+- **H Extension**：虚拟化扩展 → [[03-标准扩展/vocabulary]]
 - **hart**（Hardware Thread）：硬件线程，基本执行单元 → [[01-isa基础/vocabulary]]
-- **hgatp**：Stage-2 地址翻译根页表寄存器 → [[extensions/vocabulary]]
+- **hgatp**：Stage-2 地址翻译根页表寄存器 → [[03-标准扩展/vocabulary]]
 - **HSM**（Hart State Management）：hart 生命周期管理 SBI 扩展 → [[platform/vocabulary]]
 
 ## I
@@ -368,14 +368,14 @@ last_updated: 2026-07-23
 
 ## L
 
-- **LMUL**（Length Multiplier）：向量寄存器组倍增系数 → [[extensions/vocabulary]]
+- **LMUL**（Length Multiplier）：向量寄存器组倍增系数 → [[03-标准扩展/vocabulary]]
 - **lp64d**：64位 Linux 主流 ABI → [[01-isa基础/vocabulary]]
 - **LR/SC**（Load-Reserved/Store-Conditional）：原子操作原语 → [[01-isa基础/vocabulary]]
 - **LUI**：加载高位立即数 → [[01-isa基础/vocabulary]]
 
 ## M
 
-- **M Extension**：整数乘除法扩展 → [[extensions/vocabulary]]
+- **M Extension**：整数乘除法扩展 → [[03-标准扩展/vocabulary]]
 - **M-mode**（Machine mode）：最高特权级 → [[02-特权架构/vocabulary]]
 - **march**：GCC 目标指令集选项 → [[software/vocabulary]]
 - **mcontrol**：内存访问触发器类型 → [[debug/vocabulary]]
@@ -443,13 +443,13 @@ last_updated: 2026-07-23
 
 ## V
 
-- **V Extension**：向量扩展 → [[extensions/vocabulary]]
+- **V Extension**：向量扩展 → [[03-标准扩展/vocabulary]]
 - **Verilator**：RTL 周期精确仿真工具 → [[software/vocabulary]]
-- **vl**（Vector Length）：向量操作元素数 → [[extensions/vocabulary]]
-- **VLEN**：向量寄存器位宽 → [[extensions/vocabulary]]
-- **VMID**（Virtual Machine Identifier）：虚拟机标识符 → [[extensions/vocabulary]]
-- **vsetvli**：向量配置指令 → [[extensions/vocabulary]]
-- **vtype**：向量类型寄存器 → [[extensions/vocabulary]]
+- **vl**（Vector Length）：向量操作元素数 → [[03-标准扩展/vocabulary]]
+- **VLEN**：向量寄存器位宽 → [[03-标准扩展/vocabulary]]
+- **VMID**（Virtual Machine Identifier）：虚拟机标识符 → [[03-标准扩展/vocabulary]]
+- **vsetvli**：向量配置指令 → [[03-标准扩展/vocabulary]]
+- **vtype**：向量类型寄存器 → [[03-标准扩展/vocabulary]]
 
 ## W
 
@@ -464,9 +464,9 @@ last_updated: 2026-07-23
 
 - **Z-extension**：Z 前缀扩展 → [[01-isa基础/vocabulary]]
 - **Zawrs**：等待保留集扩展 → [[microarch/vocabulary]]
-- **Zba/Zbb/Zbc/Zbs**：B 扩展子集 → [[extensions/vocabulary]]
-- **Zicond**：条件操作扩展 → [[extensions/vocabulary]]
-- **Zicsr**：CSR 访问指令扩展 → [[extensions/vocabulary]]
-- **Zifencei**：FENCE.I 扩展 → [[extensions/vocabulary]]
+- **Zba/Zbb/Zbc/Zbs**：B 扩展子集 → [[03-标准扩展/vocabulary]]
+- **Zicond**：条件操作扩展 → [[03-标准扩展/vocabulary]]
+- **Zicsr**：CSR 访问指令扩展 → [[03-标准扩展/vocabulary]]
+- **Zifencei**：FENCE.I 扩展 → [[03-标准扩展/vocabulary]]
 - **Zihintpause**：pause 暂停提示扩展 → [[microarch/vocabulary]]
-- **Zfinx/Zdinx**：浮点使用整数寄存器 → [[extensions/vocabulary]]
+- **Zfinx/Zdinx**：浮点使用整数寄存器 → [[03-标准扩展/vocabulary]]

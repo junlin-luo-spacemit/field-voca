@@ -58,7 +58,7 @@ amoswap.w t0, a1, (a0)   # t0←old value, *a0 = a1 (atomic swap) / t0←旧值�
 
 ## Related Terms / 相关词条
 
-[[01-isa基础/vocabulary#LR/SC]], [[01-isa基础/vocabulary#AMO]], [[extensions/vocabulary#A Extension]]
+[[01-isa基础/vocabulary#LR/SC]], [[01-isa基础/vocabulary#AMO]], [[03-标准扩展/vocabulary#A Extension]]
 
 ## Source / 来源文档
 
