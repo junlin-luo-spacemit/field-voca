@@ -248,7 +248,7 @@
 
 **对于高级开发者：**
 1. 03-标准扩展/vocabulary.md 研究H扩展和密码学扩展
-2. microarch/vocabulary.md 理解OoO执行
+2. 04-微架构/vocabulary.md 理解OoO执行
 3. platform/vocabulary.md 深入AIA（APLIC+IMSIC）
 4. 探索向量密码学和CFI扩展
 
@@ -311,7 +311,7 @@ riscv/
 ├── platform/vocabulary.md      (~211 术语) ✅ 扩展
 ├── software/vocabulary.md      (~68 术语) ✅ 扩展
 ├── debug/vocabulary.md         (~40 术语) ✅ 扩展
-├── microarch/vocabulary.md     (~64 术语) ✅ NEW
+├── 04-微架构/vocabulary.md     (~64 术语) ✅ NEW
 ├── glossary/master_glossary.md (314 术语) ✅ 100%
 ├── PROGRESS.md                 (本文档)
 ├── ASSESSMENT.md               (综合评估)

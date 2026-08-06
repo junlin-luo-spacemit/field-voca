@@ -18,7 +18,7 @@ last_updated: 2026-07-23
 - **AES**：高级加密标准，Zkne/Zknd 提供硬件加速 → [[03-标准扩展/vocabulary]]
 - **AIA**（Advanced Interrupt Architecture）：PLIC 的现代替代，支持 MSI，包含 APLIC + IMSIC → [[platform/vocabulary]]
 - **ACLINT**：高级核本地中断器，标准化定时器和软件中断，包含 MTIMER/MSWI/SSWI → [[platform/vocabulary]]
-- **ALU**（Arithmetic Logic Unit）：算术逻辑单元，执行整数运算 → [[microarch/vocabulary]]
+- **ALU**（Arithmetic Logic Unit）：算术逻辑单元，执行整数运算 → [[04-微架构/vocabulary]]
 - **AMO**（Atomic Memory Operation）：原子读改写指令（A 扩展）→ [[01-isa基础/vocabulary]]
 - **AMO PMA levels**：AMONone/AMOSwap/AMOLogical/AMOArithmetic，原子操作支持级别 → [[02-特权架构/vocabulary]]
 - **APLIC**：AIA 中的高级平台级中断控制器，支持 Direct 和 MSI 模式 → [[platform/vocabulary]]
@@ -31,13 +31,13 @@ last_updated: 2026-07-23
 
 - **B Extension**：位操作扩展（Zba/Zbb/Zbc/Zbs）→ [[03-标准扩展/vocabulary]]
 - **BOOM**（Berkeley Out-of-Order Machine）：开源乱序 RISC-V 处理器 → [[software/vocabulary]]
-- **BHT**（Branch History Table）：分支历史预测表 → [[microarch/vocabulary]]
-- **BTB**（Branch Target Buffer）：分支目标缓冲 → [[microarch/vocabulary]]
+- **BHT**（Branch History Table）：分支历史预测表 → [[04-微架构/vocabulary]]
+- **BTB**（Branch Target Buffer）：分支目标缓冲 → [[04-微架构/vocabulary]]
 
 ## C
 
 - **C Extension**：压缩指令扩展（16 位编码）→ [[01-isa基础/vocabulary]]
-- **CPI**（Cycles Per Instruction）：每指令周期数 → [[microarch/vocabulary]]
+- **CPI**（Cycles Per Instruction）：每指令周期数 → [[04-微架构/vocabulary]]
 - **CSR**（Control and Status Register）：控制与状态寄存器 → [[02-特权架构/vocabulary]]
 - **CVA6**：开源 RISC-V 应用处理器核（原 Ariane）→ [[software/vocabulary]]
 - **CoRR**（Coherence for Read-Read）：读-读一致性，RVWMO PPO Rule 2 保证 → [[01-isa基础/vocabulary]]
@@ -92,20 +92,20 @@ last_updated: 2026-07-23
 ## I
 
 - **I**：基础整数指令集 → [[01-isa基础/vocabulary]]
-- **I-cache**：指令缓存，L1级指令取指缓存 → [[microarch/vocabulary]]
+- **I-cache**：指令缓存，L1级指令取指缓存 → [[04-微架构/vocabulary]]
 - **IALIGN**：指令地址对齐约束（16或32位）→ [[01-isa基础/vocabulary]]
-- **ID**（Instruction Decode）：指令译码流水线阶段 → [[microarch/vocabulary]]
+- **ID**（Instruction Decode）：指令译码流水线阶段 → [[04-微架构/vocabulary]]
 - **ILEN**：实现支持的最大指令长度 → [[01-isa基础/vocabulary]]
 - **IMSIC**（Incoming MSI Controller）：AIA中的MSI接收控制器，每hart一个，支持中断文件和虚拟化 → [[platform/vocabulary]]
-- **IPC**（Instructions Per Cycle）：每周期指令数 → [[microarch/vocabulary]]
+- **IPC**（Instructions Per Cycle）：每周期指令数 → [[04-微架构/vocabulary]]
 - **IPI**（Inter-Processor Interrupt）：处理器间中断SBI扩展（EID 0x735049），发送软件中断 → [[platform/vocabulary]]
 - **ISA**（Instruction Set Architecture）：指令集架构 → [[01-isa基础/vocabulary]]
 - **I-Type**：立即数指令格式，编码ADDI/LOAD/JALR等，12位立即数 → [[01-isa基础/vocabulary]]
 - **icount**：指令计数触发器（单步调试）→ [[debug/vocabulary]]
 - **idempotency PMA**：幂等性物理内存属性，描述访问副作用 → [[02-特权架构/vocabulary]]
-- **instruction window**：乱序执行的指令窗口，受ROB大小限制（64-256项）→ [[microarch/vocabulary]]
+- **instruction window**：乱序执行的指令窗口，受ROB大小限制（64-256项）→ [[04-微架构/vocabulary]]
 - **Invisible Trap**：透明陷阱，执行环境透明处理，软件不感知 → [[01-isa基础/vocabulary]]
-- **issue width**：每周期可分派到执行单元的最大指令数 → [[microarch/vocabulary]]
+- **issue width**：每周期可分派到执行单元的最大指令数 → [[04-微架构/vocabulary]]
 
 ## J
 
@@ -115,16 +115,16 @@ last_updated: 2026-07-23
 
 ## L
 
-- **L1/L2/L3 cache**：一/二/三级缓存层次结构 → [[microarch/vocabulary]]
+- **L1/L2/L3 cache**：一/二/三级缓存层次结构 → [[04-微架构/vocabulary]]
 - **LB/LH/LW/LD**：加载字节/半字/字/双字指令，符号扩展 → [[01-isa基础/vocabulary]]
 - **LBU/LHU/LWU**：无符号加载指令，零扩展 → [[01-isa基础/vocabulary]]
 - **little-endian**：小端字节序，RISC-V存储格式，LSB在最低地址 → [[01-isa基础/vocabulary]]
 - **LMUL**（Length Multiplier）：向量寄存器组倍增系数（1/8, 1/4, 1/2, 1, 2, 4, 8）→ [[03-标准扩展/vocabulary]]
-- **load queue**：加载队列，乱序核心中保存推测性加载 → [[microarch/vocabulary]]
+- **load queue**：加载队列，乱序核心中保存推测性加载 → [[04-微架构/vocabulary]]
 - **load-store architecture**：加载-存储架构，内存操作仅通过Load/Store → [[01-isa基础/vocabulary]]
 - **lp64d**：64位Linux主流ABI，双精度浮点通过f寄存器传递 → [[01-isa基础/vocabulary]]
 - **LR/SC**（Load-Reserved/Store-Conditional）：原子操作原语 → [[01-isa基础/vocabulary]]
-- **LSU**（Load-Store Unit）：加载存储单元，执行内存访问 → [[microarch/vocabulary]]
+- **LSU**（Load-Store Unit）：加载存储单元，执行内存访问 → [[04-微架构/vocabulary]]
 - **LUI**：加载高位立即数指令，设置高20位 → [[01-isa基础/vocabulary]]
 - **load value axiom**：加载值公理，RVWMO 三大公理之一 → [[01-isa基础/vocabulary]]
 
@@ -156,7 +156,7 @@ last_updated: 2026-07-23
 
 ## O
 
-- **OoO**（Out-of-Order）：乱序执行，按操作数就绪情况动态调度 → [[microarch/vocabulary]]
+- **OoO**（Out-of-Order）：乱序执行，按操作数就绪情况动态调度 → [[04-微架构/vocabulary]]
 - **OpenOCD**：开源片上调试器，通过JTAG连接DM，为GDB提供远程调试服务 → [[debug/vocabulary]]
 - **OpenSBI**：RISC-V参考SBI固件实现，M-mode运行，提供15个SBI扩展 → [[platform/vocabulary]]
 - **Opcode**：操作码，指令的bits[6:0]，标识指令类型 → [[01-isa基础/vocabulary]]
@@ -166,7 +166,7 @@ last_updated: 2026-07-23
 
 - **PC**（Program Counter）：程序计数器，保存当前指令地址 → [[01-isa基础/vocabulary]]
 - **page table walk**：页表遍历，9步算法将虚拟地址翻译为物理地址 → [[02-特权架构/vocabulary]]
-- **physical register file**：物理寄存器堆，用于寄存器重命名（128-256个寄存器）→ [[microarch/vocabulary]]
+- **physical register file**：物理寄存器堆，用于寄存器重命名（128-256个寄存器）→ [[04-微架构/vocabulary]]
 - **pk**（Proxy Kernel）：Spike 代理内核 → [[software/vocabulary]]
 - **PLIC**（Platform Level Interrupt Controller）：平台级中断控制器，Gateway/Priority/Context架构 → [[platform/vocabulary]]
 - **PMA**（Physical Memory Attribute）：物理内存属性 → [[02-特权架构/vocabulary]]
@@ -187,16 +187,16 @@ last_updated: 2026-07-23
 ## R
 
 - **ra**（return address）：返回地址寄存器（x1），保存函数返回地址 → [[01-isa基础/vocabulary]]
-- **RAS**（Return Address Stack）：返回地址预测栈，预测ret指令目标（8-16项）→ [[microarch/vocabulary]]
+- **RAS**（Return Address Stack）：返回地址预测栈，预测ret指令目标（8-16项）→ [[04-微架构/vocabulary]]
 - **RAS hint**：JAL/JALR 通过寄存器号隐式编码 Push/Pop 操作提示 → [[01-isa基础/vocabulary]]
-- **RAT**（Register Allocation Table）：寄存器分配表，将架构寄存器映射到物理寄存器 → [[microarch/vocabulary]]
+- **RAT**（Register Allocation Table）：寄存器分配表，将架构寄存器映射到物理寄存器 → [[04-微架构/vocabulary]]
 - **ratified**：已批准规范状态 → [[01-isa基础/vocabulary]]
 - **RCpc / RCsc**：Release Consistency Processor/Sequentially Consistent，RVWMO 获取释放语义强度 → [[01-isa基础/vocabulary]]
 - **reset vector**：复位后 PC 初始值，由平台规范定义 → [[02-特权架构/vocabulary]]
-- **retirement width**：每周期可退休的最大指令数 → [[microarch/vocabulary]]
+- **retirement width**：每周期可退休的最大指令数 → [[04-微架构/vocabulary]]
 - **RFNC**（Remote Fence）：SBI 远程 TLB 刷新扩展（EID 0x52464E43），远程 SFENCE.VMA → [[platform/vocabulary]]
 - **RISC-V**：开放标准指令集架构 → [[01-isa基础/vocabulary]]
-- **ROB**（Reorder Buffer）：重排序缓冲区，跟踪所有in-flight指令，确保顺序提交（64-256项）→ [[microarch/vocabulary]]
+- **ROB**（Reorder Buffer）：重排序缓冲区，跟踪所有in-flight指令，确保顺序提交（64-256项）→ [[04-微架构/vocabulary]]
 - **Rocket Chip**：UC Berkeley 开源 RISC-V 生成器 → [[software/vocabulary]]
 - **RsrvEventual / RsrvNonEventual**：LR/SC 保留集 PMA，是否保证最终成功 → [[02-特权架构/vocabulary]]
 - **R-Type**：寄存器-寄存器指令格式，编码ADD/SUB/AND/OR/XOR/SLL/SRL/SRA → [[01-isa基础/vocabulary]]
@@ -216,11 +216,11 @@ last_updated: 2026-07-23
 - **sret**：S 模式 trap 返回 → [[02-特权架构/vocabulary]]
 - **SRST**（System Reset）：系统复位SBI扩展（EID 0x53525354），执行系统重启/关机 → [[platform/vocabulary]]
 - **store buffer forwarding**：store buffer 转发，load value axiom 的第2选项来源 → [[01-isa基础/vocabulary]]
-- **store queue**：存储队列，乱序核心缓冲存储直到提交，提供转发 → [[microarch/vocabulary]]
+- **store queue**：存储队列，乱序核心缓冲存储直到提交，提供转发 → [[04-微架构/vocabulary]]
 - **S-Type**：存储指令格式，编码SB/SH/SW，12位偏移量分两个字段 → [[01-isa基础/vocabulary]]
 - **SUM**（permit Supervisor User Memory）：mstatus 字段，控制 S 模式访问 U 页面 → [[02-特权架构/vocabulary]]
 - **superpage**：超大页，任意级别叶 PTE 均可（Sv39：2MiB/1GiB）→ [[02-特权架构/vocabulary]]
-- **superscalar**：超标量流水线，每周期可发射/执行多条指令（2/4/6-8路）→ [[microarch/vocabulary]]
+- **superscalar**：超标量流水线，每周期可发射/执行多条指令（2/4/6-8路）→ [[04-微架构/vocabulary]]
 - **SUSP**（System Suspend）：系统挂起SBI扩展（EID 0x53555350），低功耗挂起模式 → [[platform/vocabulary]]
 - **Sv39/Sv48/Sv57**：虚拟地址翻译方案（3/4/5级页表）→ [[02-特权架构/vocabulary]]
 - **Svade / Svadu**：A/D 位软件异常 vs 硬件更新扩展 → [[02-特权架构/vocabulary]]
@@ -269,7 +269,7 @@ last_updated: 2026-07-23
 ## Z
 
 - **Z-extension**：Z 前缀扩展，标准化ISA扩展 → [[01-isa基础/vocabulary]]
-- **Zawrs**：等待保留集扩展，wrs.nto/wrs.sto低功耗等待 → [[microarch/vocabulary]]
+- **Zawrs**：等待保留集扩展，wrs.nto/wrs.sto低功耗等待 → [[04-微架构/vocabulary]]
 - **Zba/Zbb/Zbc/Zbs**：B 扩展子集，位操作指令 → [[03-标准扩展/vocabulary]]
 - **Zicbom / Zicboz / Zicbop**：缓存块管理/清零/预取扩展，cbo.*指令 → [[03-标准扩展/vocabulary]]
 - **Zicfiss**（Shadow Stack）：影子栈CFI扩展，防护返回地址，防御ROP攻击 → [[03-标准扩展/vocabulary]]
@@ -277,7 +277,7 @@ last_updated: 2026-07-23
 - **Zicond**：条件操作扩展，czero.eqz/czero.nez → [[03-标准扩展/vocabulary]]
 - **Zicsr**：CSR 访问指令扩展，csrrw/csrrs/csrrc → [[03-标准扩展/vocabulary]]
 - **Zifencei**：FENCE.I 扩展，I-cache同步 → [[03-标准扩展/vocabulary]]
-- **Zihintpause**：pause 暂停提示扩展，自旋等待优化 → [[microarch/vocabulary]]
+- **Zihintpause**：pause 暂停提示扩展，自旋等待优化 → [[04-微架构/vocabulary]]
 - **Zfinx/Zdinx**：浮点使用整数寄存器，节省寄存器地址空间 → [[03-标准扩展/vocabulary]]
 - **Zkn / Zks / Zkr / Zkt**：密码学扩展族（NIST/国密/熙源/数据无关延迟）→ [[03-标准扩展/vocabulary]]
 - **Zkne/Zknd**：AES加密/解密扩展，aes32*/aes64*指令 → [[03-标准扩展/vocabulary]]
@@ -306,13 +306,13 @@ last_updated: 2026-07-23
 
 - **B Extension**：位操作扩展（Zba/Zbb/Zbc/Zbs）→ [[03-标准扩展/vocabulary]]
 - **BOOM**（Berkeley Out-of-Order Machine）：开源乱序 RISC-V 处理器 → [[software/vocabulary]]
-- **BHT**（Branch History Table）：分支历史预测表 → [[microarch/vocabulary]]
-- **BTB**（Branch Target Buffer）：分支目标缓冲 → [[microarch/vocabulary]]
+- **BHT**（Branch History Table）：分支历史预测表 → [[04-微架构/vocabulary]]
+- **BTB**（Branch Target Buffer）：分支目标缓冲 → [[04-微架构/vocabulary]]
 
 ## C
 
 - **C Extension**：压缩指令扩展（16 位编码）→ [[01-isa基础/vocabulary]]
-- **CPI**（Cycles Per Instruction）：每指令周期数 → [[microarch/vocabulary]]
+- **CPI**（Cycles Per Instruction）：每指令周期数 → [[04-微架构/vocabulary]]
 - **CSR**（Control and Status Register）：控制与状态寄存器 → [[02-特权架构/vocabulary]]
 - **CVA6**：开源 RISC-V 应用处理器核（原 Ariane）→ [[software/vocabulary]]
 
@@ -357,7 +357,7 @@ last_updated: 2026-07-23
 - **I**：基础整数指令集 → [[01-isa基础/vocabulary]]
 - **icount**：指令计数触发器（单步调试）→ [[debug/vocabulary]]
 - **IMSIC**（Incoming MSI Controller）：MSI 接收器 → [[platform/vocabulary]]
-- **IPC**（Instructions Per Cycle）：每周期指令数 → [[microarch/vocabulary]]
+- **IPC**（Instructions Per Cycle）：每周期指令数 → [[04-微架构/vocabulary]]
 - **ISA**（Instruction Set Architecture）：指令集架构 → [[01-isa基础/vocabulary]]
 
 ## J
@@ -390,7 +390,7 @@ last_updated: 2026-07-23
 
 ## O
 
-- **OoO**（Out-of-Order）：乱序执行 → [[microarch/vocabulary]]
+- **OoO**（Out-of-Order）：乱序执行 → [[04-微架构/vocabulary]]
 - **OpenOCD**：开源片上调试器 → [[debug/vocabulary]]
 - **OpenSBI**：RISC-V 参考 SBI 固件 → [[platform/vocabulary]]
 
@@ -411,10 +411,10 @@ last_updated: 2026-07-23
 ## R
 
 - **ratified**：已批准规范状态 → [[01-isa基础/vocabulary]]
-- **RAS**（Return Address Stack）：返回地址预测栈 → [[microarch/vocabulary]]
+- **RAS**（Return Address Stack）：返回地址预测栈 → [[04-微架构/vocabulary]]
 - **RFNC**（Remote Fence）：SBI 远程 TLB 刷新扩展 → [[platform/vocabulary]]
 - **RISC-V**：开放标准指令集架构 → [[01-isa基础/vocabulary]]
-- **ROB**（Reorder Buffer）：重排序缓冲区 → [[microarch/vocabulary]]
+- **ROB**（Reorder Buffer）：重排序缓冲区 → [[04-微架构/vocabulary]]
 - **Rocket Chip**：UC Berkeley 开源 RISC-V 生成器 → [[software/vocabulary]]
 - **RV32E/RV32I/RV64I**：RISC-V 基础 ISA 变体 → [[01-isa基础/vocabulary]]
 - **RVWMO**：RISC-V 弱内存序 → [[01-isa基础/vocabulary]]
@@ -463,10 +463,10 @@ last_updated: 2026-07-23
 ## Z
 
 - **Z-extension**：Z 前缀扩展 → [[01-isa基础/vocabulary]]
-- **Zawrs**：等待保留集扩展 → [[microarch/vocabulary]]
+- **Zawrs**：等待保留集扩展 → [[04-微架构/vocabulary]]
 - **Zba/Zbb/Zbc/Zbs**：B 扩展子集 → [[03-标准扩展/vocabulary]]
 - **Zicond**：条件操作扩展 → [[03-标准扩展/vocabulary]]
 - **Zicsr**：CSR 访问指令扩展 → [[03-标准扩展/vocabulary]]
 - **Zifencei**：FENCE.I 扩展 → [[03-标准扩展/vocabulary]]
-- **Zihintpause**：pause 暂停提示扩展 → [[microarch/vocabulary]]
+- **Zihintpause**：pause 暂停提示扩展 → [[04-微架构/vocabulary]]
 - **Zfinx/Zdinx**：浮点使用整数寄存器 → [[03-标准扩展/vocabulary]]

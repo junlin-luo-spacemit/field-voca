@@ -338,6 +338,6 @@ for (int i = 0; i < 1000; i++) {
 
 ## 深入阅读
 
-- [[../microarch/notes|微架构笔记]]
+- [[../04-微架构/notes|微架构笔记]]
 - [[../hardware/notes|硬件实现笔记]]
 - [[../01-isa基础/notes|ISA 笔记]]
