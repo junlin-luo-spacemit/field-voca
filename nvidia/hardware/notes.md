@@ -45,6 +45,57 @@
 
 ---
 
+## A100 关键规格速查（官方 nvidia.com/a100 核实，2026-08-07）
+
+| 参数 | A100 40GB PCIe | A100 80GB SXM |
+|------|-----------------|----------------|
+| 架构 | Ampere (GA100) | Ampere (GA100) |
+| FP64 | 9.7 TFLOPS | 9.7 TFLOPS |
+| FP64 Tensor Core | 19.5 TFLOPS | 19.5 TFLOPS |
+| FP32 | 19.5 TFLOPS | 19.5 TFLOPS |
+| TF32 Tensor Core | 156 TFLOPS（312 TFLOPS 稀疏） | 312 TFLOPS（稀疏） |
+| BF16/FP16 Tensor Core | 312 TFLOPS（624 稀疏） | 624 TFLOPS（稀疏） |
+| INT8 Tensor Core | 624 TOPS（1248 稀疏） | 1248 TOPS（稀疏） |
+| 显存 | 80GB HBM2e | 80GB HBM2e |
+| 显存带宽 | 1,935 GB/s | 2,039 GB/s |
+| Max TDP | 300W | 400W（HGX 定制散热 SKU 最高 500W） |
+| 互连 | NVLink Bridge 600 GB/s（限2 GPU）/ PCIe Gen4 64 GB/s | NVLink 600 GB/s / PCIe Gen4 64 GB/s |
+| MIG | 最多 7 个实例 @ 10GB | 最多 7 个实例 @ 10GB |
+
+> 注：TF32/BF16/FP16/INT8 括号内数值为启用**结构化稀疏（sparsity）**后的峰值，非稠密算力。
+
+## H200 关键规格速查（官方 nvidia.com/h200 核实，2026-08-07）
+
+| 参数 | H200 SXM | H200 NVL |
+|------|----------|----------|
+| 架构 | Hopper (GH100，首款 HBM3e) | Hopper (GH100) |
+| FP64 | 34 TFLOPS | 30 TFLOPS |
+| FP64 Tensor Core | 67 TFLOPS | 60 TFLOPS |
+| FP32 | 67 TFLOPS | 60 TFLOPS |
+| TF32 Tensor Core | 989 TFLOPS（稀疏） | 835 TFLOPS（稀疏） |
+| BF16/FP16 Tensor Core | 1,979 TFLOPS（稀疏） | 1,671 TFLOPS（稀疏） |
+| FP8/INT8 Tensor Core | 3,958 TFLOPS/TOPS（稀疏） | 3,341 TFLOPS/TOPS（稀疏） |
+| 显存 | 141GB HBM3e | 141GB HBM3e |
+| 显存带宽 | 4.8 TB/s | 4.8 TB/s |
+| Max TDP | 700W（可配置） | 600W（可配置） |
+| 互连 | NVLink 900 GB/s / PCIe Gen5 128 GB/s | NVLink Bridge 900 GB/s/GPU（2/4路）/ PCIe Gen5 128 GB/s |
+| MIG | 最多 7 个实例 @18GB | 最多 7 个实例 @16.5GB |
+| 服务器选项 | HGX H200（4/8 GPU） | MGX H200 NVL（最多 8 GPU） |
+
+> 注：以上为 NVIDIA 官网标注的"preliminary specifications, may be subject to change"（初步规格，可能变更）。
+
+## B200 关键规格（⚠️ 待核实，暂缺官方逐项数据表）
+
+截至本次核实（2026-08-07），官方 B200 独立产品页与 HGX B200 专页均未能成功抓取到结构化规格表（页面已被 Rubin/Blackwell Ultra 新一代内容覆盖，或需要 JS 渲染/PDF 才能看到完整数据）。**以下信息来自 Blackwell 架构页面的架构级描述，不是逐项产品规格表，请勿引用具体 TFLOPS/带宽数字用于正式文档**：
+
+- Blackwell 架构采用双 die 设计，通过 10 TB/s 芯片间互连（chip-to-chip interconnect）构成统一单 GPU，单颗封装含 2080 亿晶体管，TSMC 4NP 定制工艺
+- NVLink 为第五代，单个 NVL72 域内 GPU 带宽达 130 TB/s，支持扩展至 576 GPU
+- 支持 FP4（NVFP4，微缩放格式）新精度，用于加速 LLM/MoE 推理与训练
+
+**待办**：需要用户提供官方 B200 Datasheet PDF，或访问 NVIDIA 官方 Blackwell Resources Center 手动获取逐项规格（FP64/FP32/TF32/FP16/FP8/FP4 算力、显存容量与带宽、TDP、CUDA/Tensor Core 数量），再补全本表。**不要凭记忆或推算填入具体数字**。
+
+---
+
 ## DGX H100/H200 系统架构（官方 User Guide 核实）
 
 ```

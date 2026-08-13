@@ -1,0 +1,32 @@
+---
+tags: [term]
+domain: hardware
+aliases: []
+status: draft
+created: 
+updated: 
+source: 
+superseded_by: 
+---
+
+# {{term}}
+
+> 概要：一句话描述
+
+## 定义
+
+简短定义。
+
+## 关键参数
+
+- 属性 1：
+- 属性 2：
+
+## 典型用途
+
+- 用途 1
+
+## 相关链接
+
+- 官方文档：
+- 参考资料：

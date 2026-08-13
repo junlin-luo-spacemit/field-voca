@@ -63,6 +63,7 @@
 | DGX Platform Overview (DGX H100/H200 User Guide) | ✅ | 2026-07-21 | ~15 | 硬件规格/BMC/NVSM/DCGM/SuperPOD/DensiLink |
 | Jetson Overview (Developer Guide r36.4) | ✅ | 2026-07-21 | ~10 | Orin系列型号矩阵/开发套件vs模组/JetPack/L4T/A-B冗余 |
 | vGPU Overview (NVIDIA vGPU Software Docs) | ✅ | 2026-07-21 | ~12 | vGPU Manager/软件分支策略/vWS-vCS-vPC/time-sliced/MIG-backed |
+| GPU 规格速查表补全（A100/H100/H200 官方核实） | 🔄 | 2026-08-07 | — | H100 已有；新补 A100/H200 完整算力表（官方nvidia.com核实）；**B200 逐项规格待补**（官方产品页/HGX B200页均未成功抓取结构化数据，需人工提供Datasheet PDF） |
 
 ## Omniverse
 

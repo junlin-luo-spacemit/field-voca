@@ -1,13 +1,13 @@
 ﻿---
 tags: [home, index, riscv]
 domain: all
-date: 2026-07-22
+date: 2026-08-08
 ---
 
 # RISC-V 词汇知识库
 
 > 芯片行业文档工程师学习用知识库 · 来源：[riscv.org](https://riscv.org/)
-> 进度追踪：[[PROGRESS]] · 规范索引：[[glossary/master_glossary]]
+> 进度追踪：[[PROGRESS]] · 规范索引：[[glossary/master_glossary]] · 架构规范：[[../ARCHITECTURE]]
 
 ---
 
@@ -15,19 +15,16 @@ date: 2026-07-22
 
 **[[概念地图]]** — 一张图讲清楚所有分支之间的关系，从最简单的心智模型开始，逐层深入到具体词条。5分钟建立全局框架。
 
+**[[learning_path/README|RISC-V 分步学习路线]]** — 专为零基础设计的学习路径，从零开始理解 RISC-V 指令集架构。
+
 ---
 
 ## 核心原子词条
 
 > RISC-V 最重要的基础概念，每个都有独立深度页面。
 
-## 小白分步学习
-
-按由浅入深的顺序学习整理好的内容：[[learning_path/README|RISC-V 分步学习路线]]
-
 ### ISA 基础
 - [[01-isa基础/atoms/RV32I]] — 32位基础整数指令集，RISC-V 最小完备子集
-- [[atoms/RV64I]] — 64位基础整数指令集
 - [[01-isa基础/atoms/XLEN]] — 整数寄存器宽度，定义地址空间与操作数位宽
 - [[01-isa基础/atoms/hart]] — Hardware Thread，RISC-V 的基本执行单元
 
@@ -53,9 +50,9 @@ date: 2026-07-22
 | 特权架构 | [[02-特权架构/vocabulary\|特权架构词汇]] | [[02-特权架构/notes\|特权架构笔记]] | — | ⬜ 待学习 |
 | 标准扩展 | [[03-标准扩展/vocabulary\|扩展词汇]] | [[03-标准扩展/notes\|扩展笔记]] | — | ⬜ 待学习 |
 | 微架构 | [[04-微架构/vocabulary\|微架构词汇]] | [[04-微架构/notes\|微架构笔记]] | — | ⬜ 待学习 |
-| 平台规范 | [[05-调试与工具链/platform/vocabulary\|平台词汇]] | [[05-调试与工具链/platform/notes\|平台笔记]] | — | ⬜ 待学习 |
-| 软件生态 | [[05-调试与工具链/software/vocabulary\|软件词汇]] | [[05-调试与工具链/software/notes\|软件笔记]] | — | ⬜ 待学习 |
-| 调试与跟踪 | [[05-调试与工具链/debug/vocabulary\|调试词汇]] | [[05-调试与工具链/debug/notes\|调试笔记]] | — | ⬜ 待学习 |
+| 平台规范 | [[05-platform/vocabulary\|平台词汇]] | [[05-platform/notes\|平台笔记]] | — | ⬜ 待学习 |
+| 软件生态 | [[05-software/vocabulary\|软件词汇]] | [[05-software/notes\|软件笔记]] | — | ⬜ 待学习 |
+| 调试与跟踪 | [[05-debug/vocabulary\|调试词汇]] | [[05-debug/notes\|调试笔记]] | — | ⬜ 待学习 |
 | 全局词汇 | [[glossary/master_glossary\|Master Glossary]] | — | — | — |
 
 ---

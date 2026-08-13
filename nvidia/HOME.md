@@ -1,13 +1,19 @@
 ---
 tags: [home, index, nvidia]
 domain: all
-date: 2026-07-22
+date: 2026-08-08
 ---
 
 # NVIDIA 词汇知识库
 
 > 芯片行业文档工程师学习用知识库 · 来源：[docs.nvidia.com](https://docs.nvidia.com/)
-> 进度追踪：[[PROGRESS]] · 总览：[[README]]
+> 进度追踪：[[PROGRESS]] · 总览：[[README]] · 架构规范：[[../ARCHITECTURE]]
+
+---
+
+## 🌳 不知道从哪看起？
+
+**[[LEARNING_GUIDE]]** — 专为技术小白设计的学习路径，从零开始理解 NVIDIA GPU 技术体系。
 
 ---
 

@@ -50,9 +50,10 @@ NVIDIA 服务器 GPU 专用高带宽接口模块，通过 NVLink 高速连接，
 通过硅通孔（TSV）堆叠的 DRAM，封装与 GPU 同一基板，极低延迟、极高带宽。
 | 型号 | HBM 版本 | 显存大小 | 带宽 |
 |------|----------|----------|------|
-| A100 SXM | HBM2e | 80 GB | 2.0 TB/s |
-| H100 SXM | HBM3 | 80 GB | 3.35 TB/s |
-| B200 | HBM3e | 192 GB | 8.0 TB/s |
+| A100 80GB SXM | HBM2e | 80 GB | 2.039 TB/s（官方 nvidia.com/a100 核实） |
+| H100 SXM5 | HBM3 | 80 GB | 3.35 TB/s（官方核实） |
+| H200 SXM/NVL | HBM3e | 141 GB | 4.8 TB/s（官方 nvidia.com/h200 核实） |
+| B200 | HBM3e | ⚠️ 待核实 | ⚠️ 待核实（官方逐项规格页暂未成功抓取，勿凭记忆填写，见 hardware/notes.md 说明） |
 
 ### MIG (Multi-Instance GPU) / 多实例 GPU
 A100/H100 的虚拟化特性，将单个 GPU 硬件切分为最多 7 个完全隔离的 GPU 实例。
