@@ -2,8 +2,11 @@
 tags: [nvidia, ai-software, inference, atom]
 domain: ai-software
 aliases: [TensorRT, TRT, 张量推理]
-date: 2026-06-29
+status: approved
+created: 2026-06-29
+updated: 2026-06-29
 source: https://docs.nvidia.com/deeplearning/tensorrt/
+superseded_by:
 ---
 
 # TensorRT / TensorRT

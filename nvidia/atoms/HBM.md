@@ -2,8 +2,11 @@
 tags: [nvidia, hardware, memory, atom]
 domain: hardware
 aliases: [HBM, High Bandwidth Memory, 高带宽内存]
-date: 2026-06-29
+status: approved
+created: 2026-06-29
+updated: 2026-06-29
 source: https://docs.nvidia.com/
+superseded_by:
 ---
 
 # HBM — High Bandwidth Memory / 高带宽内存

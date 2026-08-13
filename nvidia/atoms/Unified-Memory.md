@@ -2,8 +2,11 @@
 tags: [nvidia, cuda, memory, atom]
 domain: cuda
 aliases: [Unified Memory, 统一内存, UM]
-date: 2026-06-29
+status: approved
+created: 2026-06-29
+updated: 2026-06-29
 source: https://docs.nvidia.com/cuda/cuda-programming-guide/
+superseded_by:
 ---
 
 # Unified Memory / 统一内存

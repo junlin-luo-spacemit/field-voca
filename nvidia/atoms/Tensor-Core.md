@@ -2,8 +2,11 @@
 tags: [nvidia, cuda, hardware, atom]
 domain: cuda
 aliases: [Tensor Core, 张量核心]
-date: 2026-06-29
+status: approved
+created: 2026-06-29
+updated: 2026-06-29
 source: https://docs.nvidia.com/cuda/cuda-programming-guide/
+superseded_by:
 ---
 
 # Tensor Core / 张量核心

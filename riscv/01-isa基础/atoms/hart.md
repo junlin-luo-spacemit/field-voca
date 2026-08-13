@@ -2,8 +2,11 @@
 tags: [riscv, atom, isa]
 domain: isa
 aliases: [hart, hardware thread]
+status: approved
+created: 2026-07-22
+updated: 2026-07-22
 source: https://github.com/riscv/riscv-isa-manual
-date: 2026-07-22
+superseded_by:
 ---
 
 # hart (Hardware Thread) / hart（硬件线程）

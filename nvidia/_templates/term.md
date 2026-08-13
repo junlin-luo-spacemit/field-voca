@@ -2,8 +2,11 @@
 tags: [term, template]
 domain: 
 aliases: []
+status: draft
+created: 
+updated: 
 source: 
-date: 
+superseded_by: 
 ---
 
 # 词条标题（英文）

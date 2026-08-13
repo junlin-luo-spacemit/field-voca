@@ -2,8 +2,11 @@
 tags: [riscv, atom, privileged]
 domain: privileged
 aliases: [CSR, Control and Status Register, 控制与状态寄存器]
+status: approved
+created: 2026-07-22
+updated: 2026-07-22
 source: https://github.com/riscv/riscv-isa-manual
-date: 2026-07-22
+superseded_by:
 ---
 
 # CSR (Control and Status Register) / CSR（控制与状态寄存器）

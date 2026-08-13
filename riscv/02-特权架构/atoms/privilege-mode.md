@@ -2,8 +2,11 @@
 tags: [riscv, atom, privileged]
 domain: privileged
 aliases: [privilege mode, M-mode, S-mode, U-mode]
+status: approved
+created: 2026-07-22
+updated: 2026-07-22
 source: https://github.com/riscv/riscv-isa-manual
-date: 2026-07-22
+superseded_by:
 ---
 
 # Privilege Mode / privilege-mode（特权模式）

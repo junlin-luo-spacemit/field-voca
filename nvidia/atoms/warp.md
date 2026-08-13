@@ -2,8 +2,11 @@
 tags: [nvidia, cuda, hardware, atom]
 domain: cuda
 aliases: [warp, 线程束]
-date: 2026-06-29
+status: approved
+created: 2026-06-29
+updated: 2026-06-29
 source: https://docs.nvidia.com/cuda/cuda-programming-guide/
+superseded_by:
 ---
 
 # warp / 线程束
@@ -27,7 +30,7 @@ source: https://docs.nvidia.com/cuda/cuda-programming-guide/
 ## SIMT 执行模型
 
 - warp 内所有线程在同一时刻执行同一条指令
-- 分支（if/else）导致 [[warp divergence]]，部分线程被 masked off，串行执行两条路径
+- 分支（if/else）导致 [[warp-divergence]]，部分线程被 masked off，串行执行两条路径
 - 同一 warp 内线程可通过 shuffle 指令直接交换寄存器数据（无需共享内存）
 
 ## warp 与线程层次关系
@@ -42,6 +45,6 @@ Grid
 ## 相关词条
 
 - [[SM]] — warp 运行的硬件单元
-- [[warp divergence]] — 分支导致的性能问题
+- [[warp-divergence]] — 分支导致的性能问题
 - [[occupancy]] — SM 上活跃 warp 数量比率
-- [[latency hiding]] — 多 warp 并发隐藏访存延迟
+- [[latency-hiding]] — 多 warp 并发隐藏访存延迟

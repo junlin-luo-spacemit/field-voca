@@ -2,8 +2,11 @@
 tags: [riscv, atom, privileged]
 domain: privileged
 aliases: [trap, exception, interrupt, 陷阱, 异常, 中断]
+status: approved
+created: 2026-07-22
+updated: 2026-07-22
 source: https://github.com/riscv/riscv-isa-manual
-date: 2026-07-22
+superseded_by:
 ---
 
 # trap (Trap) / trap（陷阱）

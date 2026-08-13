@@ -2,8 +2,11 @@
 tags: [riscv, atom, isa]
 domain: isa
 aliases: [RV32I, 基础整数指令集]
+status: approved
+created: 2026-07-22
+updated: 2026-07-22
 source: https://github.com/riscv/riscv-isa-manual
-date: 2026-07-22
+superseded_by:
 ---
 
 # RV32I / RV64I (Base Integer Instruction Set) / RV32I / RV64I（基础整数指令集）

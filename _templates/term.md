@@ -2,8 +2,11 @@
 tags: [term, <% tp.frontmatter.domain %>]
 domain: 
 aliases: []
-source: 
+status: draft
 created: <% tp.date.now("YYYY-MM-DD") %>
+updated: <% tp.date.now("YYYY-MM-DD") %>
+source: 
+superseded_by:
 ---
 
 # <% tp.file.title %>
