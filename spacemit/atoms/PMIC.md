@@ -1,18 +1,21 @@
 ---
 tags: [atom, pmic, power, spacemit]
 domain: hardware
-aliases: [PMIC, Power Management IC, 电源管理芯片]
-status: approved
+aliases: [PMIC, Power Management IC, 电源管理芯片, 电源管理集成电路]
+status: needs_review
 created: 2026-08-06
-updated: 2026-08-06
+updated: 2026-10-29
+source:
 superseded_by:
 ---
 
-# PMIC / Power Management
+# PMIC（电源管理集成电路）
+
+**中文译名**：电源管理集成电路 / 电源管理芯片
 
 ## 定义
 
-PMIC（电源管理集成电路）负责为芯片和模块提供稳压、功率序列管理、功耗监控与电源保护功能。
+PMIC（Power Management IC，电源管理集成电路）负责为芯片和模块提供稳压、功率序列管理、功耗监控与电源保护功能。
 
 ## 为什么重要
 
@@ -20,4 +23,13 @@ PMIC（电源管理集成电路）负责为芯片和模块提供稳压、功率�
 
 ## 在 SpacemiT 中
 
-- 文档提到 `P Series`（如 P1、P1S）为电源管理芯片，属于系统设计重要组成部分。
+- SpacemiT 提供 **P 系列**电源管理芯片：
+  - [[../hardware/products/P1]] — 配套 K1/K3 使用
+  - [[../hardware/products/P1S]] — P1 的变体型号
+- P 系列是系统设计的重要组成部分，与 K 系列 AI CPU 配套
+
+## 相关词条
+
+- [[SoC]] — 系统级芯片
+- [[../hardware/products/K1]] — 配套使用 P1/P1S
+- [[../hardware/products/K3]] — 配套使用 P1/P1S

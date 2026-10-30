@@ -1,6 +1,8 @@
 ---
-tags: [home, index, nvidia]
-date: 2026-07-22
+tags: [home, index]
+status: needs_review
+created: 2026-07-22
+updated: 2026-10-29
 ---
 
 # 芯片行业文档词汇知识库
@@ -13,6 +15,7 @@ date: 2026-07-22
 
 | 域 | 主页 | 来源 | 状态 |
 |----|------|------|------|
+| **SpacemiT** | [[spacemit/HOME\|SpacemiT 知识库]] | [spacemit.com/community/document](https://www.spacemit.com/community/document) | ✅ 活跃 |
 | NVIDIA | [[nvidia/HOME\|NVIDIA 知识库]] | [docs.nvidia.com](https://docs.nvidia.com/) | ✅ 活跃 |
 | RISC-V | [[riscv/HOME\|RISC-V 知识库]] | [riscv.org](https://riscv.org/) | 🔄 建立中 |
 
@@ -37,15 +40,15 @@ date: 2026-07-22
 
 ### 硬件 / 计算单元
 
-- [[atoms/SM|SM — Streaming Multiprocessor 流多处理器]]
-- [[atoms/warp|warp — 线程束（32线程执行单位）]]
-- [[atoms/CUDA-Core|CUDA Core — 标量计算单元]]
-- [[atoms/Tensor-Core|Tensor Core — 矩阵计算单元]]
+- [[nvidia/atoms/SM|SM — Streaming Multiprocessor 流多处理器]]
+- [[nvidia/atoms/warp|warp — 线程束（32线程执行单位）]]
+- [[nvidia/atoms/CUDA-Core|CUDA Core — 标量计算单元]]
+- [[nvidia/atoms/Tensor-Core|Tensor Core — 矩阵计算单元]]
 
 ### 内存
 
-- [[atoms/HBM|HBM — 高带宽内存]]
-- [[atoms/Unified-Memory|Unified Memory — 统一内存]]
+- [[nvidia/atoms/HBM|HBM — 高带宽内存]]
+- [[nvidia/atoms/Unified-Memory|Unified Memory — 统一内存]]
 
 ### 互连
 

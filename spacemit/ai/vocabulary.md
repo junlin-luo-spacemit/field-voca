@@ -2,7 +2,7 @@
 tags: [spacemit, ai, vocabulary]
 domain: ai
 date: 2026-08-08
-source: https://www.spacemit.com/community/document?lang=zh
+source: C:\Users\luojunlin\docs-ai\zh\
 ---
 
 # AI 平台词汇表

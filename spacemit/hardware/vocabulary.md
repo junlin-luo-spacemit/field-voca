@@ -2,7 +2,7 @@
 tags: [spacemit, hardware, vocabulary]
 domain: hardware
 date: 2026-08-08
-source: https://www.spacemit.com/community/document?lang=zh
+source: C:\Users\luojunlin\docs-chip\, C:\Users\luojunlin\docs-product\
 ---
 
 # 硬件平台词汇表
@@ -84,7 +84,7 @@ SpacemiT 产品的设计原则与技术决策，如功耗平衡、可扩展性�
 高速串行总线标准，用于连接 GPU、SSD、网卡等高速设备。
 
 ### Ethernet / 以太网
-网络连接接口，K3 支持千兆/万兆以太网。
+网络连接接口，K3 支持双千兆以太网 (RGMII/SGMII)。
 
 ### M.2
 固态硬盘和扩展卡接口标准，支持 NVMe 协议。
@@ -125,7 +125,7 @@ SpacemiT 产品的设计原则与技术决策，如功耗平衡、可扩展性�
 ## 调试与跟踪（Debug & Trace）
 
 ### JTAG
-标准调试接口，用于芯片级调试与烧录。
+标准调试接口，用于芯片级调试与固件烧录。
 
 ### Trace / 执行跟踪
 记录 CPU 指令执行流程的调试技术。

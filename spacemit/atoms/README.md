@@ -1,7 +1,9 @@
 ---
 tags: [atoms, index, spacemit]
 domain: all
-date: 2026-08-08
+status: needs_review
+created: 2026-08-08
+updated: 2026-10-29
 ---
 
 # 原子词条索引（Atoms Index）
@@ -22,15 +24,17 @@ date: 2026-08-08
 
 ### 硬件核心
 - [SoC](SoC.md) — 系统级芯片，SpacemiT 产品的核心形态
-- [X60 Core](X60-Core.md) — SpacemiT 的 CPU 核心架构
-- [Matrix Extension](Matrix-Extension.md) — SpacemiT 的矩阵加速指令集扩展
+- [X60 Core](X60-Core.md) — K1 的 CPU 核心架构（8×X60，双簇，Cluster0 含 AI 扩展）
+- [X100 Core](X100-Core.md) — K3 的高性能 CPU 核心（8×X100 @2.4GHz）
+- [A100 AI Core](A100-AI-Core.md) — K3 的专用 AI 加速核心（8×A100，约 60 TOPS）
+- [Matrix Extension](Matrix-Extension.md) — SpacemiT 的矩阵加速技术（K1 指令集扩展 + K3 A100 硬件核心）
 
 ### 内存与 I/O
-- [HBM](HBM.md) — 高带宽内存（如果 SpacemiT 芯片使用）
+- [HBM](HBM.md) — 高带宽内存（对比参考，SpacemiT 采用 LPDDR）
 - [IOMMU](IOMMU.md) — I/O 内存管理单元，虚拟化关键技术
 
 ### 电源管理
-- [PMIC](PMIC.md) — 电源管理集成电路
+- [PMIC](PMIC.md) — 电源管理集成电路（P 系列）
 
 ---
 

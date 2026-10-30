@@ -2,7 +2,7 @@
 tags: [spacemit, software, vocabulary]
 domain: software
 date: 2026-08-08
-source: https://www.spacemit.com/community/document?lang=zh
+source: C:\Users\luojunlin\docs-bianbu\, C:\Users\luojunlin\docs-buildroot\, C:\Users\luojunlin\docs-openwrt\, C:\Users\luojunlin\docs-openharmony\, C:\Users\luojunlin\docs-ros\
 ---
 
 # 软件平台词汇表

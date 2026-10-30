@@ -2,7 +2,7 @@
 tags: [spacemit, tools, vocabulary]
 domain: tools
 date: 2026-08-08
-source: https://www.spacemit.com/community/document?lang=zh
+source: C:\Users\luojunlin\docs-tool\zh\
 ---
 
 # 开发工具词汇表
