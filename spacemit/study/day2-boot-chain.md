@@ -17,39 +17,60 @@ source: C:\Users\luojunlin\docs-buildroot\zh\k1_buildroot\device\boot.md, C:\Use
 
 ## 完整启动链（K1 / K3 通用）
 
+> **小白类比**：芯片通电就像早晨叫醒一个完全失忆的人。他不知道自己是谁，不认识任何人，也不知道怎么说话。每一层"引导程序"就像一个叫醒他的人，把他的记忆和能力一点点还给他，直到他完全清醒，能独立工作为止。
+
 ```
 通电
   │
   ▼
-1. BROM（Boot ROM）
-   · 芯片出厂固化，不可修改
-   · 任务：从存储介质找到 FSBL 并加载
+1. BROM（Boot ROM）—— "保安大叔"
+   · 芯片出厂时已经固化在里面，永远不会变
+   · 他只会做一件事：去存储介质（eMMC/SD 卡/NOR）里
+     找到 FSBL 这个文件，把它加载进来
+   · 类比：公司大门的保安，他不会帮你工作，
+     但他会开门让真正的工作人员进来
   │
   ▼
-2. FSBL（First Stage Boot Loader）
+2. FSBL（First Stage Boot Loader）—— "开灯的人"
    · SpacemiT 自定义的第一阶段引导
-   · 任务：初始化内存控制器（DRAM 在此之前不可用），加载 OpenSBI
+   · 此时内存（DRAM）还不能用——就像进了一间漆黑的房间
+   · 他的任务：先把灯打开（初始化内存控制器），
+     然后加载 OpenSBI
+   · 类比：进办公室第一件事，把灯和空调打开，
+     让后面的人能正常工作
   │
   ▼
-3. OpenSBI（RISC-V Supervisor Binary Interface）
-   · RISC-V 专有固件层（x86/ARM 没有这一层）
-   · 任务：初始化 M-Mode 特权级，为操作系统提供底层系统调用接口
+3. OpenSBI（RISC-V Supervisor Binary Interface）—— "翻译官"
+   · RISC-V 专有的一层（x86/ARM 没有这个角色）
+   · 硬件最底层的操作（比如关机、时钟）只有他能做
+   · 操作系统（Linux）想要操控硬件，必须通过他"翻译"
+   · 类比：一个只懂硬件"机器语言"的翻译官，
+     把操作系统的指令翻译成硬件能听懂的语言
   │
   ▼
-4. U-Boot
+4. U-Boot —— "装修工头"
    · 通用引导加载程序（开源 + SpacemiT 适配）
-   · 任务：初始化硬件外设，加载内核 + 设备树（DTB）
-   · 特殊用途：进入 Fastboot 模式 → 刷机（写入新固件）
+   · 把剩余的硬件外设都初始化好（网卡、存储、显示...）
+   · 然后把 Linux 内核请进来
+   · 还有一个特殊技能：进入 Fastboot 模式 → 刷机
+   · 类比：装修工头，先把房间布置好，再请房主入住；
+     如果需要重新装修（刷机），也找他
   │
   ▼
-5. Linux 内核（Kernel）
-   · SpacemiT 适配版本（K1 Linux 6.1，K3 Linux 6.6+）
-   · 任务：初始化所有驱动，挂载根文件系统
+5. Linux 内核（Kernel）—— "大管家"
+   · SpacemiT 适配版（K1 用 Linux 6.1，K3 用 Linux 6.6+）
+   · 接管所有硬件驱动，管理内存、CPU、设备
+   · 挂载根文件系统，准备好用户空间
+   · 类比：公司大管家，所有部门（硬件）都归他协调，
+     他把一切安排好，员工（程序）才能开始工作
   │
   ▼
-6. Rootfs（根文件系统）
-   · 在这里选择：Bianbu / Buildroot / OpenWrt / OpenHarmony
-   · 任务：提供用户空间，程序从这里开始运行
+6. Rootfs（根文件系统）—— "办公室"
+   · 在这里选择操作系统版本：
+     Bianbu（Ubuntu 基础）/ Buildroot（最小化）/
+     OpenWrt（路由器）/ OpenHarmony（鸿蒙）
+   · 类比：员工终于进了办公室，桌椅电脑都有了，
+     可以开始干活了
   │
   ▼
 你的程序跑起来了 🎉
