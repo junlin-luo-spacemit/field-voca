@@ -149,7 +149,27 @@ RISC-V 把权限分成三层（类比：公司员工等级）：
 | **S-Mode**（监管模式） | Linux 内核 | 管理程序和资源，但不能直接碰底层硬件 | 部门经理 |
 | **U-Mode**（用户模式） | 你的程序 | 只能干自己的活，其他都得找上级批准 | 普通员工 |
 
-Linux 内核想要"关机"、"调时钟"这种底层操作，必须**请求 OpenSBI 代劳**——这就是 **SBI 调用**（Supervisor Binary Interface）。类比：部门经理想调整全公司空调温度，得找董事长批准，不能自己动总开关。
+**启动时的权限切换过程：**
+
+```
+FSBL（在 M-Mode 运行）
+  ↓ 加载 OpenSBI
+OpenSBI（接管 M-Mode，常驻不退出）
+  ↓ 加载 U-Boot，降权到 S-Mode
+U-Boot（在 S-Mode 运行）
+  ↓ 加载 Linux 内核
+Linux 内核（在 S-Mode 运行）
+  ↓ 需要底层操作时，通过 SBI 调用请求 OpenSBI
+OpenSBI（M-Mode，响应请求）
+```
+
+**关键点：**
+- FSBL 完成初始化后，把 M-Mode 的控制权交给 OpenSBI
+- **OpenSBI 常驻 M-Mode**，不会退出，像"安保主管"一直守在最高权限层
+- U-Boot 和 Linux 内核都运行在 S-Mode（降权）
+- 内核想做底层操作（关机、调时钟），必须通过 **SBI 调用**请求 OpenSBI 代劳
+
+**类比：** OpenSBI 是"总机房的安保主管"，永远守在最高权限层（M-Mode）。Linux 内核是"楼层经理"（S-Mode），想动总电闸得找安保主管批准。FSBL 是"第一个到公司的保安"，开了门就把钥匙交给安保主管，自己退场了。
 
 写文档时看到"需要 OpenSBI 支持"、"SBI 版本"，知道它是 RISC-V 专有的"底层固件 / 最高权限层"就够了。
 
