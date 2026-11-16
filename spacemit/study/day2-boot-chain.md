@@ -31,9 +31,9 @@ source: C:\Users\luojunlin\docs-buildroot\zh\k1_buildroot\device\boot.md, C:\Use
   │
   ▼
 2. FSBL（First Stage Boot Loader）—— "开灯的人"
+   · 为什么叫开灯的人？此时内存（DRAM）还不能用，就像进了一间漆黑的房间
    · SpacemiT 自定义的第一阶段引导
-   · 此时内存（DRAM）还不可用，他先初始化内存控制器
-   · 再加载 OpenSBI
+   · 他先初始化内存控制器（把灯打开），再加载 OpenSBI
   │
   ▼
 3. OpenSBI（RISC-V Supervisor Binary Interface）—— "翻译官"
@@ -43,12 +43,14 @@ source: C:\Users\luojunlin\docs-buildroot\zh\k1_buildroot\device\boot.md, C:\Use
   │
   ▼
 4. U-Boot —— "装修工头"
+   · 为什么叫装修工头？他要把所有硬件外设都安排好，才能让内核"入住"
    · 通用引导加载程序（开源 + SpacemiT 适配）
    · 初始化硬件外设，加载 Linux 内核 + 设备树（DTB）
    · 特殊技能：进入 Fastboot 模式 → 刷机
   │
   ▼
 5. Linux 内核（Kernel）—— "大管家"
+   · 为什么叫大管家？他要协调所有硬件（部门），让程序（员工）能正常工作
    · K1 用 Linux 6.1，K3 用 Linux 6.6+
    · 接管所有硬件驱动，挂载根文件系统
   │
