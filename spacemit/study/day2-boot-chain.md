@@ -42,8 +42,8 @@ source: C:\Users\luojunlin\docs-buildroot\zh\k1_buildroot\device\boot.md, C:\Use
    · Linux 内核想控制硬件，必须通过他"翻译"
   │
   ▼
-4. U-Boot —— "装修工头"
-   · 为什么叫装修工头？他要把所有硬件外设都安排好，才能让内核"入住"
+4. U-Boot —— "接待员"
+   · 为什么叫接待员？每次启动都要准备好所有硬件，"接待"内核入住
    · 通用引导加载程序（开源 + SpacemiT 适配）
    · 初始化硬件外设，加载 Linux 内核 + 设备树（DTB）
    · 特殊技能：进入 Fastboot 模式 → 刷机
