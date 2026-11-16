@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SpacemiT Day 1 Recap 测验</title>
+<style>
+  :root {
+    --bg: #0f1115;
+    --panel: #171a21;
+    --panel-2: #1e222b;
+    --border: #2c3240;
+    --text: #e4e7ee;
+    --text-dim: #9aa3b4;
+    --accent: #4d9dff;
+    --ok: #2ecc8f;
+    --ok-bg: rgba(46, 204, 143, 0.12);
+    --bad: #ff5f6d;
+    --bad-bg: rgba(255, 95, 109, 0.12);
+  }
+  @media (prefers-color-scheme: light) {
+    :root {
+      --bg: #f5f6f9;
+      --panel: #ffffff;
+      --panel-2: #f0f2f6;
+      --border: #dce0e8;
+      --text: #1c2029;
+      --text-dim: #666f80;
+      --accent: #1f6feb;
+      --ok: #1a8f5f;
+      --ok-bg: rgba(26, 143, 95, 0.1);
+      --bad: #d92d3c;
+      --bad-bg: rgba(217, 45, 60, 0.09);
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    padding: 32px 20px 80px;
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft YaHei", sans-serif;
+    line-height: 1.65;
+    font-size: 15px;
+  }
+  .wrap { max-width: 820px; margin: 0 auto; }
+
+  header { margin-bottom: 28px; }
+  h1 { font-size: 24px; margin: 0 0 8px; letter-spacing: -0.01em; }
+  .sub { color: var(--text-dim); font-size: 14px; margin: 0; }
+
+  /* sticky score bar */
+  .bar {
+    position: sticky; top: 0; z-index: 20;
+    display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
+    padding: 12px 16px; margin: 0 -16px 26px;
+    background: color-mix(in srgb, var(--bg) 88%, transparent);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border);
+  }
+  .bar .stat { font-size: 13px; color: var(--text-dim); }
+  .bar .stat b { color: var(--text); font-variant-numeric: tabular-nums; }
+  .bar .spacer { flex: 1; }
+  .btn {
+    font: inherit; font-size: 13px; cursor: pointer;
+    padding: 6px 14px; border-radius: 7px;
+    border: 1px solid var(--border);
+    background: var(--panel-2); color: var(--text);
+    transition: border-color .15s, background .15s;
+  }
+  .btn:hover { border-color: var(--accent); }
+  .btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+
+  .progress-track {
+    height: 3px; background: var(--border); border-radius: 2px;
+    width: 100%; margin-top: 2px; overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%; width: 0%;
+    background: var(--accent);
+    transition: width .25s ease;
+  }
+
+  h2.group {
+    font-size: 13px; text-transform: uppercase; letter-spacing: .09em;
+    color: var(--text-dim); font-weight: 600;
+    margin: 36px 0 14px; padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+  h2.group:first-of-type { margin-top: 8px; }
+
+  .q {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 11px;
+    padding: 18px 20px;
+    margin-bottom: 14px;
+    transition: border-color .2s;
+  }
+  .q.answered-correct { border-color: color-mix(in srgb, var(--ok) 55%, var(--border)); }
+  .q.answered-wrong { border-color: color-mix(in srgb, var(--bad) 55%, var(--border)); }
+
+  .q-head { display: flex; gap: 10px; margin-bottom: 14px; }
+  .q-num {
+    flex: 0 0 auto;
+    width: 26px; height: 26px; border-radius: 7px;
+    background: var(--panel-2); border: 1px solid var(--border);
+    display: grid; place-items: center;
+    font-size: 12.5px; font-weight: 600; color: var(--text-dim);
+    font-variant-numeric: tabular-nums;
+  }
+  .q.answered-correct .q-num { background: var(--ok-bg); color: var(--ok); border-color: transparent; }
+  .q.answered-wrong .q-num { background: var(--bad-bg); color: var(--bad); border-color: transparent; }
+  .q-text { font-size: 15px; font-weight: 500; padding-top: 1px; }
+
+  .opts { display: flex; flex-direction: column; gap: 7px; }
+  .opt {
+    display: flex; align-items: flex-start; gap: 11px;
+    padding: 10px 13px; border-radius: 8px;
+    border: 1px solid var(--border);
+    background: var(--panel-2);
+    cursor: pointer;
+    transition: border-color .12s, background .12s, transform .08s;
+    user-select: none;
+  }
+  .opt:hover:not(.locked) { border-color: var(--accent); }
+  .opt:active:not(.locked) { transform: scale(.995); }
+  .opt.locked { cursor: default; }
+
+  .opt .key {
+    flex: 0 0 auto;
+    width: 21px; height: 21px; border-radius: 5px;
+    display: grid; place-items: center;
+    font-size: 11.5px; font-weight: 700;
+    background: var(--bg); color: var(--text-dim);
+    border: 1px solid var(--border);
+    margin-top: 1px;
+  }
+  .opt .label { flex: 1; font-size: 14px; }
+
+  .opt.is-correct {
+    border-color: var(--ok);
+    background: var(--ok-bg);
+  }
+  .opt.is-correct .key { background: var(--ok); color: #fff; border-color: var(--ok); }
+  .opt.is-wrong {
+    border-color: var(--bad);
+    background: var(--bad-bg);
+  }
+  .opt.is-wrong .key { background: var(--bad); color: #fff; border-color: var(--bad); }
+  .opt.dimmed { opacity: .45; }
+
+  .explain {
+    margin-top: 13px; padding: 11px 14px;
+    border-left: 3px solid var(--accent);
+    background: var(--panel-2);
+    border-radius: 0 8px 8px 0;
+    font-size: 13.5px; color: var(--text-dim);
+    display: none;
+  }
+  .explain.show { display: block; }
+  .explain b { color: var(--text); font-weight: 600; }
+
+  .verdict {
+    font-size: 12px; font-weight: 600; letter-spacing: .03em;
+    padding: 2px 9px; border-radius: 20px; margin-left: 8px;
+    display: none;
+  }
+  .verdict.show { display: inline-block; }
+  .verdict.ok { background: var(--ok-bg); color: var(--ok); }
+  .verdict.bad { background: var(--bad-bg); color: var(--bad); }
+
+  /* result panel */
+  .result {
+    display: none;
+    margin-top: 34px; padding: 26px;
+    background: var(--panel); border: 1px solid var(--border);
+    border-radius: 13px;
+  }
+  .result.show { display: block; }
+  .result .big {
+    font-size: 42px; font-weight: 700; letter-spacing: -0.02em;
+    font-variant-numeric: tabular-nums; line-height: 1.15;
+  }
+  .result .big small { font-size: 17px; font-weight: 500; color: var(--text-dim); }
+  .result .tier { font-size: 15px; margin-top: 6px; }
+  .result .brk {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 10px; margin-top: 20px;
+  }
+  .brk-item {
+    background: var(--panel-2); border: 1px solid var(--border);
+    border-radius: 9px; padding: 11px 14px;
+  }
+  .brk-item .n { font-size: 12px; color: var(--text-dim); }
+  .brk-item .v { font-size: 17px; font-weight: 600; font-variant-numeric: tabular-nums; margin-top: 2px; }
+
+  footer {
+    margin-top: 40px; padding-top: 18px;
+    border-top: 1px solid var(--border);
+    font-size: 12.5px; color: var(--text-dim);
+  }
+  footer a { color: var(--accent); text-decoration: none; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <h1>SpacemiT Day 1 Recap 测验</h1>
+    <p class="sub">22 题 · 4 组 · 点击选项即时判分</p>
+  </header>
+
+  <div class="bar">
+    <span class="stat">已答 <b id="s-answered">0</b>/22</span>
+    <span class="stat">正确 <b id="s-correct">0</b></span>
+    <span class="stat">正确率 <b id="s-rate">—</b></span>
+    <span class="spacer"></span>
+    <button class="btn" id="btn-reset">重做</button>
+  </div>
+
+  <div class="progress-track"><div class="progress-fill" id="prog"></div></div>
+
+  <div id="quiz"></div>
+
+  <div class="result" id="result">
+    <div class="big"><span id="r-score">0</span><small> / 22</small></div>
+    <div class="tier" id="r-tier"></div>
+    <div class="brk" id="r-brk"></div>
+  </div>
+
+  <footer>
+    依据：<code>docs-chip/zh/key_stone/{k1,k3}</code> · <code>docs-ai/en/architecture/concept.md</code> · <code>docs-product/zh/{k3_series,v100_series}</code>
+  </footer>
+
+</div>
+
+<script>
+const DATA = [
+  { group: "A 组 · 产品线归属", items: [
+    { q: "RV2768 属于以下哪一项？",
+      opts: ["Vital Stone 系列 · V100 产品线", "Key Stone 系列 · K1 产品线", "Key Stone 系列 · K3 产品线", "独立于三大系列之外的集群产品"],
+      a: 2,
+      e: "RV2768 由 48 颗 K3 芯片组成，是 K3 产品线的集群形态。" },
+    { q: "V100 属于哪个系列？",
+      opts: ["Key Stone", "Vital Stone", "Power Stone", "Edge Stone"],
+      a: 1,
+      e: "V100 是 Vital Stone 系列目前唯一的芯片，面向数据中心服务器。" },
+    { q: "K 系列和 V 系列最根本的区别是？",
+      opts: ["主频高低", "核心数量", "芯片内是否集成 AI 核心", "制造工艺"],
+      a: 2,
+      e: "K 系列内置 AI 核心（A60 / A100），V 系列只有 CPU。这是两条线所有其它差异的根源。" },
+    { q: "\u201c同构融合技术\u201d是谁的技术？",
+      opts: ["RISC-V 国际基金会的标准", "NVIDIA 授权", "SpacemiT 自研（基于开源 RISC-V 指令集）", "ARM 架构移植"],
+      a: 2,
+      e: "架构理念与核心实现均为 SpacemiT 自研，底层指令集基于开源的 RISC-V 标准扩展。" }
+  ]},
+
+  { group: "B 组 · 芯片规格", items: [
+    { q: "K1 的 8 个核心是怎么构成的？",
+      opts: ["8×X60", "8×X60 + 2×A60", "4×X60 通用核 + 4×A60 智能计算核", "4×X100 + 4×A100"],
+      a: 2,
+      e: "官方原文：K1 包含四个 X60 通用核和四个 A60 智能计算核 —— 正好 8 核，不是 8+2。" },
+    { q: "K3 使用的 CPU 核心是？",
+      opts: ["X60", "X100", "A100", "昆明湖 V2R2"],
+      a: 1,
+      e: "K3 = 8×X100 CPU + 8×A100 AI。X60 是 K1 的核，A100 是 AI 核，昆明湖在 V100 上。" },
+    { q: "V100 有多少个 CPU 核心？",
+      opts: ["8", "16", "46", "64"],
+      a: 2,
+      e: "6×昆明湖 V2R2 + 40×X100 = 46 核。" },
+    { q: "K3 的 AI 算力是多少？",
+      opts: ["2 TOPS", "30 TOPS", "60 TOPS", "130 TOPS"],
+      a: 2,
+      e: "60 TOPS。130 KDMIPS 是它的 CPU 通用算力，两者别混。" },
+    { q: "K1 的 AI 算力是多少？",
+      opts: ["1 TOPS", "2 TOPS", "8 TOPS", "60 TOPS"],
+      a: 1,
+      e: "2 TOPS。50 KDMIPS 是 CPU 算力。" },
+    { q: "V100 芯片本身使用的内存类型是？",
+      opts: ["LPDDR4X", "LPDDR5", "DDR5", "HBM3E"],
+      a: 2,
+      e: "DDR5-4800，8 通道，最大 2 TB。LPDDR 是 K 系列的；HBM3E 在 G5201 外接的 GPU 卡上，不属于 V100 芯片。" }
+  ]},
+
+  { group: "C 组 · 产品形态", items: [
+    { q: "RV2768 由多少颗芯片组成？",
+      opts: ["24 颗 K3", "48 颗 K3", "96 颗 K1", "46 颗 V100"],
+      a: 1,
+      e: "48 颗 K3。早期文档误写为 96 颗 K1，已依据官方文档修正。" },
+    { q: "RV2768 的物理形态是？",
+      opts: ["1U 机架，12 个计算模块", "2U 机架，24 个计算模块", "4U 机架，8 个计算模块", "2U 机架，48 个计算模块"],
+      a: 1,
+      e: "2U 机架，24 个计算模块，每模块含 2 个 K3 节点 —— 24×2 = 48。" },
+    { q: "V100-G5201 出厂时的状态是？",
+      opts: ["已装好 8 张 GPU 卡，开箱即可训练", "只有 2 颗 V100 CPU，8 个 PCIe 槽需自行插卡", "没有 PCIe 扩展槽", "内置 A100 AI 核心，无需外接"],
+      a: 1,
+      e: "4U 机箱提供 8 个 600W 显卡位，加速卡由客户自备。" },
+    { q: "V100-S5236 最突出的特点是？",
+      opts: ["36 个硬盘位，面向海量存储", "8 个 GPU 扩展槽", "边缘工业主板", "768 核集群"],
+      a: 0,
+      e: "4U 双路，36 个硬盘位，面向云存储 / SAN / NAS。" },
+    { q: "MUSE 系列中，笔记本形态的是？",
+      opts: ["MUSE-Pi", "MUSE-Book", "MUSE-Card", "MUSE-BOX"],
+      a: 1,
+      e: "MUSE-Book 是笔记本；Pi=开发板，Card=计算卡，BOX=迷你主机。" }
+  ]},
+
+  { group: "D 组 · 算力来源与选型", items: [
+    { q: "RV2768 的 2880 TOPS 算力来自哪里？",
+      opts: ["外接的 GPU 加速卡", "48 颗 K3 内置的共 384 个 A100 AI 核心", "X100 CPU 核的向量扩展", "独立的 NPU 芯片"],
+      a: 1,
+      e: "48 颗 × 每颗 8 个 A100 = 384 个 AI 核心；48 × 60 TOPS = 2880 TOPS，全部来自芯片内置。" },
+    { q: "K1 可以流畅运行多大参数规模的本地模型？",
+      opts: ["0.5B–1B", "7B–13B", "30B", "100B 以上"],
+      a: 0,
+      e: "0.5B–1B。" },
+    { q: "K3 可以流畅运行多大参数规模的模型？",
+      opts: ["0.5B–1B", "7B–13B", "30B", "100B 以上"],
+      a: 2,
+      e: "30B。早期文档误写为 7B–13B，已修正。" },
+    { q: "客户要做\u201c边缘摄像头本地识别，跑 1B 小模型\u201d，推荐？",
+      opts: ["K1", "RV2768", "V100-G5201", "V100-S5236"],
+      a: 0,
+      e: "轻量边缘 AI → K1，自带 AI 核心、功耗低。" },
+    { q: "客户要\u201c100B+ 大模型推理，需要 768 核规模\u201d，推荐？",
+      opts: ["K3 单芯片", "V100-C2201", "RV2768", "MUSE-BOX"],
+      a: 2,
+      e: "大规模 AI 推理集群 → RV2768（768 核，2880 TOPS）。" },
+    { q: "A60 和 A100 的关系是？",
+      opts: ["同一颗核心的两种叫法", "A60 是 K1 的智能计算核，A100 是 K3 的 AI 加速核", "A60 在 K3 上，A100 在 K1 上", "两者都是外接 GPU"],
+      a: 1,
+      e: "两代各自的 AI 核：A60 配 K1（4 颗），A100 配 K3（8 颗）。" },
+    { q: "为什么 RV2768 选择 K3 而不是 V100？",
+      opts: ["K3 主频更高", "K3 内存更大", "RV2768 需要每个节点自带 AI 核心，V100 没有", "K3 更便宜"],
+      a: 2,
+      e: "\u201c每节点自带 AI\u201d的集群架构只能靠内置 AI 核心实现，V100 需外接 GPU，不适合。" }
+  ]}
+];
+
+const LETTERS = ["A", "B", "C", "D"];
+const state = { total: 0, answered: 0, correct: 0, groups: [] };
+
+// flatten with group index
+const FLAT = [];
+DATA.forEach((g, gi) => {
+  state.groups.push({ name: g.group, total: g.items.length, correct: 0 });
+  g.items.forEach(it => FLAT.push({ ...it, gi }));
+});
+state.total = FLAT.length;
+
+const quizEl = document.getElementById("quiz");
+
+function build() {
+  let html = "";
+  let n = 0;
+  DATA.forEach((g, gi) => {
+    html += `<h2 class="group">${g.group}</h2>`;
+    g.items.forEach(it => {
+      html += `<div class="q" id="q${n}" data-qi="${n}">
+        <div class="q-head">
+          <div class="q-num">${n + 1}</div>
+          <div class="q-text">${it.q}<span class="verdict" id="v${n}"></span></div>
+        </div>
+        <div class="opts">`;
+      it.opts.forEach((o, oi) => {
+        html += `<div class="opt" data-q="${n}" data-o="${oi}">
+          <div class="key">${LETTERS[oi]}</div>
+          <div class="label">${o}</div>
+        </div>`;
+      });
+      html += `</div><div class="explain" id="e${n}"><b>解析：</b>${it.e}</div></div>`;
+      n++;
+    });
+  });
+  quizEl.innerHTML = html;
+}
+
+function choose(qi, oi) {
+  const card = document.getElementById("q" + qi);
+  if (card.classList.contains("answered-correct") || card.classList.contains("answered-wrong")) return;
+
+  const it = FLAT[qi];
+  const correct = oi === it.a;
+  const opts = card.querySelectorAll(".opt");
+
+  opts.forEach((el, idx) => {
+    el.classList.add("locked");
+    if (idx === it.a) el.classList.add("is-correct");
+    else if (idx === oi) el.classList.add("is-wrong");
+    else el.classList.add("dimmed");
+  });
+
+  card.classList.add(correct ? "answered-correct" : "answered-wrong");
+
+  const v = document.getElementById("v" + qi);
+  v.textContent = correct ? "正确" : "错误";
+  v.className = "verdict show " + (correct ? "ok" : "bad");
+
+  document.getElementById("e" + qi).classList.add("show");
+
+  state.answered++;
+  if (correct) { state.correct++; state.groups[it.gi].correct++; }
+  refresh();
+}
+
+function refresh() {
+  document.getElementById("s-answered").textContent = state.answered;
+  document.getElementById("s-correct").textContent = state.correct;
+  document.getElementById("s-rate").textContent =
+    state.answered ? Math.round(state.correct / state.answered * 100) + "%" : "—";
+  document.getElementById("prog").style.width =
+    (state.answered / state.total * 100) + "%";
+
+  if (state.answered === state.total) showResult();
+}
+
+function showResult() {
+  const pct = Math.round(state.correct / state.total * 100);
+  document.getElementById("r-score").textContent = state.correct;
+
+  let tier;
+  if (pct === 100) tier = "满分。可以进入 Day 2 了。";
+  else if (pct >= 85) tier = "扎实。翻一下错题解析即可继续。";
+  else if (pct >= 70) tier = "基本掌握。建议重读 HOME.md 第五步对比表。";
+  else if (pct >= 50) tier = "有明显漏洞。建议整份 recap 再走一遍。";
+  else tier = "建议从 HOME.md 第一步重新开始。";
+  document.getElementById("r-tier").textContent = `${pct}% — ${tier}`;
+
+  document.getElementById("r-brk").innerHTML = state.groups
+    .map(g => {
+      const p = Math.round(g.correct / g.total * 100);
+      return `<div class="brk-item">
+        <div class="n">${g.name.replace(/^[A-D] 组 · /, "")}</div>
+        <div class="v">${g.correct}/${g.total} <span style="font-size:12px;font-weight:400;color:var(--text-dim)">${p}%</span></div>
+      </div>`;
+    }).join("");
+
+  const r = document.getElementById("result");
+  r.classList.add("show");
+  r.scrollIntoView({ behavior: "smooth", block: "nearest" });
+}
+
+function reset() {
+  state.answered = 0;
+  state.correct = 0;
+  state.groups.forEach(g => g.correct = 0);
+  document.getElementById("result").classList.remove("show");
+  build();
+  bind();
+  refresh();
+  document.getElementById("prog").style.width = "0%";
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function bind() {
+  quizEl.querySelectorAll(".opt").forEach(el => {
+    el.addEventListener("click", () => {
+      choose(+el.dataset.q, +el.dataset.o);
+    });
+  });
+}
+
+build();
+bind();
+document.getElementById("btn-reset").addEventListener("click", reset);
+</script>
+</body>
+</html>
