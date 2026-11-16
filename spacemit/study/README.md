@@ -47,7 +47,7 @@ Day 1 → Day 2 → Day 3（计划中）
 
 | 文件 | 内容 | 预计时间 |
 |------|------|---------|
-| [day2-boot-chain.md](./day2-boot-chain.md) | 启动链六层、OpenSBI 解释、刷机 vs 启动、K3 vs K1 差异 | 30 分钟阅读 |
+| [day2-boot-chain.md](./day2-boot-chain.md) | 启动链六层、小白类比（保安/开灯/翻译官/装修工头/大管家/办公室）、OpenSBI 解释、刷机 vs 启动、**Linux vs Ubuntu 关系**、K3 vs K1 差异 | 40 分钟阅读 |
 | day2-operating-systems.md | 四种 OS 的定位与选型（Bianbu/Buildroot/OpenWrt/OpenHarmony） | 待建 |
 | day2-sdk-toolchain.md | SDK/BSP 结构、为什么需要交叉编译 | 待建 |
 | quiz/day2-recap.html | Day 2 互动测验 | 待建 |

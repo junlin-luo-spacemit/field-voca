@@ -160,6 +160,69 @@ U-Mode（用户模式） ← 你的程序在这里运行
 
 ---
 
+## 背景知识：Linux 和 Ubuntu 是什么关系？
+
+> 启动链的最后一层是 Rootfs，里面跑的是 Bianbu / Buildroot 等操作系统。理解它们之前，先要搞清 Linux 和 Ubuntu 的关系。
+
+### 一句话版本
+
+> **Linux 是引擎，Ubuntu 是整辆车。**
+
+**Linux** 实际上指的是 **Linux 内核（Kernel）**。内核管理 CPU、内存、硬盘、网卡，让硬件能工作。但内核本身不能直接用——就像只有发动机的车，你没法开它上路。
+
+**Ubuntu** 是在 Linux 内核上加了一堆东西之后做成的**完整操作系统**（发行版）：
+
+```
+Ubuntu = Linux 内核
+       + 命令行工具（ls, cd, apt...）
+       + 桌面环境（GNOME）
+       + 软件包管理器（apt install）
+       + 浏览器、文件管理器、各种应用
+       + Ubuntu 的品牌和技术支持
+```
+
+### 类比
+
+| 类比 | Linux 内核 | Ubuntu |
+|---|---|---|
+| 汽车 | 发动机 | 整辆车（发动机 + 车壳 + 方向盘 + 座椅） |
+| 手机 | Android 内核 | 小米 MIUI / 华为 EMUI（都基于同一个内核） |
+| 建筑 | 钢筋结构 | 整栋楼（钢筋 + 墙 + 门窗 + 装修） |
+
+### 为什么有这么多"Linux 发行版"？
+
+Linux 内核是**开源免费**的，任何人都可以拿来加工成自己的操作系统：
+
+| 发行版 | 定位 | 类比 |
+|---|---|---|
+| **Ubuntu** | 通用桌面/服务器，新手友好 | 大众汽车 |
+| **Buildroot** | 极简嵌入式，只留必要组件 | 卡丁车（只有发动机和轮子） |
+| **OpenWrt** | 专为路由器优化 | 摩托车（特定用途） |
+| **Bianbu** | SpacemiT 基于 Ubuntu 定制，专为 K1/K3 优化 | 大众汽车改装版（专为 RISC-V 路面） |
+
+### 回到 SpacemiT 的语境
+
+```
+Ubuntu 24.04.1（Canonical 官方）
+    ↓ SpacemiT 拿来，针对 RISC-V 重新编译 + 适配驱动
+Bianbu 2.x（K1 专用）
+
+Ubuntu 26.04（Canonical 官方）
+    ↓ SpacemiT 拿来，针对 K3 重新编译 + 适配驱动
+Bianbu 4.x（K3 专用）
+```
+
+Bianbu 就是"Ubuntu 的 RISC-V 版本"——底层内核、包管理器（apt）、软件生态都跟 Ubuntu 一样，只是针对 SpacemiT 芯片做了适配和优化。
+
+### 结论
+
+- **Linux** = 内核，不是完整的操作系统
+- **Ubuntu** = 基于 Linux 内核的完整操作系统（发行版）
+- **Bianbu** = 基于 Ubuntu 的、专为 SpacemiT RISC-V 芯片优化的发行版
+- 说"我在用 Linux"和"我在用 Ubuntu"都对，只是粒度不同
+
+---
+
 ## 易错点
 
 | 错误 | 正确 |
