@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>SpacemiT Boot Chain</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: #0d1117;
+  color: #e6edf3;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 24px 16px 48px;
+  min-height: 100vh;
+}
+h1 { font-size: 18px; font-weight: 600; margin-bottom: 4px; color: #58a6ff; }
+.sub { font-size: 13px; color: #8b949e; margin-bottom: 28px; }
+.chain { display: flex; flex-direction: column; align-items: center; width: 100%; max-width: 480px; }
+.node {
+  width: 100%;
+  border-radius: 10px;
+  border: 1.5px solid #30363d;
+  background: #161b22;
+  padding: 14px 18px;
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity .4s ease, transform .4s ease, border-color .3s;
+}
+.node.show { opacity: 1; transform: translateY(0); }
+.node.active { border-color: var(--c); background: #1a2030; }
+.head { display: flex; align-items: center; gap: 10px; }
+.badge {
+  flex: 0 0 28px; height: 28px;
+  border-radius: 50%;
+  background: var(--c);
+  display: grid; place-items: center;
+  font-size: 13px; font-weight: 700; color: #0d1117;
+}
+.title { font-size: 15px; font-weight: 600; }
+.nick { font-size: 12px; color: #8b949e; margin-left: 2px; }
+.body { display: none; margin-top: 8px; padding-left: 38px; font-size: 13px; color: #8b949e; line-height: 1.65; }
+.node.active .body { display: block; }
+.tag {
+  display: inline-block; margin-top: 6px;
+  font-size: 12px; padding: 2px 10px; border-radius: 20px;
+  background: #21262d; color: var(--c);
+  border: 1px solid var(--c);
+}
+.arrow { width: 2px; background: #30363d; height: 0; transition: height .3s ease; position: relative; }
+.arrow.show { height: 24px; }
+.arrow.show::after {
+  content: '';
+  position: absolute; bottom: -6px; left: 50%; transform: translateX(-50%);
+  border-left: 5px solid transparent; border-right: 5px solid transparent;
+  border-top: 7px solid #30363d;
+}
+.pow { font-size: 13px; color: #58a6ff; font-weight: 600; margin-bottom: 2px; opacity: 0; transition: opacity .4s; }
+.pow.show { opacity: 1; }
+.done {
+  margin-top: 4px; font-size: 15px; font-weight: 600; color: #2ecc8f;
+  opacity: 0; transition: opacity .5s;
+  padding: 10px 20px; border-radius: 8px;
+  background: rgba(46,204,143,.1); border: 1px solid rgba(46,204,143,.3);
+}
+.done.show { opacity: 1; }
+.controls { display: flex; gap: 10px; margin-top: 28px; }
+button {
+  font: inherit; font-size: 13px; cursor: pointer;
+  padding: 7px 18px; border-radius: 7px;
+  border: 1px solid #30363d; background: #21262d; color: #e6edf3;
+  transition: border-color .15s;
+}
+button:hover:not(:disabled) { border-color: #58a6ff; }
+button.pri { background: #1f6feb; border-color: #1f6feb; color: #fff; }
+button:disabled { opacity: .4; cursor: default; }
+.prog { font-size: 12px; color: #8b949e; margin-top: 10px; }
+</style>
+</head>
+<body>
+<h1>&#x26A1; SpacemiT Boot Chain</h1>
+<p class="sub">K1 / K3 &#x901A;&#x7528; &middot; &#x70B9;&#x51FB;&#x300C;&#x4E0B;&#x4E00;&#x6B65;&#x300D;&#x9010;&#x5C42;&#x5C55;&#x5F00;</p>
+<div class="chain" id="chain"></div>
+<div class="controls">
+  <button id="bprev" disabled>&#x2190; &#x4E0A;&#x4E00;&#x6B65;</button>
+  <button id="bnext" class="pri">&#x5F00;&#x59CB; &#x2192;</button>
+  <button id="breset">&#x91CD;&#x7F6E;</button>
+</div>
+<div class="prog" id="prog">0 / 6</div>
+
+<script>
+var STEPS = [
+  { n:1, name:"BROM", full:"Boot ROM", nick:"\u4FDD\u5B89\u5927\u53D4", c:"#58a6ff",
+    desc:"\u82AF\u7247\u51FA\u5382\u65F6\u5DF2\u56FA\u5316\u5728\u5185\u90E8\uFF0C\u6C38\u8FDC\u4E0D\u4F1A\u6539\u53D8\u3002\u5524\u4E00\u7684\u4EFB\u52A1\uFF1A\u53BB\u5B58\u50A8\u4ECB\u8D28\u91CC\u627E\u5230 FSBL \u6587\u4EF6\uFF0C\u628A\u5B83\u52A0\u8F7D\u8FDB\u6765\u3002",
+    tag:"\uD83D\uDD12 \u7C7B\u6BD4\uFF1A\u516C\u53F8\u5927\u95E8\u4FDD\u5B89\uFF0C\u53EA\u7BA1\u5F00\u95E8\uFF0C\u4E0D\u7BA1\u5176\u4ED6" },
+  { n:2, name:"FSBL", full:"First Stage Boot Loader", nick:"\u5F00\u706F\u7684\u4EBA", c:"#f78166",
+    desc:"SpacemiT \u81EA\u5B9A\u4E49\u7684\u7B2C\u4E00\u9636\u6BB5\u5F15\u5BFC\u3002\u6B64\u65F6\u5185\u5B58\uFF08DRAM\uFF09\u8FD8\u4E0D\u53EF\u7528\u3002FSBL \u5148\u521D\u59CB\u5316\u5185\u5B58\u63A7\u5236\u5668\uFF0C\u518D\u52A0\u8F7D OpenSBI\u3002",
+    tag:"\uD83D\uDCA1 \u7C7B\u6BD4\uFF1A\u8FDB\u529E\u516C\u5BA4\u7B2C\u4E00\u4EF6\u4E8B\uFF0C\u5148\u628A\u706F\u548C\u7A7A\u8C03\u6253\u5F00" },
+  { n:3, name:"OpenSBI", full:"RISC-V Supervisor Binary Interface", nick:"\u7FFB\u8BD1\u5B98", c:"#d2a8ff",
+    desc:"RISC-V \u4E13\u6709\u56FA\u4EF6\u5C42\uFF0Cx86 \u548C ARM \u6CA1\u6709\u8FD9\u4E00\u5C42\u3002\u786C\u4EF6\u6700\u5E95\u5C42\u7684\u64CD\u4F5C\uFF08\u65F6\u949F\u3001\u5173\u673A\uFF09\u53EA\u6709\u4ED6\u80FD\u505A\u3002Linux \u5185\u6838\u60F3\u63A7\u5236\u786C\u4EF6\uFF0C\u5FC5\u987B\u901A\u8FC7\u4ED6\u7FFB\u8BD1\u3002",
+    tag:"\uD83C\uDF10 \u7C7B\u6BD4\uFF1A\u53EA\u61C2\u673A\u5668\u8BED\u8A00\u7684\u7FFB\u8BD1\u5B98\uFF0C\u628A OS \u6307\u4EE4\u7FFB\u8BD1\u7ED9\u786C\u4EF6" },
+  { n:4, name:"U-Boot", full:"Universal Boot Loader", nick:"\u88C5\u4FEE\u5DE5\u5934", c:"#ffa657",
+    desc:"\u901A\u7528\u5F15\u5BFC\u52A0\u8F7D\u7A0B\u5E8F\uFF08\u5F00\u6E90 + SpacemiT \u9002\u914D\uFF09\u3002\u628A\u6240\u6709\u786C\u4EF6\u5916\u8BBE\u521D\u59CB\u5316\u597D\uFF0C\u518D\u52A0\u8F7D Linux \u5185\u6838\u3002\u7279\u6B8A\u6280\u80FD\uFF1A\u8FDB\u5165 Fastboot \u6A21\u5F0F \u2192 \u5237\u673A\uFF08\u5199\u5165\u65B0\u56FA\u4EF6\uFF09\u3002",
+    tag:"\uD83D\uDD28 \u7C7B\u6BD4\uFF1A\u88C5\u4FEE\u5DE5\u5934\uFF0C\u5E03\u7F6E\u597D\u623F\u95F4\u518D\u8BF7\u623F\u4E3B\u5165\u4F4F\uFF1B\u4E5F\u8D1F\u8D23\u91CD\u65B0\u88C5\u4FEE\uFF08\u5237\u673A\uFF09" },
+  { n:5, name:"Linux \u5185\u6838", full:"Kernel  K1: 6.1  |  K3: 6.6+", nick:"\u5927\u7BA1\u5BB6", c:"#2ecc8f",
+    desc:"SpacemiT \u9002\u914D\u7248 Linux \u5185\u6838\u3002\u63A5\u7BA1\u6240\u6709\u786C\u4EF6\u9A71\u52A8\uFF0C\u7BA1\u7406\u5185\u5B58\u548C CPU\uFF0C\u628A\u6839\u6587\u4EF6\u7CFB\u7EDF\u6302\u8F7D\u597D\uFF0C\u4E3A\u7528\u6237\u7A0B\u5E8F\u505A\u597D\u51C6\u5907\u3002",
+    tag:"\uD83D\uDCCB \u7C7B\u6BD4\uFF1A\u516C\u53F8\u5927\u7BA1\u5BB6\uFF0C\u534F\u8C03\u6240\u6709\u90E8\u95E8\uFF0C\u5B89\u6392\u597D\u4E00\u5207\u540E\u5458\u5DE5\u624D\u80FD\u5F00\u59CB\u5DE5\u4F5C" },
+  { n:6, name:"Rootfs", full:"\u6839\u6587\u4EF6\u7CFB\u7EDF\uFF084 \u79CD\u53EF\u9009\uFF09", nick:"\u529E\u516C\u5BA4", c:"#e3b341",
+    desc:"\u5728\u8FD9\u91CC\u9009\u62E9\u64CD\u4F5C\u7CFB\u7EDF\u7248\u672C\uFF1A<br>\u2022 <b>Bianbu</b>\uFF08Ubuntu \u57FA\u7840\uFF0C\u5F00\u53D1\u9996\u9009\uFF09<br>\u2022 <b>Buildroot</b>\uFF08\u6700\u5C0F\u5316\uFF0C\u4EA7\u54C1\u5316\uFF09<br>\u2022 <b>OpenWrt</b>\uFF08\u8DEF\u7531\u5668 / NAS\uFF09<br>\u2022 <b>OpenHarmony</b>\uFF08\u9E3F\u8499\u751F\u6001\uFF09",
+    tag:"\uD83C\uDFE2 \u7C7B\u6BD4\uFF1A\u5458\u5DE5\u7EC8\u4E8E\u8FDB\u4E86\u529E\u516C\u5BA4\uFF0C\u684C\u6905\u7535\u8111\u90FD\u6709\uFF0C\u53EF\u4EE5\u5F00\u59CB\u5E72\u6D3B\u4E86" }
+];
+
+var step = 0;
+var chain = document.getElementById('chain');
+var bnext = document.getElementById('bnext');
+var bprev = document.getElementById('bprev');
+var breset = document.getElementById('breset');
+var prog = document.getElementById('prog');
+
+function build() {
+  chain.innerHTML = '';
+  var pow = document.createElement('div');
+  pow.className = 'pow'; pow.id = 'pow';
+  pow.innerHTML = '&#x26A1; &#x901A;&#x7535;';
+  chain.appendChild(pow);
+  for (var i = 0; i < STEPS.length; i++) {
+    var s = STEPS[i];
+    var arr = document.createElement('div');
+    arr.className = 'arrow'; arr.id = 'a' + i;
+    chain.appendChild(arr);
+    var nd = document.createElement('div');
+    nd.className = 'node'; nd.id = 'n' + i;
+    nd.style.setProperty('--c', s.c);
+    nd.innerHTML =
+      '<div class="head">' +
+        '<div class="badge">' + s.n + '</div>' +
+        '<div><span class="title">' + s.name + '</span>' +
+        '<span class="nick">\u300C' + s.nick + '\u300D</span></div>' +
+      '</div>' +
+      '<div class="body">' +
+        '<div style="color:#c9d1d9;margin-bottom:4px;font-size:12px">' + s.full + '</div>' +
+        s.desc +
+        '<div><span class="tag">' + s.tag + '</span></div>' +
+      '</div>';
+    chain.appendChild(nd);
+  }
+  var da = document.createElement('div');
+  da.className = 'arrow'; da.id = 'adone'; chain.appendChild(da);
+  var done = document.createElement('div');
+  done.className = 'done'; done.id = 'done';
+  done.innerHTML = '&#x1F389; &#x4F60;&#x7684;&#x7A0B;&#x5E8F;&#x8DEC;&#x8D77;&#x6765;&#x4E86;&#xFF01;';
+  chain.appendChild(done);
+}
+
+function render() {
+  document.getElementById('pow').className = 'pow' + (step > 0 ? ' show' : '');
+  for (var i = 0; i < STEPS.length; i++) {
+    var reached = i < step;
+    var active = i === step - 1;
+    document.getElementById('a' + i).className = 'arrow' + (reached ? ' show' : '');
+    var nd = document.getElementById('n' + i);
+    nd.className = 'node' + (reached ? ' show' : '') + (active ? ' active' : '');
+  }
+  document.getElementById('adone').className = 'arrow' + (step > STEPS.length ? ' show' : '');
+  document.getElementById('done').className = 'done' + (step > STEPS.length ? ' show' : '');
+  bprev.disabled = step === 0;
+  bnext.disabled = step > STEPS.length;
+  bnext.textContent = step === 0 ? '\u5F00\u59CB \u2192' : (step > STEPS.length ? '\u2705 \u5B8C\u6210' : '\u4E0B\u4E00\u6B65 \u2192');
+  prog.textContent = Math.min(step, STEPS.length) + ' / ' + STEPS.length;
+}
+
+bnext.addEventListener('click', function() { if (step <= STEPS.length) { step++; render(); } });
+bprev.addEventListener('click', function() { if (step > 0) { step--; render(); } });
+breset.addEventListener('click', function() { step = 0; render(); });
+
+build();
+render();
+</script>
+</body>
+</html>
