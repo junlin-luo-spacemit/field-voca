@@ -155,6 +155,45 @@ K3：BROM → FSBL → [OP-TEE] → OpenSBI → U-Boot → Kernel → Rootfs
 
 > 官方文档原文：刷机与启动是相互关联的，如果需要对刷机做自定义配置，启动可能也需要做相关的调整，反之亦然。
 
+### 刷机时需要烧三个文件吗？
+
+**要看你用什么工具**，这是技术写作里需要判断读者身份的典型场景：
+
+#### 方式一：TitanFlasher 工具（GUI，给普通用户）
+
+不需要手动处理三个文件。TitanFlasher 读取一个**整包 `.zip` 镜像**，工具自动把每个文件烧到正确分区。
+
+```
+你做的事：选 .zip 镜像 → 点「开始烧录」
+工具做的事：自动把 FSBL.bin / opensbi.itb / u-boot.itb / rootfs 等
+           分别写入各自对应的分区
+```
+
+**类比**：就像 iPhone 更新系统，你只管点"立即更新"，手机自己处理所有文件。
+
+#### 方式二：fastboot 命令行（给开发工程师）
+
+需要手动指定每个文件：
+
+```bash
+fastboot flash fsbl    factory/FSBL.bin
+fastboot flash opensbi fw_dynamic.itb
+fastboot flash uboot   u-boot.itb
+fastboot flash bootfs  bootfs.img
+fastboot flash rootfs  rootfs.ext4
+```
+
+**类比**：自己装系统，要分别格式化 C 盘、装驱动、装软件，每一步手动来。
+
+#### 写文档时的判断
+
+| 写给谁 | 用什么工具 | 文档怎么说 |
+|---|---|---|
+| 普通用户 / 客户快速上手 | TitanFlasher | "下载镜像包，用 TitanFlasher 一键烧录" |
+| 开发工程师参考手册 | fastboot 命令行 | 列出每条 `fastboot flash` 命令和对应文件 |
+
+**同一个动作（刷机），给不同读者写的文档是完全不同的** — 这是技术写作最核心的判断之一。
+
 ---
 
 ## OpenSBI 是什么？为什么 RISC-V 需要它？
