@@ -13,6 +13,8 @@ source: C:\Users\luojunlin\docs-buildroot\zh\k1_buildroot\device\boot.md, C:\Use
 
 能画出从"通电"到"程序运行"的六个层级，说出每一层的名称和职责。
 
+**配套互动动画**：用浏览器打开 [boot-chain-animation.html](./quiz/boot-chain-animation.html) — 点击「开始」逐层展开，每层都有小白类比说明。建议**先看动画，再读下面的详细内容**。
+
 ---
 
 ## 完整启动链（K1 / K3 通用）
