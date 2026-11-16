@@ -4,7 +4,7 @@ domain: software
 aliases: [Bianbu, 边部系统, Bianbu OS]
 status: approved
 created: 2026-08-06
-updated: 2026-10-29
+updated: 2026-11-16
 source: C:\Users\luojunlin\docs-bianbu\zh\
 superseded_by:
 ---
@@ -41,31 +41,30 @@ Bianbu 为开发者和用户提供以下版本镜像：
 
 ## 版本历史
 
+> 官方维护状态：**Bianbu 2.x 为 K1 长期支持版本**；**Bianbu 4.x 仅支持 K3**。
+> 来源：`docs-bianbu/zh/root_overview.md`、`docs-bianbu/zh/release_notes/index.md`
+
 | 版本 | 基于 Ubuntu | 支持芯片 | 状态 |
 |------|------------|---------|------|
-| **Bianbu 4.x** | Ubuntu 26.04 | **K3** | ✅ 活跃（K3 推荐版本）|
-| **Bianbu 2.x** | Ubuntu 23.10 | **K1** | ✅ 长期维护版本（K1 推荐）|
-| Bianbu 3.x | — | K1 | 🔄 过渡版本 |
-| Bianbu 1.x | — | K1 | ❌ 已停止维护 |
+| **Bianbu 4.x** | Ubuntu 26.04 | **仅 K3** | ✅ 主要维护（K3 推荐）|
+| **Bianbu 2.x** | Ubuntu 24.04.1 | **K1** | ✅ 长期支持（K1 推荐）|
+| Bianbu 3.0 | Ubuntu 25.04 | K1 | 历史版本（未标注停服）|
+| Bianbu 2.1 | Ubuntu 24.04.1 | K1 | ❌ 已停服 |
+| Bianbu 2.0 | Ubuntu 24.04 | K1 | ❌ 已停服 |
+| Bianbu 1.0 | Ubuntu 23.10 | K1 | ❌ 已停服 |
 
-### Bianbu 4.0（K3）
+### Bianbu 4.0（仅 K3）
 
-- **最新版本**：V4.0.7（2026-09-16）
+- **最新版本**：V4.0.8（2026-10-22）
 - **基于**：Ubuntu 26.04
-- **主要特性**：
-  - LXQt 桌面环境优化
-  - UEFI 固件支持
-  - 休眠/唤醒稳定性改进
-  - 多屏显示支持
+- **对应 BSP**：Buildroot v1.0.10
+- **软件源**：`https://archive.spacemit.com/bianbu4/`
 
-### Bianbu 2.3（K1）
+### Bianbu 2.3 / 2.2（K1）
 
-- **状态**：长期维护版本
-- **基于**：Ubuntu 23.10
-- **主要特性**：
-  - GNOME/LXQt 双桌面选择
-  - 完整硬件驱动支持
-  - ROS 2 Humble/Jazzy 适配
+- **2.2 为长期支持版本**，2.3 为后续更新版本
+- **基于**：Ubuntu 24.04.1
+- **支持芯片**：K1（不适用于 K3）
 
 ## 系统架构
 

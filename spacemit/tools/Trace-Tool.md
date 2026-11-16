@@ -4,8 +4,8 @@ domain: tools
 aliases: [Trace Tool, 跟踪工具, Trace, 执行跟踪]
 status: approved
 created: 2026-08-06
-updated: 2026-10-29
-source: C:\Users\luojunlin\docs-buildroot\zh\k1_buildroot\device\
+updated: 2026-11-16
+source: C:\Users\luojunlin\docs-tool\zh\user_guide\trace_user_guide.md
 superseded_by:
 ---
 
@@ -48,9 +48,11 @@ superseded_by:
 
 ## 工具示例
 
-- **硬件跟踪**：ARM CoreSight ETM、RISC-V Trace
-- **软件跟踪**：perf、ftrace、LTTng
-- **可视化**：Chrome Tracing、Perfetto
+- **RISC-V Trace**：RISC-V N-Trace（Nexus Trace）协议 —— **SpacemiT K3 采用此方案**
+- **软件跟踪**：Linux `perf`、`ftrace`
+- **配套工具**：NexRv（读取并解析 Trace 数据）
+
+> ⚠️ 不要混入 ARM 的 **CoreSight ETM** —— 那是 ARM 架构专用，RISC-V 芯片不使用。
 
 ## 分析流程
 
@@ -58,15 +60,21 @@ superseded_by:
 1. 配置跟踪选项（跟踪范围、事件类型）
 2. 运行程序并记录
 3. 停止跟踪，导出数据
-4. 使用分析工具可视化与统计
+4. 结合匹配的 ELF 文件解析 PC 跳转轨迹
 5. 定位性能瓶颈
 ```
 
 ## 在 SpacemiT 场景
 
-- 用于性能分析、瓶颈定位与系统行为验证
-- K1/K3 芯片级跟踪支持
-- AI 推理性能优化
+- **K3 系列**基于 RISC-V N-Trace 协议实现，OpenOCD 配置脚本为 `tcl/spacemit/spacemit-k3-trace.cfg`
+- 典型用途：**死机问题分析** —— 系统崩溃前启动 Trace，崩溃后通过 JTAG 读回数据，重建程序 PC 跳转轨迹
+- 启动 Trace 的三种方式：**JTAG 寄存器操作**、**Linux sysfs 节点**、**perf 工具**
+
+**已知限制**（来自官方手册）：
+
+- 只记录**跳转指令**，不记录非跳转指令，也不记录大部分指令的绝对地址，因此必须用**严格匹配的 ELF 文件**才能解析
+- 不记录 load/store 的数据结果，仅记录跳转（当前 N-Trace 规范尚未支持 Data Trace）
+- 多进程环境下，需要 Linux 内核在调度时写入 `scontext` CSR
 
 ## 与 JTAG Debugging 的区别
 
@@ -78,11 +86,10 @@ superseded_by:
 
 ## 相关词条
 
-- [[JTAG-Debugging]] — 断点调试工具
-- [[SpacemiT-Studio]] — IDE 集成工具
-- [[../hardware/products/K1]] — K1 跟踪支持
-- [[../hardware/products/K3]] — K3 跟踪支持
+- [[JTAG-Debugging]] — 断点调试工具（Trace 数据也常通过 JTAG 读取）
+- [[SpacemiT-Studio]] — 集成开发环境
+- [[../hardware/products/K3]] — K3 支持 RISC-V N-Trace
 
 ## 来源文档
 
-- SpacemiT 文档中心：Tools / Trace User Guide
+- `docs-tool/zh/user_guide/trace_user_guide.md`（官方 Trace 使用手册）

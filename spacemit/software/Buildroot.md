@@ -4,8 +4,8 @@ domain: software
 aliases: [Buildroot, 进迭Buildroot]
 status: approved
 created: 2026-08-06
-updated: 2026-10-29
-source: C:\Users\luojunlin\docs-buildroot\zh\k1_buildroot\
+updated: 2026-11-16
+source: C:\Users\luojunlin\docs-buildroot\zh\ (k1_buildroot + k3_buildroot)
 superseded_by:
 ---
 
@@ -17,7 +17,7 @@ Buildroot 是用于生成嵌入式 Linux 根文件系统与镜像的构建工具
 
 ## 为什么重要
 
-- **完整 BSP 栈**：OpenSBI + U-Boot/UEFI + Linux Kernel + 完整中间件
+- **完整 BSP 栈**：OpenSBI + U-Boot + Linux Kernel + 完整中间件
 - **硬件加速集成**：GPU (PowerVR)、VPU、JPU、2D 加速、AI 推理（onnxruntime）
 - **最小化可定制**：只包含必要组件，内存与存储占用小
 - **产品化就绪**：包含工厂测试、MPP、FFmpeg/GStreamer 硬件加速
@@ -50,14 +50,32 @@ Buildroot 是用于生成嵌入式 Linux 根文件系统与镜像的构建工具
 
 ## 版本与分支
 
+Buildroot 按芯片分为两条独立的产品线，**版本号不通用**：
+
+### K3（`bl-v1.0.y`）
+
+| 版本 | 分支 | 最新发布 |
+|------|------|---------|
+| v1.0 | `bl-v1.0.y` | **v1.0.10（2026-10-22）** |
+
+- 状态：**长期支持版本**
+- 对应 Bianbu 4.0.x
+- 来源：`docs-buildroot/zh/k3_buildroot/release_notes/bl-v1.0.y.md`
+
+### K1（`bl-v2.x`）
+
 | 版本 | manifest.xml | 分支 | Linux 内核 |
 |------|-------------|------|-----------|
-| v1.0 | `bl-v1.0.y.xml` | `bl-v1.0.y` | Linux 6.1 |
-| v2.0 | `bl-v2.0.y.xml` | `bl-v2.0.y` | Linux 6.6 |
-| v2.1 | `k1-bl-v2.1.y.xml` | `k1-bl-v2.1.y` | Linux 6.6 |
 | v2.2 | `k1-bl-v2.2.y.xml` | `k1-bl-v2.2.y` | Linux 6.6 |
+| v2.1 | `k1-bl-v2.1.y.xml` | `k1-bl-v2.1.y` | Linux 6.6 |
+| v2.0 | `bl-v2.0.y.xml` | `bl-v2.0.y` | Linux 6.6 |
+| v1.0 | `bl-v1.0.y.xml` | `bl-v1.0.y` | Linux 6.1 |
+
+- 状态：**v2.2 为长期支持版本**，更早版本已停服
+- 来源：`docs-buildroot/zh/k1_buildroot/release_notes/index.md`
 
 **重要说明：**
+- **v1.0 在两颗芯片上是不同产品**：K3 的 v1.0 是当前主线，K1 的 v1.0 是历史版本。引用版本号时必须同时说明芯片。
 - Gitee 单仓库容量限制导致 v2.0 和 v2.1 的 linux-6.6 分支被移动到独立仓库
 - GitHub 仅托管 v2.2 及以后版本
 - 自 Buildroot 2.2.7 开始，默认在 Docker 容器中构建（需安装 Docker CE）
@@ -74,7 +92,7 @@ Buildroot 是用于生成嵌入式 Linux 根文件系统与镜像的构建工具
 
 | 特性 | Buildroot | Bianbu |
 |------|-----------|--------|
-| 基础 | 从零构建 | 基于 Ubuntu 23.10/26.04 |
+| 基础 | 从零构建 | 基于 Ubuntu 24.04.1（K1）/ 26.04（K3） |
 | 大小 | 最小（几十 MB） | 完整（几 GB） |
 | 软件生态 | 有限，手动添加 | Ubuntu apt 生态 |
 | 定制性 | 极高 | 中等 |

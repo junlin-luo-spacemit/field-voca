@@ -4,8 +4,8 @@ domain: software
 aliases: [SDK, Software Development Kit, 软件开发套件]
 status: approved
 created: 2026-08-06
-updated: 2026-10-29
-source: C:\Users\luojunlin\docs-buildroot\zh\k1_buildroot\
+updated: 2026-11-16
+source: C:\Users\luojunlin\docs-buildroot\zh\ (k1_buildroot + k3_buildroot)
 superseded_by:
 ---
 
@@ -23,7 +23,8 @@ SDK（Software Development Kit，软件开发套件）包含工具链、库、�
 
 1. **Bootloader**
    - OpenSBI（RISC-V Supervisor Binary Interface）
-   - U-Boot / UEFI
+   - U-Boot（支持 Fastboot 刷机模式）
+   - 可选 OP-TEE 安全固件（K3 支持，Buildroot v1.0.9 起可构建）
 
 2. **Linux Kernel**
    - 适配 K1/K3 的内核树

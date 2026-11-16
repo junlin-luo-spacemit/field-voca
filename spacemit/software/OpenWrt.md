@@ -4,7 +4,7 @@ domain: software
 aliases: [OpenWrt, 进迭OpenWrt]
 status: approved
 created: 2026-08-06
-updated: 2026-10-29
+updated: 2026-11-16
 source: C:\Users\luojunlin\docs-openwrt\zh\root_overview.md
 superseded_by:
 ---
@@ -42,12 +42,14 @@ OpenWrt 是基于 Linux 的嵌入式路由器与网络设备操作系统。Space
 
 ## 版本与分支
 
-| 分支 | Linux 内核 | OpenWrt 版本 | 维护状态 |
-|------|-----------|-------------|---------|
-| **bl-v2.0.y** | Linux 6.6 | 基于 master | 主要维护分支 |
-| bl-v1.0.y | Linux 6.1 | OpenWrt 23.05 | 有限维护 |
+| 分支 | OpenWrt 版本 | 说明 |
+|------|-------------|------|
+| **bl-v2.0.y** | 基于 master | 主要维护分支 |
 
-**建议使用 bl-v2.0.y 分支**（后续主要维护分支）
+**建议使用 bl-v2.0.y 分支。**
+
+> 注：官方概述仅说明"基于原生 OpenWrt 23.05 集成 SpacemiT Stone 系列芯片 BSP"，并注明 `bl-v2.0.y` 分支基于 master。实际发布产物为 OpenWrt **23.05.2**。
+> 来源：`docs-openwrt/zh/root_overview.md`
 
 ## 支持设备
 
