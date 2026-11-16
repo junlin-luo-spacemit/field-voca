@@ -13,6 +13,202 @@ source: C:\Users\luojunlin\docs-buildroot\zh\k1_buildroot\device\boot.md, C:\Use
 
 能画出从"通电"到"程序运行"的六个层级，说出每一层的名称和职责。
 
+**配套互动动画**：用浏览器打开 [boot-chain-animation.html](./quiz/boot-chain-animation.html) — 点击「开始」逐层展开，每层都有小白类比。建议**先看动画，再读下面内容**。
+
+---
+
+## 完整启动链（K1 / K3 通用）
+
+> 芯片通电就像叫醒一个完全失忆的人，每一层引导程序把他的记忆和能力一点点还给他，直到他能独立工作为止。
+
+```
+通电
+  │
+  ▼
+1. BROM（Boot ROM）—— "保安大叔"
+   · 芯片出厂固化，永远不会变，不可修改
+   · 唯一任务：去存储介质里找到 FSBL，把它加载进来
+  │
+  ▼
+2. FSBL（First Stage Boot Loader）—— "开灯的人"
+   · SpacemiT 自定义的第一阶段引导
+   · 此时内存（DRAM）还不可用，他先初始化内存控制器
+   · 再加载 OpenSBI
+  │
+  ▼
+3. OpenSBI（RISC-V Supervisor Binary Interface）—— "翻译官"
+   · RISC-V 专有的固件层（x86 / ARM 没有这一层）
+   · 硬件最底层的操作（时钟、关机）只有他能做
+   · Linux 内核想控制硬件，必须通过他"翻译"
+  │
+  ▼
+4. U-Boot —— "装修工头"
+   · 通用引导加载程序（开源 + SpacemiT 适配）
+   · 初始化硬件外设，加载 Linux 内核 + 设备树（DTB）
+   · 特殊技能：进入 Fastboot 模式 → 刷机
+  │
+  ▼
+5. Linux 内核（Kernel）—— "大管家"
+   · K1 用 Linux 6.1，K3 用 Linux 6.6+
+   · 接管所有硬件驱动，挂载根文件系统
+  │
+  ▼
+6. Rootfs（根文件系统）—— "办公室"
+   · 选择操作系统：Bianbu / Buildroot / OpenWrt / OpenHarmony
+   · 程序从这里开始运行
+  │
+  ▼
+你的程序跑起来了 🎉
+```
+
+**每一层"是谁做的"**
+
+| 层级 | 名称 | 谁做的 | 可不可以改 |
+|---|---|---|---|
+| 1 | BROM | SpacemiT 芯片内固化 | ❌ |
+| 2 | FSBL | SpacemiT 开发 | ✅ |
+| 3 | OpenSBI | RISC-V 开源社区 | ✅ |
+| 4 | U-Boot | 开源社区 + SpacemiT 适配 | ✅ |
+| 5 | Linux 内核 | Linux 社区 + SpacemiT BSP | ✅ |
+| 6 | Rootfs | SpacemiT / 开源（4 种可选） | ✅ |
+
+---
+
+## K3 比 K1 多了什么
+
+K3 可以在 OpenSBI 之前插入一个**可选的安全固件层**：
+
+```
+K1：BROM → FSBL → OpenSBI → U-Boot → Kernel → Rootfs
+K3：BROM → FSBL → [OP-TEE] → OpenSBI → U-Boot → Kernel → Rootfs
+```
+
+**OP-TEE**（Trusted Execution Environment）提供硬件级安全隔离（安全启动、密钥保护）。K3 Buildroot v1.0.9 起支持，存放在独立 TEE 分区。
+
+---
+
+## 固件存在哪里：存储分区布局
+
+> 你不需要记住地址，只需要知道固件是**分开存放**的，写文档时不要把它们说成"一个镜像文件"。
+
+把存储介质想象成一栋楼：
+
+```
+NOR Flash（固件仓库）         SSD / eMMC（系统仓库）
+┌─────────────────────┐      ┌─────────────────────┐
+│  1楼：FSBL.bin      │      │  A区：bootfs        │  ← 内核 + DTB
+│  2楼：opensbi.itb   │      │  B区：rootfs        │  ← 根文件系统
+│  3楼：u-boot.itb    │      └─────────────────────┘
+└─────────────────────┘
+```
+
+`FSBL.bin`、`opensbi.itb`、`u-boot.itb` 是**三个独立文件**，刷机时需要分别烧写到各自分区。
+
+---
+
+## 刷机 vs 启动
+
+| | 启动（Boot） | 刷机（Flash） |
+|---|---|---|
+| 是什么 | 读取已有固件，逐层跑起系统 | 把新固件写入存储，替换旧的 |
+| 什么时候 | 每次上电或重启 | 升级系统 / 初始化设备 |
+
+> 官方文档：刷机与启动相互关联——如果修改了启动逻辑，刷机配置通常也要跟着改。
+
+### 刷机用什么工具？
+
+**TitanFlasher（GUI，给普通用户）**：选一个 `.zip` 整包镜像 → 点「开始烧录」，工具自动把每个文件烧到正确分区。类比：iPhone 点"立即更新"，手机自己处理所有文件。
+
+**fastboot 命令行（给开发工程师）**：手动逐个烧写：
+
+```bash
+fastboot flash fsbl    factory/FSBL.bin
+fastboot flash opensbi fw_dynamic.itb
+fastboot flash uboot   u-boot.itb
+fastboot flash bootfs  bootfs.img
+fastboot flash rootfs  rootfs.ext4
+```
+
+**写文档时的判断**：同一个动作，给不同读者写法完全不同——给用户写"一键烧录"，给工程师写每条命令。这是技术写作最核心的判断之一。
+
+---
+
+## 三个常见术语解释
+
+### OpenSBI 是什么？
+
+x86 有 BIOS / UEFI，RISC-V 有 **OpenSBI**——功能类似，都是管理硬件最底层操作的固件层。Linux 内核无法直接操作 M-Mode 硬件，必须通过 OpenSBI 的 SBI 调用。写文档时看到"需要 OpenSBI 支持"，知道它是 RISC-V 专有的"底层固件"就够了。
+
+### 设备树（DTB）是什么？
+
+U-Boot 加载"内核 + 设备树（DTB）"——DTB 是一份**硬件说明书**，告诉 Linux 内核这块板子上有哪些硬件（USB 口几个、内存多大、摄像头用哪个接口）。内核是通用的，不可能内置所有板子的信息，所以用 DTB 单独描述。
+
+| 格式 | 扩展名 | 用途 |
+|---|---|---|
+| DTS | `.dts` | 人类可读源码，工程师修改这个 |
+| DTB | `.dtb` | 编译后的二进制，U-Boot 加载这个 |
+
+常见说法解读：
+- "bootfs 包含 kernel 和 DTB" → 两个文件：内核 + 硬件配置
+- "适配新板子需要修改 DTS" → 修改硬件说明书的源码
+
+### Linux 和 Ubuntu 是什么关系？
+
+**Linux = 引擎（内核），Ubuntu = 整辆车（完整操作系统）。**
+
+Linux 内核是开源的，任何人都可以拿来加工成自己的操作系统（发行版）：
+
+| 发行版 | 定位 | 类比 |
+|---|---|---|
+| Ubuntu | 通用桌面 / 服务器 | 大众汽车 |
+| Buildroot | 极简嵌入式 | 卡丁车（只有发动机和轮子） |
+| OpenWrt | 路由器专用 | 摩托车 |
+| **Bianbu** | 基于 Ubuntu，针对 SpacemiT K1/K3 优化 | 大众改装版（专为 RISC-V 路面） |
+
+Bianbu 就是"Ubuntu 的 RISC-V 版"：
+```
+Ubuntu 24.04.1  →  Bianbu 2.x（K1 专用）
+Ubuntu 26.04    →  Bianbu 4.x（K3 专用，仅 K3）
+```
+
+---
+
+## 易错点
+
+| 错误 | 正确 |
+|---|---|
+| "启动和刷机是同一件事" | 完全不同：启动是**读取**运行，刷机是**写入**替换 |
+| "OpenSBI 和 BIOS 没有关系" | 功能类似，OpenSBI 是 RISC-V 专有的 BIOS/UEFI 等价物 |
+| "K3 和 K1 启动链完全一样" | K3 多了可选的 **OP-TEE** 安全固件层 |
+| "固件是一个大文件" | FSBL / OpenSBI / U-Boot 是**三个独立文件**，分别烧写 |
+| "Bianbu 2.x 也支持 K3" | Bianbu 2.x 仅支持 K1；K3 用 **Bianbu 4.x** |
+
+---
+
+## 关键记忆点
+
+1. BROM 是芯片内固化的，**不可修改**
+2. FSBL 是 SpacemiT **自定义**的第一阶段引导
+3. **OpenSBI 是 RISC-V 专有**的，x86 / ARM 没有
+4. 刷机 ≠ 启动：刷机是**写入**，启动是**读取**
+5. K3 多 **OP-TEE** 安全固件层（Buildroot v1.0.9 起支持）
+6. DTB = 硬件说明书，由 U-Boot 传给 Linux 内核
+7. Bianbu = Ubuntu 的 RISC-V 版（2.x → K1，4.x → K3）
+
+---
+
+## 作业
+
+画一张从"通电"到"程序运行"的流程图，标出：
+1. 六个层级的名称和各自职责
+2. 刷机发生在哪一层（提示：U-Boot Fastboot 模式）
+3. K3 比 K1 多的可选层
+4. DTB 在哪一步被传给内核
+
+## 学习目标
+
+能画出从"通电"到"程序运行"的六个层级，说出每一层的名称和职责。
+
 **配套互动动画**：用浏览器打开 [boot-chain-animation.html](./quiz/boot-chain-animation.html) — 点击「开始」逐层展开，每层都有小白类比说明。建议**先看动画，再读下面的详细内容**。
 
 ---
