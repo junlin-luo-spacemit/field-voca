@@ -1,93 +1,84 @@
 ---
 tags: [study, index, spacemit]
 domain: all
-status: approved
+status: needs_review
 created: 2026-11-16
-updated: 2026-11-16
+updated: 2026-11-18
 ---
 
-# SpacemiT 学习材料索引
+# SpacemiT 技术基础知识库
 
-> 所有学习材料统一放在 `spacemit/study/` 目录下。
-> 配套测验在 `spacemit/study/quiz/` 目录下。
-> 同事可以直接从这里开始，按阶段顺序学习。
+## 这是什么
 
----
+给**技术写作团队**用的 SpacemiT 产品与生态基础课。
 
-## 学习路径
+目标不是练写作，是**把技术底子打起来**：团队要先知道我们卖的是什么、这颗芯片里有什么、软件是怎么跑起来的、AI 能力从哪来。写文档是以后的事，等底子够了自然会写。
 
-```
-Day 1 → Day 2 → Day 3（计划中）
-  ↓         ↓
-产品全景   软件栈
-  ↓         ↓
-测验      测验（待建）
-```
+判断学会的标准很朴素：**不看资料，能用大白话把一件事讲明白。** 讲不明白就是还没懂。
 
----
+## 素材来源：六份官方文档库
 
-## 材料清单
+| 库 | 篇数 | 讲什么 |
+|---|---:|---|
+| `docs-product` | 117 | 产品线：K1 / K3 / V100 三个系列各有哪些整机形态 |
+| `docs-chip` | 149 | 芯片本身：CPU 核、AI 核、内存、存储、显示、图像、互联、安全 |
+| `docs-bianbu` | 104 | 面向通用计算的操作系统：桌面版、命令行版、怎么开发 |
+| `docs-buildroot` | 349 | 面向嵌入式的系统：驱动、外设、多媒体、图形、内核调试 |
+| `docs-ai` | 92 | AI 能力：指令集扩展、推理引擎、量化、应用工具、行业方案 |
+| `docs-tool` | 45 | 开发工具：Studio、交叉编译、烧录、JTAG、Trace |
 
-### Day 1：SpacemiT 产品全景（硬件）
+本地路径都在 `C:\Users\luojunlin\` 下，同事机器上可能不存在。
 
-| 文件 | 内容 | 预计时间 |
-|------|------|---------|
-| [day1-products.md](./day1-products.md) | 两大芯片系列、三颗芯片规格、产品线、RV2768、同构融合技术、选型决策树 | 45 分钟阅读 |
-| [quiz/day1-recap.html](./quiz/day1-recap.html) | 22 题互动选择题，点击即时判分，分组统计 | 20 分钟 |
+## 组织方式：按技术主线，不按库
 
-**学完 Day 1 你应该能回答**：
-- RV2768 是由多少颗什么芯片组成的？
-- K1 的 8 个核心怎么分配？
-- G5201 出厂有没有 GPU 卡？
-- 同构融合技术是谁的技术？
+这一点最容易搞错。
 
----
+**不是"一天看一份库"。** 同一件事在六份库里都有，各讲一个侧面。比如"启动"：
 
-### Day 2：软件栈基础
+- 芯片库讲 Boot ROM 和启动模式
+- Buildroot 库讲 U-Boot 和设备树
+- Bianbu 库讲系统镜像怎么做出来
+- 产品库讲用户怎么刷机
+- 工具库讲烧录工具怎么用
 
-| 文件 | 内容 | 预计时间 |
-|------|------|---------|
-| [day2-boot-chain.md](./day2-boot-chain.md) | 启动链六层、小白类比（保安/开灯/翻译官/装修工头/大管家/办公室）、OpenSBI 解释、刷机 vs 启动、**Linux vs Ubuntu 关系**、K3 vs K1 差异 | 40 分钟阅读 |
-| day2-operating-systems.md | 四种 OS 的定位与选型（Bianbu/Buildroot/OpenWrt/OpenHarmony） | 待建 |
-| day2-sdk-toolchain.md | SDK/BSP 结构、为什么需要交叉编译 | 待建 |
-| quiz/day2-recap.html | Day 2 互动测验 | 待建 |
+所以每一讲都是**一条技术主线，穿过多份库**。这样学完的东西是立体的，不是一个库里零散的知识点。
 
-**学完 Day 2 你应该能回答**：
-- 通电到程序运行经过哪六层固件？
-- BROM 和 FSBL 有什么区别？
-- OpenSBI 是什么，x86 有没有？
-- 刷机和启动有什么区别？
+完整的课表见 [ROADMAP.md](./ROADMAP.md)。
 
----
+## 一条主线的样本
 
-### Day 3（计划中）：AI 栈
+以"D1 显示与图形"为例，一讲里会同时用到：
+
+| 库 | 贡献什么 |
+|---|---|
+| `docs-chip` | DPU0/DPU1 的接口不对称、MIPI-DSI 与 DP/eDP 的区别 |
+| `docs-buildroot` | 显示驱动框架、panel porting、GPU 驱动 |
+| `docs-product` | 具体板子上引出的是 DP 还是 DSI、几个口 |
+| `docs-ai` | GPU 的 OpenCL 在 AI 预/后处理里的角色 |
+
+一讲读完，你能同时回答"芯片支持什么""驱动怎么做""这块板子里有什么"。
+
+## 怎么用
+
+1. 按 [ROADMAP.md](./ROADMAP.md) 的顺序走，模块一讲一讲来。
+2. 每讲读完，先自己复述一遍，再做题。题目用来找概念混淆，不是门槛。
+3. 讲不清就回看那一讲，不用重做整套题。
+4. 遇到术语，查 `spacemit/glossary/` 和 `spacemit/atoms/`。
+5. 跨会话或换机器继续，先读 [HANDOFF.md](./HANDOFF.md)。
+
+课程怎么写、测验怎么出，见 [STYLE.md](./STYLE.md)。那份文件是硬性规范，编写时逐条对照。
+
+## 现状
+
+**M1 已完成**，三篇课加一份测验：
 
 | 文件 | 内容 |
-|------|------|
-| day3-ai-stack.md | 推理引擎（ONNXRuntime / Llama.cpp / vLLM）、量化（XSlim）、应用工具 | 待建 |
-| quiz/day3-recap.html | Day 3 测验 | 待建 |
+|---|---|
+| [m1-01-series-naming.md](./m1-01-series-naming.md) | 产品系列与命名规律：K/P/V 三个系列、编号规则、K1 与 K3 的内核差异 |
+| [m1-02-form-factors.md](./m1-02-form-factors.md) | 同一颗芯片的多种形态 |
+| [m1-03-reading-specs.md](./m1-03-reading-specs.md) | 读懂规格表里的数字 |
+| [quiz/m1-recap.html](./quiz/m1-recap.html) | 15 道选择题（基础与应用 10 + 认陷阱 5）+ 14 个知识点的分点自评，含错题计数与回看清单 |
 
----
+M2 之后的模块按 [ROADMAP.md](./ROADMAP.md) 逐个编写。
 
-## 给同事的快速上手建议
-
-1. **先读 [day1-products.md](./day1-products.md)**，大约 45 分钟。建立全局认知。
-2. **做 [day1-recap.html](./quiz/day1-recap.html) 测验**，确认理解。85 分（19/22）以上再继续。
-3. **读 [day2-boot-chain.md](./day2-boot-chain.md)**，理解固件链。
-4. 遇到不确定的技术术语，查 [[../HOME|HOME.md]] 里的"5 分钟快速理解"部分。
-5. 深入某个概念，查 [[../atoms/README|原子词条]]。
-
----
-
-## 参考文档来源
-
-所有材料均依据以下官方文档库核实：
-
-| 文档库 | 路径 | 覆盖内容 |
-|--------|------|---------|
-| docs-chip | `C:\Users\luojunlin\docs-chip` | K1/K3 芯片规格 |
-| docs-product | `C:\Users\luojunlin\docs-product` | 产品简介 |
-| docs-bianbu | `C:\Users\luojunlin\docs-bianbu` | Bianbu OS |
-| docs-buildroot | `C:\Users\luojunlin\docs-buildroot` | Buildroot SDK、启动链 |
-| docs-ai | `C:\Users\luojunlin\docs-ai` | AI 软件栈 |
-| docs-tool | `C:\Users\luojunlin\docs-tool` | 工具链、JTAG、Trace |
+早期按「一天一份库」写的 `day1-*` ~ `day4-*` 已全部删除，不再保留。
