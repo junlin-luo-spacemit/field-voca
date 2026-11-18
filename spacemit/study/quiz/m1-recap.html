@@ -1,0 +1,1015 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SpacemiT M1 测验 · 产品线全景</title>
+<style>
+  :root {
+    --bg: #0f1115;
+    --panel: #171a21;
+    --panel-2: #1e222b;
+    --border: #2c3240;
+    --text: #e4e7ee;
+    --text-dim: #9aa3b4;
+    --accent: #4d9dff;
+    --ok: #2ecc8f;
+    --ok-bg: rgba(46, 204, 143, 0.12);
+    --bad: #ff5f6d;
+    --bad-bg: rgba(255, 95, 109, 0.12);
+    --warn: #e8b339;
+    --warn-bg: rgba(232, 179, 57, 0.1);
+    --src: #8b93a7;
+  }
+  @media (prefers-color-scheme: light) {
+    :root {
+      --bg: #f5f6f9;
+      --panel: #ffffff;
+      --panel-2: #f0f2f6;
+      --border: #dce0e8;
+      --text: #1c2029;
+      --text-dim: #666f80;
+      --accent: #1f6feb;
+      --ok: #1a8f5f;
+      --ok-bg: rgba(26, 143, 95, 0.09);
+      --bad: #d92d3c;
+      --bad-bg: rgba(217, 45, 60, 0.08);
+      --warn: #a97c10;
+      --warn-bg: rgba(169, 124, 16, 0.09);
+      --src: #7a8296;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; padding: 32px 20px 80px;
+    background: var(--bg); color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft YaHei", sans-serif;
+    line-height: 1.7; font-size: 15px;
+  }
+  .wrap { max-width: 860px; margin: 0 auto; }
+
+  header { margin-bottom: 26px; }
+  h1 { font-size: 23px; margin: 0 0 8px; letter-spacing: -0.01em; }
+  .sub { color: var(--text-dim); font-size: 13.5px; margin: 0; }
+
+  .bar {
+    position: sticky; top: 0; z-index: 20;
+    display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
+    padding: 11px 16px; margin: 0 -16px 22px;
+    background: color-mix(in srgb, var(--bg) 90%, transparent);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border);
+  }
+  .bar .stat { font-size: 13px; color: var(--text-dim); }
+  .bar .stat b { color: var(--text); font-variant-numeric: tabular-nums; }
+  .bar .spacer { flex: 1; }
+  .btn {
+    font: inherit; font-size: 13px; cursor: pointer;
+    padding: 6px 14px; border-radius: 7px;
+    border: 1px solid var(--border);
+    background: var(--panel-2); color: var(--text);
+    transition: border-color .15s;
+  }
+  .btn:hover { border-color: var(--accent); }
+  .btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  .progress-track {
+    height: 3px; background: var(--border); border-radius: 2px;
+    width: 100%; overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%; width: 0%;
+    background: var(--accent); transition: width .25s ease;
+  }
+
+  h2.group {
+    font-size: 12.5px; letter-spacing: .09em;
+    color: var(--text-dim); font-weight: 600;
+    margin: 34px 0 6px; padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+  .group-note {
+    font-size: 13px; color: var(--text-dim);
+    margin: 0 0 16px; padding-left: 2px;
+  }
+
+  .q {
+    background: var(--panel); border: 1px solid var(--border);
+    border-radius: 11px; padding: 18px 20px; margin-bottom: 13px;
+    transition: border-color .2s;
+  }
+  .q.answered-correct { border-color: color-mix(in srgb, var(--ok) 50%, var(--border)); }
+  .q.answered-wrong { border-color: color-mix(in srgb, var(--bad) 50%, var(--border)); }
+
+  .q-head { display: flex; gap: 10px; margin-bottom: 15px; }
+  .q-num {
+    flex: 0 0 auto; width: 26px; height: 26px; border-radius: 7px;
+    background: var(--panel-2); border: 1px solid var(--border);
+    display: grid; place-items: center;
+    font-size: 12.5px; font-weight: 600; color: var(--text-dim);
+    font-variant-numeric: tabular-nums;
+  }
+  .q.answered-correct .q-num { background: var(--ok-bg); color: var(--ok); border-color: transparent; }
+  .q.answered-wrong .q-num { background: var(--bad-bg); color: var(--bad); border-color: transparent; }
+  .q-text { font-size: 15px; font-weight: 500; padding-top: 1px; }
+  .q-type {
+    font-size: 11px; font-weight: 600; padding: 1px 7px;
+    border-radius: 20px; margin-left: 8px; vertical-align: 1px;
+    background: var(--panel-2); color: var(--text-dim);
+    border: 1px solid var(--border);
+  }
+
+  .opts { display: flex; flex-direction: column; gap: 7px; }
+  .opt {
+    display: flex; align-items: flex-start; gap: 11px;
+    padding: 11px 13px; border-radius: 8px;
+    border: 1px solid var(--border); background: var(--panel-2);
+    cursor: pointer; user-select: none;
+    transition: border-color .12s, background .12s;
+  }
+  .opt:hover:not(.locked) { border-color: var(--accent); }
+  .opt:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .opt.locked { cursor: default; }
+  .opt .key {
+    flex: 0 0 auto; width: 21px; height: 21px; border-radius: 5px;
+    display: grid; place-items: center;
+    font-size: 11.5px; font-weight: 700;
+    background: var(--bg); color: var(--text-dim);
+    border: 1px solid var(--border); margin-top: 2px;
+  }
+  .opt .label { flex: 1; font-size: 14px; }
+
+  .opt.is-correct { border-color: var(--ok); background: var(--ok-bg); }
+  .opt.is-correct .key { background: var(--ok); color: #fff; border-color: var(--ok); }
+  .opt.is-wrong { border-color: var(--bad); background: var(--bad-bg); }
+  .opt.is-wrong .key { background: var(--bad); color: #fff; border-color: var(--bad); }
+  .opt.dimmed { opacity: .5; }
+
+  .feedback {
+    margin-top: 14px; display: none;
+    border-left: 3px solid var(--accent);
+    padding-left: 0;
+  }
+  .feedback.show { display: block; }
+  .fb-verdict {
+    font-size: 13px; font-weight: 600;
+    padding: 4px 0 8px;
+  }
+  .fb-verdict.ok { color: var(--ok); }
+  .fb-verdict.bad { color: var(--bad); }
+  .fb-body {
+    background: var(--panel-2); border-radius: 0 8px 8px 0;
+    padding: 12px 15px; font-size: 13.5px; color: var(--text-dim);
+  }
+  .fb-body b { color: var(--text); font-weight: 600; }
+  .fb-body ul { margin: 6px 0 0; padding-left: 19px; }
+  .fb-body li { margin-bottom: 4px; }
+  .fb-src {
+    margin-top: 10px; padding-top: 9px;
+    border-top: 1px dashed var(--border);
+    font-size: 12.5px; color: var(--src);
+    font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+    word-break: break-all;
+  }
+
+  /* self-assessment */
+  .sa {
+    background: var(--panel); border: 1px solid var(--border);
+    border-radius: 11px; padding: 6px 20px 18px; margin-bottom: 13px;
+  }
+  .sa-row {
+    display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+    padding: 13px 0; border-bottom: 1px solid var(--border);
+  }
+  .sa-row:last-child { border-bottom: none; }
+  .sa-label { flex: 1 1 260px; font-size: 14px; }
+  .sa-opts { display: flex; gap: 6px; }
+  .sa-btn {
+    font: inherit; font-size: 12.5px; cursor: pointer;
+    padding: 4px 12px; border-radius: 20px;
+    border: 1px solid var(--border);
+    background: transparent; color: var(--text-dim);
+    transition: all .15s;
+  }
+  .sa-btn:hover { border-color: var(--text-dim); color: var(--text); }
+  .sa-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .sa-btn[aria-pressed="true"][data-v="ok"] { border-color: var(--ok); background: var(--ok-bg); color: var(--ok); }
+  .sa-btn[aria-pressed="true"][data-v="q"] { border-color: var(--warn); background: var(--warn-bg); color: var(--warn); }
+  .sa-btn[aria-pressed="true"][data-v="no"] { border-color: var(--bad); background: var(--bad-bg); color: var(--bad); }
+
+  .result {
+    display: none; margin-top: 30px; padding: 24px;
+    background: var(--panel); border: 1px solid var(--border);
+    border-radius: 13px;
+  }
+  .result.show { display: block; }
+  .result .big {
+    font-size: 40px; font-weight: 700; letter-spacing: -0.02em;
+    font-variant-numeric: tabular-nums; line-height: 1.15;
+  }
+  .result .big small { font-size: 16px; font-weight: 500; color: var(--text-dim); }
+  .result .tier { font-size: 14.5px; margin-top: 6px; }
+  .result .brk {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 10px; margin-top: 18px;
+  }
+  .brk-item {
+    background: var(--panel-2); border: 1px solid var(--border);
+    border-radius: 9px; padding: 11px 14px;
+  }
+  .brk-item .n { font-size: 12px; color: var(--text-dim); }
+  .brk-item .v { font-size: 17px; font-weight: 600; font-variant-numeric: tabular-nums; margin-top: 2px; }
+  .review-hint {
+    margin-top: 18px; padding: 14px 16px;
+    background: var(--warn-bg); border-left: 3px solid var(--warn);
+    border-radius: 0 8px 8px 0; font-size: 13.5px;
+  }
+  .review-hint b { color: var(--text); }
+
+  .revisit { margin-top: 18px; }
+  .revisit h3 {
+    font-size: 12.5px; text-transform: uppercase; letter-spacing: .08em;
+    color: var(--text-dim); font-weight: 600;
+    margin: 0 0 12px; padding-bottom: 7px;
+    border-bottom: 1px solid var(--border);
+  }
+  .rv-item {
+    background: var(--panel-2); border: 1px solid var(--border);
+    border-radius: 9px; padding: 13px 15px; margin-bottom: 9px;
+    border-left: 3px solid var(--border);
+  }
+  .rv-item.p1 { border-left-color: var(--bad); }
+  .rv-item.p2 { border-left-color: var(--warn); }
+  .rv-item.p3 { border-left-color: var(--accent); }
+  .rv-head {
+    display: flex; align-items: baseline; gap: 9px; flex-wrap: wrap;
+    font-size: 13.5px; margin-bottom: 8px;
+  }
+  .rv-badge {
+    font-size: 11px; font-weight: 600; padding: 1px 8px;
+    border-radius: 20px; white-space: nowrap;
+  }
+  .rv-badge.bad { background: var(--bad-bg); color: var(--bad); }
+  .rv-badge.warn { background: var(--warn-bg); color: var(--warn); }
+  .rv-badge.info { background: var(--accent); color: #fff; background: var(--ok-bg); color: var(--ok); }
+  .rv-title { flex: 1 1 200px; font-weight: 500; }
+  .rv-count { font-size: 12px; color: var(--text-dim); white-space: nowrap; }
+  .rv-rewrite {
+    margin-top: 7px; padding: 6px 10px; font-size: 12.5px;
+    background: var(--bad-bg); color: var(--bad);
+    border-radius: 6px; font-weight: 500;
+  }
+  .rv-snippet {
+    font-size: 13px; color: var(--text); line-height: 1.65;
+    padding: 9px 12px; margin-top: 4px;
+    background: var(--bg); border-radius: 6px;
+    border-left: 2px solid var(--accent);
+  }
+  .rv-snippet::before {
+    content: "回看这段"; display: block;
+    font-size: 11px; font-weight: 600; letter-spacing: .05em;
+    color: var(--text-dim); margin-bottom: 5px;
+  }
+
+  .diag-actions { display: flex; gap: 8px; margin-top: 16px; flex-wrap: wrap; align-items: center; }
+  .diag-actions .btn.primary {
+    border-color: var(--accent); color: var(--accent);
+  }
+  .copy-note { font-size: 12.5px; color: var(--ok); display: none; }
+  .copy-note.show { display: inline; }
+
+  footer {
+    margin-top: 38px; padding-top: 18px;
+    border-top: 1px solid var(--border);
+    font-size: 12.5px; color: var(--text-dim);
+  }
+  footer a { color: var(--accent); text-decoration: none; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <h1>M1 测验 · 产品线全景</h1>
+    <p class="sub">基础与应用 10 · 认陷阱 5 · 自评 14 个知识点 — 全部点选，不用写字</p>
+  </header>
+
+  <div class="bar">
+    <span class="stat">已答 <b id="s-answered">0</b>/15</span>
+    <span class="stat">正确 <b id="s-correct">0</b></span>
+    <span class="stat">正确率 <b id="s-rate">—</b></span>
+    <span class="spacer"></span>
+    <button class="btn" id="btn-reset">重做</button>
+  </div>
+
+  <div class="progress-track"><div class="progress-fill" id="prog"></div></div>
+
+  <div id="quiz"></div>
+
+  <div class="result" id="result">
+    <div class="big"><span id="r-score">0</span><small> / 15</small></div>
+    <div class="tier" id="r-tier"></div>
+    <div class="brk" id="r-brk"></div>
+    <div class="revisit" id="r-revisit"></div>
+    <div class="review-hint" id="r-hint"></div>
+    <div class="diag-actions">
+      <button class="btn primary" id="btn-copy">复制诊断摘要</button>
+      <span class="copy-note" id="copy-note">已复制，可直接粘贴给助教</span>
+    </div>
+  </div>
+
+  <footer>
+    课程：<a href="../m1-01-series-naming.md">产品系列与命名规律</a> · <a href="../m1-02-form-factors.md">同一颗芯片的多种形态</a> · <a href="../m1-03-reading-specs.md">读懂规格表里的数字</a><br>
+    规范：<a href="../STYLE.md">STYLE.md</a> · 路线：<a href="../ROADMAP.md">ROADMAP.md</a>
+  </footer>
+
+</div>
+
+<script>
+const DATA = [
+  { group: "一、基础与应用", note: "每题只有一项正确。覆盖三课：系列与命名、产品形态、规格数字，含概念题和应用题。选完立即显示答案、解析和来源。", type: "单选", items: [
+    {
+      q: "P 系列（Power Stone）在三个芯片系列里的定位是什么？",
+      sai: 0,
+      opts: [
+        "带 AI 算力的应用处理器，面向端侧",
+        "电源管理芯片（PMIC），为其他芯片供电",
+        "服务器级通用 CPU，面向数据中心",
+        "显示处理单元，负责屏幕输出"
+      ],
+      a: 1,
+      e: "P 系列是电源芯片，现有 P1、P3。芯片库的章节标题就是「P 系列电源芯片」，与 K 系列、V 系列并列。",
+      wrong: {
+        0: "这是 K 系列（Key Stone）的定位：AI CPU。",
+        2: "这是 V 系列（Vital Stone）的定位：服务器芯片。",
+        3: "显示处理单元（DPU）是 SoC 内部的模块，不是独立芯片系列。"
+      },
+      src: "docs-chip · power_stone/index.md · 全文",
+      rv: "P 系列是电源芯片，现有 P1、P3。三个系列并列：K 系列是 AI CPU，P 系列是电源芯片，V 系列是服务器芯片。"
+    },
+    {
+      q: "V 系列的芯片编号采用哪种规律？",
+      sai: 1,
+      opts: [
+        "一位奇数递增：V1、V3、V5",
+        "三位整数递增：V100、V200、V300",
+        "按流片年份：V2023、V2024",
+        "一位偶数递增：V2、V4、V6"
+      ],
+      a: 1,
+      e: "V 系列（Vital Stone）现有 V100，后续规划 V200、V300。三位整数递增是这一系列的命名规则。",
+      wrong: {
+        0: "一位奇数递增是 K 系列的规律（K1、K3、K5），不是 V 系列。",
+        2: "V 系列按代际递增编号，不按年份命名。",
+        3: "V 系列没有这种编号方式。现有的是 V100。"
+      },
+      src: "docs-chip · vital_stone/index.md · 全文",
+      rv: "K 系列一位奇数：K1、K3、K5、K7、K9。V 系列三位整数：V100、V200、V300。两条线编号规则不同。"
+    },
+    {
+      q: "三个系列的 AI 能力来源，哪组对应正确？",
+      sai: 2,
+      opts: [
+        "K1 与 K3 都靠外接加速卡；V100 内置 AI 核",
+        "K1 内置 A60；K3 内置 A100；V100 靠外接 PCIe 加速卡",
+        "K1 内置 A100；K3 内置 A60；V100 也内置 AI 核",
+        "三个系列都内置 AI 核，只是数量不同"
+      ],
+      a: 1,
+      e: "K1 簇 0 有 4 个 A60 智算核；K3 有 8 个 A100 AI 核；V100 是服务器级 CPU，本身无 AI 核，G5201 靠外接最多 8 张 PCIe 加速卡。",
+      wrong: {
+        0: "正好反过来：K1、K3 内置 AI 核，V100 靠外接卡。",
+        2: "A60 配 K1、A100 配 K3，这里配对反了；而且 V100 没有内置 AI 核。",
+        3: "V100 本身不含 AI 核，这是它和 K 系列的根本差别。"
+      },
+      src: "docs-chip · key_stone/k1/k1_docs/k1_ds.md · 2.1 / docs-chip · key_stone/k3/k3_docs/k3_ds.md · 2.1.2 / docs-product · v100_series/v100_g5201/root_overview.md · 概述、特性",
+      rv: "K1 是 4 个 X60 通用核加 4 个 A60 智算核。K3 是 8 个 X100 加 8 个 A100。V100 是服务器级 CPU，本身不含 AI 核，AI 能力来自外接 PCIe 加速卡。"
+    },
+    {
+      q: "下面哪一组全部是产品型号，而不是芯片型号？",
+      sai: 3,
+      opts: [
+        "K1、K3、V100",
+        "P1、P3",
+        "K3 Pico-ITX、C2201、G5201",
+        "X60、X100、A100"
+      ],
+      a: 2,
+      e: "芯片型号是 K1、K3、V100、P1、P3；产品型号是 K3 Pico-ITX、C2201、G5201 这类整机名。一颗芯片可以做多个产品。",
+      wrong: {
+        0: "这三个都是芯片型号。K1、K3 属 Key Stone，V100 属 Vital Stone。",
+        1: "P1、P3 是电源芯片型号，不是产品型号。",
+        3: "这三个是核（core）的型号，比芯片更小一级。"
+      },
+      src: "docs-chip · key_stone/index.md、power_stone/index.md、vital_stone/index.md · 全文 / docs-product · v100_series/index.md · 全文",
+      rv: "芯片型号：K1、K3、V100、P1、P3。产品型号：K3 Pico-ITX、C2201、G5201。核型号：X60、X100、A60、A100。三级要分清。"
+    },
+    {
+      q: "下面哪个 K3 产品，需要客户自己设计载板？",
+      sai: 5,
+      opts: [
+        "K3 Pico-ITX，因为它是单板计算机",
+        "K3 CoM260 Kit，因为它卖的是核心模组",
+        "K3 Shelf N48，因为它是机架服务器",
+        "K3 RV2768，因为它装 48 个节点"
+      ],
+      a: 1,
+      e: "判断依据是「谁负责设计板子」。CoM260 卖的是核心模组，芯片、内存、存储已封在小板上，客户拿回去插到自己的载板上。另外三种都是 SpacemiT 做好的成品。",
+      wrong: {
+        0: "Pico-ITX 是整块单板，不需要客户设计电路板。",
+        2: "Shelf 是成品机架服务器，插到机柜里就能跑。",
+        3: "RV2768 也是成品机架服务器。"
+      },
+      src: "docs-product · k3_series/k3_com260/root_overview.md · 特性",
+      rv: "判断一个 K3 产品是哪一种，按顺序问：①要客户自己设计板子吗？要 → CoM260。②是一块板还是一台机器？板 → Pico-ITX。③拿来编译还是推理？编译 → Shelf；推理 → RV2768。"
+    },
+    {
+      q: "K3 Shelf 与 RV2768 都装多个 K3 节点，定位差别在哪？",
+      sai: 6,
+      opts: [
+        "Shelf 是单板计算机，RV2768 是核心模组",
+        "两者只是节点数不同，定位相同",
+        "Shelf 面向编译集群与软件兼容性测试，RV2768 面向大规模 AI 推理",
+        "Shelf 用 K1 芯片，RV2768 用 K3 芯片"
+      ],
+      a: 2,
+      e: "两者都是机架服务器、都装多个 K3，区别只在负载：Shelf 面向编译集群与软件兼容性测试，RV2768 面向大规模 AI 推理。",
+      wrong: {
+        0: "两者都是机架服务器，都不是单板也不是模组。",
+        1: "节点数只是表象，两者面向的负载完全不同。",
+        3: "两者都用 K3 芯片。"
+      },
+      src: "docs-product · k3_series/k3_shelf/root_overview.md · 简介、特性 / docs-product · k3_series/k3_rv2768/root_overview.md · 简介",
+      rv: "Shelf 和 RV2768 的差别只在负载：Shelf 面向编译集群与软件兼容性测试，卖点是原生编译比 x86 平台 QEMU 快 10 倍以上；RV2768 面向大规模 AI 推理。一句话：编译找 Shelf，推理找 RV2768。"
+    },
+    {
+      q: "团队要搭一套 RISC-V 软件编译集群，反复编译内核和开源软件包。该选哪个 K3 产品？",
+      sai: 6,
+      opts: [
+        "K3 Shelf，因为它的定位就是编译集群与软件兼容性测试",
+        "K3 RV2768，因为节点数多、总算力高",
+        "K3 CoM260 Kit，因为可以自己设计载板做定制",
+        "K3 Pico-ITX，因为是单板可以堆叠"
+      ],
+      a: 0,
+      e: "编译找 Shelf。它的卖点正是原生编译比 x86 上跑 QEMU 快 10 倍以上。RV2768 虽然节点更多，但定位是 AI 推理。",
+      wrong: {
+        1: "节点多不等于合适。RV2768 是给 AI 推理用的，编译场景不看 TOPS。",
+        2: "CoM260 是模组，需要客户自己做载板和整机，不适合直接拿来用。",
+        3: "Pico-ITX 是单板计算机，不是机架服务器。"
+      },
+      src: "docs-product · k3_series/k3_shelf/root_overview.md · 特性",
+      rv: "Shelf 面向编译集群与软件兼容性测试，卖点是原生编译比 x86 平台 QEMU 快 10 倍以上。RV2768 面向大规模 AI 推理。编译找 Shelf，推理找 RV2768。"
+    },
+    {
+      q: "CoM260 的功耗标注为 18W ~ 35W。做电源与散热设计时应如何取用？",
+      sai: 11,
+      opts: [
+        "按 18W 设计，再留出余量即可",
+        "按 35W 设计，再在这个基础上留余量",
+        "取中间值 26.5W 设计",
+        "功耗是区间，无法用于设计"
+      ],
+      a: 1,
+      e: "18W 是最轻负载，35W 是最重负载。设计要按最不利情况，即以上限 35W 为设计点，再留余量。",
+      wrong: {
+        0: "按 18W 设计、再留 20% 也才 21.6W，离 35W 差得远，满载时会供电塌陷或散热不足。",
+        2: "取平均值没有依据，满载时会超出。",
+        3: "区间仍然可用，只是要按上限取值。"
+      },
+      src: "docs-product · k3_series/k3_com260/root_overview.md · 产品规格",
+      rv: "18W 是最轻负载，35W 是最重负载。按 18W 设计、再留 20% 也才 21.6W，离 35W 差得远。正确做法是以 35W 为设计点，再往上留余量。「留余量」是往上留，不是往下取。"
+    },
+    {
+      q: "K1 与 K3 的核构成，哪组对应正确？",
+      sai: 4,
+      opts: [
+        "K1：8 个 X60；K3：8 个 X100 加 8 个 A100",
+        "K1：4 个 X60 加 4 个 A60；K3：8 个 X100 加 8 个 A100",
+        "K1：4 个 X60 加 4 个 A60；K3：8 个 X100 加 8 个 A60",
+        "K1：8 个 A60；K3：8 个 A100 加 8 个 X60"
+      ],
+      a: 1,
+      e: "K1 是 4 个 X60 通用核加 4 个 A60 智算核，共 8 核；K3 是 8 个 X100 加 8 个 A100，共 16 核。AI 核编号随通用核一同换代：A60 配 X60，A100 配 X100。",
+      wrong: {
+        0: "K1 只有 4 个通用核，另有 4 个 A60 智算核；把 8 个都算 X60 就丢掉了 AI 核。",
+        2: "K3 的 AI 核是 A100，不是 A60。A60 只出现在 K1 上。",
+        3: "K1 的通用核是 X60，不是 A60；两者不是一回事。"
+      },
+      src: "docs-chip · key_stone/k1/k1_docs/k1_ds.md · 2.1 CPU 子系统 / docs-chip · key_stone/k3/k3_docs/k3_ds.md · 2.1.1、2.1.2",
+      rv: "K1 的 8 个核分两簇：簇 0 是 4 个 A60 智算核，簇 1 是 4 个 X60 通用核。K3 是 8 个 X100 加 8 个 A100，共 16 核。核命名规律：X + 数字是通用核，A + 数字是 AI 核，数字与同代配套。"
+    },
+    {
+      q: "关于 K5 这款芯片，下面哪种说法成立？",
+      sai: 9,
+      opts: [
+        "K5 是 K3 的下一代，算力约为 120 TOPS",
+        "K5 的编号说明它是 K 系列的第五代产品",
+        "K5 与 V200 是同一颗芯片的不同命名",
+        "K5 属于后续规划型号，目前没有官方规格，不应描述其参数"
+      ],
+      a: 3,
+      e: "K5、K7、K9 属于后续规划。现有官方资料只覆盖 K1 和 K3，K5 的规格没有发布，不能凭编号推断。",
+      wrong: {
+        0: "没有任何官方资料给出 K5 的算力。这是按 K3 的两倍猜出来的。",
+        1: "编号是一位奇数递增，但 K5 并不等于第五代；中间没有 K2、K4。",
+        2: "K 系列与 V 系列是两条不同的产品线，后者是服务器芯片。"
+      },
+      src: "docs-chip · key_stone/index.md · 全文",
+      rv: "K5、K7、K9 属后续规划，暂无官方规格。官方资料只覆盖 K1 和 K3，不能凭编号推断参数。同理 V200、V300 也不能推断。"
+    }
+  ]},
+
+  { group: "二、认陷阱", note: "下面每题都有一句话是错的，或有一个数字被误读。四项都像真的，请挑出正确的那项。", type: "单选", items: [
+    {
+      q: "K3 芯片有 4 个 CSI 控制器，而 CoM260 载板只引出 2 个摄像头接口。这说明什么？",
+      sai: 8,
+      opts: [
+        "芯片能力是通用集合，产品按目标场景取舍，需要更多可定制载板",
+        "芯片规格写错了，实际只有 2 个控制器",
+        "另外 2 个接口被 USB 占用了",
+        "载板无法支持第 3、4 路摄像头输入"
+      ],
+      a: 0,
+      e: "芯片留 4 个 CSI 覆盖不同客户场景；每多引出一个接口就多占面积、连接器和成本。目标场景用不到 4 路就只引 2 路。",
+      wrong: {
+        1: "芯片手册和产品资料一致，没有矛盾。",
+        2: "CSI 用的是 MIPI D-PHY，与 USB/PCIe 共享的 PHY 是两回事。",
+        3: "载板可以按需设计，定制载板就能引出更多。"
+      },
+      src: "docs-chip · key_stone/k3/k3_docs/k3_ds.md · 2.3.1 / docs-product · k3_series/k3_com260/root_overview.md · 参考载板",
+      rv: "芯片留 4 个 CSI 覆盖不同客户场景；每多引出一个接口就多占面积、连接器和成本。目标场景用不到 4 路就只引 2 路。要更多可以定制载板。"
+    },
+    {
+      q: "K1 系列有 8 个产品，从笔记本到集群服务器都有。这说明什么？",
+      sai: 7,
+      opts: [
+        "同一颗 K1 芯片，按目标客户做成多种形态",
+        "K1 有 8 个芯片型号，一个产品对应一颗",
+        "8 个产品都用 K1 芯片，规格完全相同",
+        "只有笔记本是 K1，其余形态属于 K3"
+      ],
+      a: 0,
+      e: "K1 系列 8 个产品都用 K1 芯片，形态包括 MUSE Book 笔记本、MUSE Pi 单板、MUSE Shelf 集群服务器等。产品资料称 MUSE Book 是「全球首款可量产的 RISC-V 笔记本电脑」。",
+      wrong: {
+        1: "K1 是一个芯片型号，系列下的 8 个是产品。",
+        2: "芯片相同，但板级接口、内存容量、功耗都不一样。",
+        3: "MUSE Book 明确是 K1 产品，产品资料就写在 k1_series 目录下。"
+      },
+      src: "docs-product · k1_series/index.md · 全文 / docs-product · k1_series/k1_muse_book/root_overview.md · 简介",
+      rv: "K1 是一个芯片型号，系列下 8 个是产品：MUSE Book 笔记本、MUSE Pi 单板、MUSE Shelf 集群服务器等。芯片相同，板级接口和功耗不同。"
+    },
+    {
+      q: "RV2768 宣称的「768 核」和「2880 TOPS」，哪项描述正确？",
+      sai: 10,
+      opts: [
+        "768 个通用核；2880 TOPS 是实测的整机吞吐量",
+        "384 个通用核加 384 个 AI 核；2880 TOPS 是 48 个节点峰值的相加",
+        "384 个通用核加 384 个 AI 核；2880 TOPS 是单个节点的算力",
+        "768 个 AI 核；2880 TOPS 是实测的整机吞吐量"
+      ],
+      a: 1,
+      e: "规格表写「最多总计有 384 个 CPU 核心和 384 个通用 AI 核心」，48 节点 × 16 核 = 768。2880 = 48 × 60 TOPS，是理论峰值相加，产品资料没有给实测值。",
+      wrong: {
+        0: "通用核只有 384 个；而且 2880 TOPS 是理论值，不是实测。",
+        2: "2880 是 48 个节点相加，不是单个节点。",
+        3: "AI 核是 384 个，通用核也是 384 个；2880 也非实测。"
+      },
+      src: "docs-product · k3_series/k3_rv2768/root_overview.md · 特性、简介",
+      rv: "768 = 48 节点 × 16 核，其中通用核 384、AI 核 384。2880 TOPS = 48 × 60 TOPS，是理论峰值相加，产品资料没给实测值。"
+    },
+    {
+      q: "产品资料写「LPDDR5 6400MT/s，双通道 2 × 32bit」，芯片手册写「LPDDR5 最高 6400 MT/s，双通道，每通道 32 位」。两处一致说明什么？",
+      sai: 13,
+      opts: [
+        "产品用的是芯片的满规格，可以直接采信",
+        "产品资料抄错了手册",
+        "手册的数字已经过时",
+        "两者只是巧合，没有参考价值"
+      ],
+      a: 0,
+      e: "两处吻合说明产品资料准确引用了芯片规格。若不一致，应以手册为准，并确认产品资料对应的是哪个版本。",
+      wrong: {
+        1: "两处数字完全对应，不存在抄错。",
+        2: "手册带修订记录（K3 当前 V1.10），是规格源头，不会因产品资料而过时。",
+        3: "两处一致恰恰说明派生关系正确，不是巧合。"
+      },
+      src: "docs-chip · key_stone/k3/k3_docs/k3_ds.md · 2.2.2 LPDDR4x/5 / docs-product · k3_series/k3_pico/root_overview.md · 产品规格",
+      rv: "以手册为准，三条理由：①手册是源头，产品资料从它派生；②手册带修订记录（K3 当前 V1.10），产品资料通常只对应某个旧版本；③派生过程会漏条件。"
+    },
+    {
+      q: "K1 标 2 TOPS（@INT8），K3 标 60 TOPS（@INT4 sparse）。为什么不能直接用 60÷2 得出「快 30 倍」？",
+      sai: 12,
+      opts: [
+        "因为 K1 的 2 TOPS 是 CPU 算力，K3 的 60 TOPS 是 AI 算力，两者单位不一样",
+        "因为「一次运算」的定义不同：INT4 每数只用 4 位、INT8 用 8 位，sparse 还会跳过零值",
+        "因为 K1 的数字是实测值，K3 的数字是理论峰值",
+        "因为 60 这个数字按四舍五入处理过，真实值可能是 59 或 61"
+      ],
+      a: 1,
+      e: "两者单位都是 TOPS，没有区别，K1 的 2 TOPS 也明确是 AI 算力。不能相除是因为「一次运算」在不同精度下含义不同：INT4 一个数 4 位、INT8 一个数 8 位，同样的硬件规模在 INT4 下能塞进两倍的数；sparse 又额外跳过权重里的零值。",
+      wrong: {
+        0: "这是最容易选错的一项。K1 的 2 TOPS 就是 AI 算力，产品资料原话是「CPU融合 2 TOPS@INT8 AI 算力」——AI 做在 CPU 簇里，但算的还是 AI。两者单位都是 TOPS。",
+        2: "资料里没有这种区分。两者都是厂商标称的峰值，差别不在实测/理论，在位宽和稀疏。",
+        3: "规格表没有这种取整说明。这不是原因。"
+      },
+      src: "docs-product · k1_series/k1_muse_pi/root_overview.md · 简介 / docs-chip · key_stone/k3/k3_docs/k3_ds.md · 2.1.2",
+      rv: "先破一个直觉：两者单位都是 TOPS，一模一样。K1 的 2 TOPS 也是 AI 算力——产品资料原话是「CPU融合 2 TOPS@INT8 AI 算力」。不能相除的原因不在单位，在「一次运算」的定义不同：INT4 每个数只用 4 位，INT8 用 8 位；sparse 还会跳过零值。就像比搬砖——甲搬 20000 块每块 8 斤、乙搬 60000 块每块 4 斤，不能说乙是甲的 3 倍。"
+    }
+  ]},
+
+  { group: "三、自评", note: "按知识点逐条选择，覆盖三课共 14 个要点。这些只作记录，帮你知道下次该回看哪一节，不参与判分。", type: "自评", items: [
+    { k: "K、P、V 三个系列各是什么芯片" },
+    { k: "K 系列与 V 系列的编号规律" },
+    { k: "三个系列 AI 能力的来源" },
+    { k: "芯片型号与产品型号的区别" },
+    { k: "K1 是 4×X60 加 4×A60，K3 是 8×X100 加 8×A100" },
+    { k: "K3 的四种形态各给谁用" },
+    { k: "Shelf 与 RV2768 的定位差别" },
+    { k: "K1 的 8 个产品形态" },
+    { k: "芯片能力与产品引出接口的取舍" },
+    { k: "规划型号（K5/K7/K9、V200/V300）不得描述参数" },
+    { k: "RV2768 的 768 核与 2880 TOPS 怎么算" },
+    { k: "功耗区间为什么按上限设计" },
+    { k: "为什么 2 TOPS 与 60 TOPS 不能直接比" },
+    { k: "规格表与手册不一致怎么办" }
+  ]}
+];
+
+const LETTERS = ["A", "B", "C", "D"];
+const SA_GROUP = DATA.find(g => g.type === "自评");
+const SA_ITEMS = SA_GROUP ? SA_GROUP.items : [];
+const state = { total: 0, answered: 0, correct: 0, groups: [] };
+const FLAT = [];
+
+DATA.forEach((g, gi) => {
+  if (g.type === "自评") return;
+  state.groups.push({ name: g.group.replace(/^[一二三]、/, ""), total: g.items.length, correct: 0 });
+  g.items.forEach(it => FLAT.push({ ...it, gi: state.groups.length - 1 }));
+});
+state.total = FLAT.length;
+
+const quizEl = document.getElementById("quiz");
+
+function esc(s) {
+  return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+}
+
+function build() {
+  let html = "";
+  let n = 0;
+  DATA.forEach((g) => {
+    html += `<h2 class="group">${g.group}</h2>`;
+    html += `<p class="group-note">${g.note}</p>`;
+
+    if (g.type === "自评") {
+      html += `<div class="sa">`;
+      g.items.forEach((it, si) => {
+        html += `<div class="sa-row">
+          <div class="sa-label">${it.k}</div>
+          <div class="sa-opts" data-sa="${si}">
+            <button class="sa-btn" data-v="ok" aria-pressed="false">懂了</button>
+            <button class="sa-btn" data-v="q" aria-pressed="false">有疑问</button>
+            <button class="sa-btn" data-v="no" aria-pressed="false">没懂</button>
+          </div>
+        </div>`;
+      });
+      html += `</div>`;
+      return;
+    }
+
+    g.items.forEach(it => {
+      html += `<div class="q" id="q${n}">
+        <div class="q-head">
+          <div class="q-num">${n + 1}</div>
+          <div class="q-text">${it.q}<span class="q-type">${g.type}</span></div>
+        </div>
+        <div class="opts" role="group">`;
+      it.opts.forEach((o, oi) => {
+        html += `<div class="opt" tabindex="0" role="button" data-q="${n}" data-o="${oi}">
+          <div class="key">${LETTERS[oi]}</div>
+          <div class="label">${esc(o)}</div>
+        </div>`;
+      });
+      html += `</div>
+        <div class="feedback" id="f${n}">
+          <div class="fb-verdict" id="fv${n}"></div>
+          <div class="fb-body">
+            <b>解析：</b>${esc(it.e)}
+            <ul id="fu${n}"></ul>
+            <div class="fb-src">来源：${esc(it.src)}</div>
+            <div id="snip${n}"></div>
+          </div>
+        </div>
+      </div>`;
+      n++;
+    });
+  });
+  quizEl.innerHTML = html;
+}
+
+function choose(qi, oi) {
+  const card = document.getElementById("q" + qi);
+  if (card.classList.contains("answered-correct") || card.classList.contains("answered-wrong")) return;
+
+  const it = FLAT[qi];
+  const correct = oi === it.a;
+  const opts = card.querySelectorAll(".opt");
+
+  opts.forEach((el, idx) => {
+    el.classList.add("locked");
+    el.setAttribute("tabindex", "-1");
+    if (idx === it.a) el.classList.add("is-correct");
+    else if (idx === oi) el.classList.add("is-wrong");
+    else el.classList.add("dimmed");
+  });
+
+  card.classList.add(correct ? "answered-correct" : "answered-wrong");
+
+  const fv = document.getElementById("fv" + qi);
+  fv.textContent = correct ? "✓ 回答正确" : "✗ 回答错误，正确答案是 " + LETTERS[it.a];
+  fv.className = "fb-verdict " + (correct ? "ok" : "bad");
+
+  const ul = document.getElementById("fu" + qi);
+  let li = "";
+  if (it.wrong) {
+    Object.keys(it.wrong).forEach(k => {
+      li += `<li><b>${LETTERS[k]}</b>：${esc(it.wrong[k])}</li>`;
+    });
+  }
+  ul.innerHTML = li;
+  const snipEl = document.getElementById("snip" + qi);
+  if (snipEl) snipEl.innerHTML = it.rv ? '<div class="rv-snippet">' + esc(it.rv) + '</div>' : "";
+
+  document.getElementById("f" + qi).classList.add("show");
+
+  state.answered++;
+  if (correct) { state.correct++; state.groups[it.gi].correct++; }
+  refresh();
+}
+
+function refresh() {
+  document.getElementById("s-answered").textContent = state.answered;
+  document.getElementById("s-correct").textContent = state.correct;
+  document.getElementById("s-rate").textContent =
+    state.answered ? Math.round(state.correct / state.answered * 100) + "%" : "—";
+  document.getElementById("prog").style.width =
+    (state.answered / state.total * 100) + "%";
+  if (state.answered === state.total) showResult();
+}
+
+function selfEval() {
+  const rows = document.querySelectorAll("[data-sa]");
+  const need = [];
+  rows.forEach((row, i) => {
+    const on = row.querySelector('.sa-btn[aria-pressed="true"]');
+    if (on && on.dataset.v !== "ok") {
+      need.push({ i, k: SA_ITEMS[i].k, v: on.dataset.v });
+    }
+  });
+  return need;
+}
+
+const HIST_KEY = "spacemit.m1.history";
+
+function loadHist() {
+  try { return JSON.parse(localStorage.getItem(HIST_KEY)) || { attempts: 0, wrongCount: {}, lastWrong: [] }; }
+  catch (e) { return { attempts: 0, wrongCount: {}, lastWrong: [] }; }
+}
+function saveHist(h) {
+  try { localStorage.setItem(HIST_KEY, JSON.stringify(h)); } catch (e) {}
+}
+
+function buildRevisit() {
+  const box = document.getElementById("r-revisit");
+  const hist = loadHist();
+  const saRows = document.querySelectorAll("[data-sa]");
+
+  const wrong = [];
+  document.querySelectorAll(".q").forEach((c, i) => {
+    if (c.classList.contains("answered-wrong")) wrong.push(i);
+  });
+
+  const items = [];
+
+  wrong.forEach(i => {
+    const row = saRows[FLAT[i].sai];
+    const btn = row ? row.querySelector('.sa-btn[aria-pressed="true"]') : null;
+    const markedOk = btn && btn.dataset.v === "ok";
+    const times = hist.wrongCount[i] || 1;
+    items.push({ pri: markedOk ? 1 : 2, i, times, markedOk });
+  });
+
+  saRows.forEach((row, si) => {
+    const btn = row.querySelector('.sa-btn[aria-pressed="true"]');
+    if (!btn || btn.dataset.v === "ok") return;
+    if (items.some(it => FLAT[it.i].sai === si)) return;
+    items.push({ pri: 3, si, v: btn.dataset.v, label: SA_ITEMS[si].k });
+  });
+
+  if (!items.length) {
+    box.innerHTML = wrong.length === 0
+      ? `<h3>不需要回看</h3><div class="rv-item p3"><div class="rv-head"><span class="rv-title">全部答对，自评也没有标出疑问。</span></div><div class="rv-snippet">过几天再重做一次，确认不是靠短期记忆答对的。</div></div>`
+      : "";
+    return items;
+  }
+
+  items.sort((a, b) => a.pri - b.pri || (b.times || 0) - (a.times || 0));
+
+  let html = `<h3>需回看（按优先级）</h3>`;
+  items.forEach(it => {
+    if (it.pri === 3) {
+      const badge = it.v === "no" ? "bad" : "warn";
+      const badgeTxt = it.v === "no" ? "没懂" : "有疑问";
+      html += `<div class="rv-item p3">
+        <div class="rv-head">
+          <span class="rv-badge ${badge}">${badgeTxt}</span>
+          <span class="rv-title">${esc(it.label)}</span>
+        </div>
+      </div>`;
+      return;
+    }
+    const q = FLAT[it.i];
+    const cls = it.pri === 1 ? "p1" : "p2";
+    const badge = it.pri === 1 ? "bad" : "warn";
+    const badgeTxt = it.pri === 1 ? "答错且标了懂了" : "答错";
+    html += `<div class="rv-item ${cls}">
+      <div class="rv-head">
+        <span class="rv-badge ${badge}">${badgeTxt}</span>
+        <span class="rv-title">Q${it.i + 1} ${esc(q.q)}</span>
+        <span class="rv-count">错第 ${it.times} 次</span>
+      </div>`;
+    if (it.times >= 2) {
+      html += `<div class="rv-rewrite">⚠ 同一题已错 ${it.times} 次 —— 更可能是这一节的讲解需要换个说法，而不是再读一遍</div>`;
+    }
+    if (q.rv) html += `<div class="rv-snippet">${esc(q.rv)}</div>`;
+    html += `</div>`;
+  });
+
+  box.innerHTML = html;
+  return items;
+}
+
+function commitHistory() {
+  const hist = loadHist();
+  hist.attempts = (hist.attempts || 0) + 1;
+  const wrongNow = [];
+  document.querySelectorAll(".q").forEach((c, i) => {
+    if (c.classList.contains("answered-wrong")) {
+      hist.wrongCount[i] = (hist.wrongCount[i] || 0) + 1;
+      wrongNow.push(i);
+    }
+  });
+  hist.lastWrong = wrongNow;
+  hist.lastAt = new Date().toISOString().slice(0, 16).replace("T", " ");
+  saveHist(hist);
+  return hist;
+}
+
+function buildDiag(items) {
+  const hist = loadHist();
+  const wrong = [];
+  document.querySelectorAll(".q").forEach((c, i) => {
+    if (c.classList.contains("answered-wrong")) wrong.push(i);
+  });
+  const need = [];
+  document.querySelectorAll("[data-sa]").forEach((row, si) => {
+    const b = row.querySelector('.sa-btn[aria-pressed="true"]');
+    if (b && b.dataset.v !== "ok") need.push(SA_ITEMS[si].k + (b.dataset.v === "no" ? "（没懂）" : "（有疑问）"));
+  });
+
+  const lines = [];
+  lines.push(`M1 测验 第 ${hist.attempts} 次 | ${state.correct}/${state.total}`);
+  if (wrong.length) {
+    lines.push("错：" + wrong.map(i => `Q${i + 1} ${FLAT[i].q}（错第 ${hist.wrongCount[i]} 次）`).join("、"));
+  } else {
+    lines.push("错：无");
+  }
+  if (need.length) lines.push("自评疑问：" + need.join("、"));
+  const contradiction = wrong.filter(i => {
+    const row = document.querySelectorAll("[data-sa]")[FLAT[i].sai];
+    const b = row ? row.querySelector('.sa-btn[aria-pressed="true"]') : null;
+    return b && b.dataset.v === "ok";
+  });
+  if (contradiction.length) lines.push("矛盾（标懂了但答错）：" + contradiction.map(i => "Q" + (i + 1)).join("、"));
+  const rewrite = wrong.filter(i => hist.wrongCount[i] >= 2);
+  if (rewrite.length) lines.push("建议重写讲解：" + rewrite.map(i => "Q" + (i + 1)).join("、"));
+  return lines.join("\n");
+}
+
+function updateHint() {
+  const hint = document.getElementById("r-hint");
+  const rated = document.querySelectorAll('.sa-btn[aria-pressed="true"]').length;
+  const wrong = [];
+  document.querySelectorAll(".q").forEach((c, i) => {
+    if (c.classList.contains("answered-wrong")) wrong.push(i);
+  });
+  const saRows = document.querySelectorAll("[data-sa]");
+  const contradiction = wrong.filter(i => {
+    const row = saRows[FLAT[i].sai];
+    const b = row ? row.querySelector('.sa-btn[aria-pressed="true"]') : null;
+    return b && b.dataset.v === "ok";
+  });
+
+  let html = "";
+  if (!rated) {
+    html = `<b>还没有做自评。</b>在第三段按知识点点选，这里会把疑问和错题一起排序。`;
+  } else if (contradiction.length) {
+    html = `<b style="color:var(--bad)">⚠ ${contradiction.length} 道题答错、但自评标了「懂了」：</b><br>` +
+      contradiction.map(i => "· Q" + (i + 1)).join("<br>") +
+      `<br><span style="font-size:13px">读的时候以为懂了，做题才发现有偏差。这类优先回看。</span>`;
+  } else if (wrong.length) {
+    html = `<b>答错 ${wrong.length} 题。</b>按上面清单回看对应小节即可。`;
+  } else {
+    html = `<b>全对。</b>自评里的疑问也已列在上面。`;
+  }
+  hint.innerHTML = html;
+}
+function showResult() {
+  const pct = Math.round(state.correct / state.total * 100);
+  document.getElementById("r-score").textContent = state.correct;
+
+  let tier;
+  if (pct === 100) tier = "全对。基础概念没有混淆。";
+  else if (pct >= 87) tier = "基本清楚，看一处错题即可。";
+  else if (pct >= 60) tier = "有几处要回看，重点看错题对应的那一课。";
+  else tier = "建议重读三篇课，再回来做一遍。";
+  document.getElementById("r-tier").textContent = `${pct}% — ${tier}`;
+
+  document.getElementById("r-brk").innerHTML = state.groups
+    .map(g => {
+      const p = Math.round(g.correct / g.total * 100);
+      return `<div class="brk-item">
+        <div class="n">${g.name}</div>
+        <div class="v">${g.correct}/${g.total} <span style="font-size:12px;font-weight:400;color:var(--text-dim)">${p}%</span></div>
+      </div>`;
+    }).join("");
+
+  commitHistory();
+  buildRevisit();
+  updateHint();
+
+  const r = document.getElementById("result");
+  r.classList.add("show");
+  r.scrollIntoView({ behavior: "smooth", block: "nearest" });
+}
+
+function reset() {
+  state.answered = 0;
+  state.correct = 0;
+  state.groups.forEach(g => g.correct = 0);
+  document.getElementById("result").classList.remove("show");
+  document.getElementById("r-revisit").innerHTML = "";
+  document.getElementById("r-hint").innerHTML = "";
+  document.getElementById("copy-note").classList.remove("show");
+  build();
+  bind();
+  refresh();
+  document.getElementById("prog").style.width = "0%";
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function bind() {
+  quizEl.querySelectorAll(".opt").forEach(el => {
+    const act = () => choose(+el.dataset.q, +el.dataset.o);
+    el.addEventListener("click", act);
+    el.addEventListener("keydown", ev => {
+      if (ev.key === "Enter" || ev.key === " ") { ev.preventDefault(); act(); }
+    });
+  });
+
+  quizEl.querySelectorAll(".sa-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const group = btn.parentElement;
+      group.querySelectorAll(".sa-btn").forEach(b => b.setAttribute("aria-pressed", "false"));
+      btn.setAttribute("aria-pressed", "true");
+      if (state.answered === state.total) { buildRevisit(); updateHint(); }
+    });
+  });
+}
+
+build();
+bind();
+document.getElementById("btn-reset").addEventListener("click", reset);
+
+document.getElementById("btn-copy").addEventListener("click", async () => {
+  const text = buildDiag();
+  const note = document.getElementById("copy-note");
+  try {
+    await navigator.clipboard.writeText(text);
+  } catch (e) {
+    const ta = document.createElement("textarea");
+    ta.value = text;
+    ta.style.position = "fixed";
+    ta.style.opacity = "0";
+    document.body.appendChild(ta);
+    ta.select();
+    try { document.execCommand("copy"); } catch (err) {}
+    document.body.removeChild(ta);
+  }
+  note.classList.add("show");
+  setTimeout(() => note.classList.remove("show"), 2600);
+});
+</script>
+</body>
+</html>
