@@ -36,7 +36,8 @@ updated: 2026-11-17
 | 模块 | 现有材料 | 状态 |
 |---|---|---|
 | M1 产品线全景 | [课一：产品系列与命名规律](./m1-01-series-naming.md) · [课二：同一颗芯片的多种形态](./m1-02-form-factors.md) · [课三：读懂规格表里的数字](./m1-03-reading-specs.md) · [测验](./quiz/m1-recap.html) | ✅ 已完成，按 STYLE.md 编写并实测过交互 |
-| M2 起 | 无 | 待编写 |
+| M2 芯片架构基础 | [课一：一颗芯片里有什么](./m2-01-chip-subsystems.md) · [课二：CPU 子系统与内存子系统](./m2-02-cpu-and-memory.md) · [课三：外设子系统概览](./m2-03-peripherals-overview.md) · [测验](./quiz/m2-recap.html) | 🔄 课程已完成，测验模板已初始化（占位符已替换），待填充 DATA 数组（15 题 + 14 自评） |
+| M3 起 | 无 | 待编写 |
 
 2026-11-18 已删除早期按「一天一份库」写的 `day1-*` ~ `day4-*` 共 13 篇课程和 4 份测验，未经备份，无法恢复。**需要那些内容时按 STYLE.md 重写，不要试图找回旧文件。**
 
@@ -48,6 +49,34 @@ updated: 2026-11-17
 |---|---|---|---|
 | Q7 功耗 18W~35W 怎么取用 | 按 18W 设计，留出余量即可 | 按 35W 设计，需按上限留足能力 | 把「余量」的方向搞反了 |
 | Q13 2 TOPS 与 60 TOPS 能否直接比 | K1 是 CPU 算力、K3 是 AI 算力，单位不同 | 精度与计算模式不同，不能直接相除 | 误判成「单位不同」，实际单位都是 TOPS |
+
+## M2 芯片架构基础（2026-11-19，进行中）
+
+**已完成**：
+- ✅ 三篇课程（commit `960e010`）：
+  - [m2-01-chip-subsystems.md](./m2-01-chip-subsystems.md)：11 个子系统概览（CPU、内存、图像、视频、显示、音频、互联、安全、外设、时钟、启动）
+  - [m2-02-cpu-and-memory.md](./m2-02-cpu-and-memory.md)：X100（RVA23、缓存层次、RVV/RVH）、A100（IME 指令集）、内存三层（512KB SRAM、32GB LPDDR5、2TB eMMC）、带宽计算
+  - [m2-03-peripherals-overview.md](./m2-03-peripherals-overview.md)：图像子系统（4 CSI、ISP）、视频子系统（VPU 1GHz、4K@90fps 编码）、显示子系统（2 DPU、4-16 层合成）
+- ✅ 测验模板初始化（commit `ca8bf87`）：`m2-recap.html` 已从 `_template.html` 复制，占位符已全部替换（M2、芯片架构基础、m2、10/5/14/15）
+
+**待完成**：
+- [ ] 填充 DATA 数组（第 376-425 行）：
+  - 10 道基础与应用题（SoC 定义、子系统识别、芯片 vs 产品规格、X100 缓存、A100 分工、内存层次、MT/s vs MHz、图像/视频/显示分工、ISP 作用、VPU 能力）
+  - 5 道认陷阱题（L2 缓存共享、LPDDR5 快≠AI 快、4 CSI 不等于必须引出 4 个、VPU 频率高≠编码快、带宽高≠所有任务快）
+  - 14 个自评项（每项带 `act` 验证动作）
+  - 所有题目带 `why` 字段（误选动机提示）
+- [ ] 替换 `__LESSON_LINKS__` 占位符（第 343 行）为三篇课程的实际链接
+- [ ] 验证 JS 语法、交互流程、浏览器实测
+- [ ] 更新 [README.md](./README.md) 的模块列表
+
+**素材来源**：
+- 主要：`C:\Users\luojunlin\docs-chip\zh\key_stone\k3\k3_docs\k3_ds.md` 第 2 章（规格参数）
+- 辅助：`C:\Users\luojunlin\docs-product\zh\k3_series\k3_com260\root_overview.md`（产品规格对比）
+
+**设计原则**：
+- 遵循 [STYLE.md](./STYLE.md) 所有规范（≤40 字/句、≤4 句/段、术语对照、引用来源、4 节结构）
+- 测验应用 M1 的两项改进（误选动机 `why`、验证动作 `act`）
+- 认陷阱题针对真实的常见误解（不是随手编的干扰项）
 
 自评标「有疑问」3 条但都答对了：K3 四种形态各给谁用、Shelf 与 RV2768 定位差别、规格表与手册不一致怎么办。属「靠排除法答对」。
 
