@@ -1,0 +1,1086 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SpacemiT M2 测验 · 芯片架构基础</title>
+<style>
+  :root {
+    --bg: #0f1115;
+    --panel: #171a21;
+    --panel-2: #1e222b;
+    --border: #2c3240;
+    --text: #e4e7ee;
+    --text-dim: #9aa3b4;
+    --accent: #4d9dff;
+    --ok: #2ecc8f;
+    --ok-bg: rgba(46, 204, 143, 0.12);
+    --bad: #ff5f6d;
+    --bad-bg: rgba(255, 95, 109, 0.12);
+    --warn: #e8b339;
+    --warn-bg: rgba(232, 179, 57, 0.1);
+    --src: #8b93a7;
+  }
+  @media (prefers-color-scheme: light) {
+    :root {
+      --bg: #f5f6f9;
+      --panel: #ffffff;
+      --panel-2: #f0f2f6;
+      --border: #dce0e8;
+      --text: #1c2029;
+      --text-dim: #666f80;
+      --accent: #1f6feb;
+      --ok: #1a8f5f;
+      --ok-bg: rgba(26, 143, 95, 0.09);
+      --bad: #d92d3c;
+      --bad-bg: rgba(217, 45, 60, 0.08);
+      --warn: #a97c10;
+      --warn-bg: rgba(169, 124, 16, 0.09);
+      --src: #7a8296;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; padding: 32px 20px 80px;
+    background: var(--bg); color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft YaHei", sans-serif;
+    line-height: 1.7; font-size: 15px;
+  }
+  .wrap { max-width: 860px; margin: 0 auto; }
+
+  header { margin-bottom: 26px; }
+  h1 { font-size: 23px; margin: 0 0 8px; letter-spacing: -0.01em; }
+  .sub { color: var(--text-dim); font-size: 13.5px; margin: 0; }
+
+  .bar {
+    position: sticky; top: 0; z-index: 20;
+    display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
+    padding: 11px 16px; margin: 0 -16px 22px;
+    background: color-mix(in srgb, var(--bg) 90%, transparent);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border);
+  }
+  .bar .stat { font-size: 13px; color: var(--text-dim); }
+  .bar .stat b { color: var(--text); font-variant-numeric: tabular-nums; }
+  .bar .spacer { flex: 1; }
+  .btn {
+    font: inherit; font-size: 13px; cursor: pointer;
+    padding: 6px 14px; border-radius: 7px;
+    border: 1px solid var(--border);
+    background: var(--panel-2); color: var(--text);
+    transition: border-color .15s;
+  }
+  .btn:hover { border-color: var(--accent); }
+  .btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  .progress-track {
+    height: 3px; background: var(--border); border-radius: 2px;
+    width: 100%; overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%; width: 0%;
+    background: var(--accent); transition: width .25s ease;
+  }
+
+  h2.group {
+    font-size: 12.5px; letter-spacing: .09em;
+    color: var(--text-dim); font-weight: 600;
+    margin: 34px 0 6px; padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+  .group-note {
+    font-size: 13px; color: var(--text-dim);
+    margin: 0 0 16px; padding-left: 2px;
+  }
+
+  .q {
+    background: var(--panel); border: 1px solid var(--border);
+    border-radius: 11px; padding: 18px 20px; margin-bottom: 13px;
+    transition: border-color .2s;
+  }
+  .q.answered-correct { border-color: color-mix(in srgb, var(--ok) 50%, var(--border)); }
+  .q.answered-wrong { border-color: color-mix(in srgb, var(--bad) 50%, var(--border)); }
+
+  .q-head { display: flex; gap: 10px; margin-bottom: 15px; }
+  .q-num {
+    flex: 0 0 auto; width: 26px; height: 26px; border-radius: 7px;
+    background: var(--panel-2); border: 1px solid var(--border);
+    display: grid; place-items: center;
+    font-size: 12.5px; font-weight: 600; color: var(--text-dim);
+    font-variant-numeric: tabular-nums;
+  }
+  .q.answered-correct .q-num { background: var(--ok-bg); color: var(--ok); border-color: transparent; }
+  .q.answered-wrong .q-num { background: var(--bad-bg); color: var(--bad); border-color: transparent; }
+  .q-text { font-size: 15px; font-weight: 500; padding-top: 1px; }
+  .q-type {
+    font-size: 11px; font-weight: 600; padding: 1px 7px;
+    border-radius: 20px; margin-left: 8px; vertical-align: 1px;
+    background: var(--panel-2); color: var(--text-dim);
+    border: 1px solid var(--border);
+  }
+
+  .opts { display: flex; flex-direction: column; gap: 7px; }
+  .opt {
+    display: flex; flex-direction: column; gap: 0;
+    padding: 11px 13px; border-radius: 8px;
+    border: 1px solid var(--border); background: var(--panel-2);
+    cursor: pointer; user-select: none;
+    transition: border-color .12s, background .12s;
+  }
+  .opt:hover:not(.locked) { border-color: var(--accent); }
+  .opt:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .opt.locked { cursor: default; }
+  .opt-main {
+    display: flex; align-items: flex-start; gap: 11px;
+  }
+  .opt .key {
+    flex: 0 0 auto; width: 21px; height: 21px; border-radius: 5px;
+    display: grid; place-items: center;
+    font-size: 11.5px; font-weight: 700;
+    background: var(--bg); color: var(--text-dim);
+    border: 1px solid var(--border); margin-top: 2px;
+  }
+  .opt .label { flex: 1; font-size: 14px; }
+  .opt-why {
+    margin-top: 8px; padding: 8px 11px; margin-left: 32px;
+    background: var(--panel); border-left: 2px solid var(--accent);
+    font-size: 12.5px; font-style: italic;
+    color: var(--text-dim); border-radius: 0 4px 4px 0;
+  }
+
+  .opt.is-correct { border-color: var(--ok); background: var(--ok-bg); }
+  .opt.is-correct .key { background: var(--ok); color: #fff; border-color: var(--ok); }
+  .opt.is-wrong { border-color: var(--bad); background: var(--bad-bg); }
+  .opt.is-wrong .key { background: var(--bad); color: #fff; border-color: var(--bad); }
+  .opt.dimmed { opacity: .5; }
+
+  .feedback {
+    margin-top: 14px; display: none;
+    border-left: 3px solid var(--accent);
+    padding-left: 0;
+  }
+  .feedback.show { display: block; }
+  .fb-verdict {
+    font-size: 13px; font-weight: 600;
+    padding: 4px 0 8px;
+  }
+  .fb-verdict.ok { color: var(--ok); }
+  .fb-verdict.bad { color: var(--bad); }
+  .fb-body {
+    background: var(--panel-2); border-radius: 0 8px 8px 0;
+    padding: 12px 15px; font-size: 13.5px; color: var(--text-dim);
+  }
+  .fb-body b { color: var(--text); font-weight: 600; }
+  .fb-body ul { margin: 6px 0 0; padding-left: 19px; }
+  .fb-body li { margin-bottom: 4px; }
+  .fb-src {
+    margin-top: 10px; padding-top: 9px;
+    border-top: 1px dashed var(--border);
+    font-size: 12.5px; color: var(--src);
+    font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+    word-break: break-all;
+  }
+
+  /* self-assessment */
+  .sa {
+    background: var(--panel); border: 1px solid var(--border);
+    border-radius: 11px; padding: 6px 20px 18px; margin-bottom: 13px;
+  }
+  .sa-row {
+    display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+    padding: 13px 0; border-bottom: 1px solid var(--border);
+  }
+  .sa-row:last-child { border-bottom: none; }
+  .sa-label { flex: 1 1 260px; font-size: 14px; }
+  .sa-opts { display: flex; gap: 6px; }
+  .sa-btn {
+    font: inherit; font-size: 12.5px; cursor: pointer;
+    padding: 4px 12px; border-radius: 20px;
+    border: 1px solid var(--border);
+    background: transparent; color: var(--text-dim);
+    transition: all .15s;
+  }
+  .sa-btn:hover { border-color: var(--text-dim); color: var(--text); }
+  .sa-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .sa-btn[aria-pressed="true"][data-v="ok"] { border-color: var(--ok); background: var(--ok-bg); color: var(--ok); }
+  .sa-btn[aria-pressed="true"][data-v="q"] { border-color: var(--warn); background: var(--warn-bg); color: var(--warn); }
+  .sa-btn[aria-pressed="true"][data-v="no"] { border-color: var(--bad); background: var(--bad-bg); color: var(--bad); }
+
+  .result {
+    display: none; margin-top: 30px; padding: 24px;
+    background: var(--panel); border: 1px solid var(--border);
+    border-radius: 13px;
+  }
+  .result.show { display: block; }
+  .result .big {
+    font-size: 40px; font-weight: 700; letter-spacing: -0.02em;
+    font-variant-numeric: tabular-nums; line-height: 1.15;
+  }
+  .result .big small { font-size: 16px; font-weight: 500; color: var(--text-dim); }
+  .result .tier { font-size: 14.5px; margin-top: 6px; }
+  .result .brk {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 10px; margin-top: 18px;
+  }
+  .brk-item {
+    background: var(--panel-2); border: 1px solid var(--border);
+    border-radius: 9px; padding: 11px 14px;
+  }
+  .brk-item .n { font-size: 12px; color: var(--text-dim); }
+  .brk-item .v { font-size: 17px; font-weight: 600; font-variant-numeric: tabular-nums; margin-top: 2px; }
+  .review-hint {
+    margin-top: 18px; padding: 14px 16px;
+    background: var(--warn-bg); border-left: 3px solid var(--warn);
+    border-radius: 0 8px 8px 0; font-size: 13.5px;
+  }
+  .review-hint b { color: var(--text); }
+
+  .revisit { margin-top: 18px; }
+  .revisit h3 {
+    font-size: 12.5px; text-transform: uppercase; letter-spacing: .08em;
+    color: var(--text-dim); font-weight: 600;
+    margin: 0 0 12px; padding-bottom: 7px;
+    border-bottom: 1px solid var(--border);
+  }
+  .rv-item {
+    background: var(--panel-2); border: 1px solid var(--border);
+    border-radius: 9px; padding: 13px 15px; margin-bottom: 9px;
+    border-left: 3px solid var(--border);
+  }
+  .rv-item.p1 { border-left-color: var(--bad); }
+  .rv-item.p2 { border-left-color: var(--warn); }
+  .rv-item.p3 { border-left-color: var(--accent); }
+  .rv-head {
+    display: flex; align-items: baseline; gap: 9px; flex-wrap: wrap;
+    font-size: 13.5px; margin-bottom: 8px;
+  }
+  .rv-badge {
+    font-size: 11px; font-weight: 600; padding: 1px 8px;
+    border-radius: 20px; white-space: nowrap;
+  }
+  .rv-badge.bad { background: var(--bad-bg); color: var(--bad); }
+  .rv-badge.warn { background: var(--warn-bg); color: var(--warn); }
+  .rv-badge.info { background: var(--accent); color: #fff; background: var(--ok-bg); color: var(--ok); }
+  .rv-title { flex: 1 1 200px; font-weight: 500; }
+  .rv-count { font-size: 12px; color: var(--text-dim); white-space: nowrap; }
+  .rv-rewrite {
+    margin-top: 7px; padding: 6px 10px; font-size: 12.5px;
+    background: var(--bad-bg); color: var(--bad);
+    border-radius: 6px; font-weight: 500;
+  }
+  .rv-snippet {
+    font-size: 13px; color: var(--text); line-height: 1.65;
+    background: var(--panel); padding: 10px 12px;
+    border-radius: 6px; margin-top: 7px;
+  }
+  .rv-act {
+    font-size: 13px; color: var(--text-dim); line-height: 1.65;
+    padding: 9px 12px; margin-top: 7px;
+    background: var(--panel); border-left: 2px solid var(--accent);
+    border-radius: 0 6px 6px 0;
+  }
+  .rv-act::before {
+    content: '✓ ';
+    color: var(--accent);
+    font-weight: 600;
+  }
+  }
+  .rv-snippet::before {
+    content: "回看这段"; display: block;
+    font-size: 11px; font-weight: 600; letter-spacing: .05em;
+    color: var(--text-dim); margin-bottom: 5px;
+  }
+
+  .diag-actions { display: flex; gap: 8px; margin-top: 16px; flex-wrap: wrap; align-items: center; }
+  .diag-actions .btn.primary {
+    border-color: var(--accent); color: var(--accent);
+  }
+  .copy-note { font-size: 12.5px; color: var(--ok); display: none; }
+  .copy-note.show { display: inline; }
+
+  footer {
+    margin-top: 38px; padding-top: 18px;
+    border-top: 1px solid var(--border);
+    font-size: 12.5px; color: var(--text-dim);
+  }
+  footer a { color: var(--accent); text-decoration: none; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <h1>M2 测验 · 芯片架构基础</h1>
+    <p class="sub">基础题 10 · 认陷阱 5 · 自评 14 个知识点 — 全部点选，不用写字</p>
+  </header>
+
+  <div class="bar">
+    <span class="stat">已答 <b id="s-answered">0</b>/15</span>
+    <span class="stat">正确 <b id="s-correct">0</b></span>
+    <span class="stat">正确率 <b id="s-rate">—</b></span>
+    <span class="spacer"></span>
+    <button class="btn" id="btn-reset">重做</button>
+  </div>
+
+  <div class="progress-track"><div class="progress-fill" id="prog"></div></div>
+
+  <div id="quiz"></div>
+
+  <div class="result" id="result">
+    <div class="big"><span id="r-score">0</span><small> / 15</small></div>
+    <div class="tier" id="r-tier"></div>
+    <div class="brk" id="r-brk"></div>
+    <div class="revisit" id="r-revisit"></div>
+    <div class="review-hint" id="r-hint"></div>
+    <div class="diag-actions">
+      <button class="btn primary" id="btn-copy">复制诊断摘要</button>
+      <span class="copy-note" id="copy-note">已复制，可直接粘贴给助教</span>
+    </div>
+  </div>
+
+  <footer>
+    课程：<a href="../m2-01-chip-subsystems.md">一颗芯片里有什么</a> · <a href="../m2-02-cpu-and-memory.md">CPU 子系统与内存子系统</a> · <a href="../m2-03-peripherals-overview.md">外设子系统概览</a><br>
+    规范：<a href="../STYLE.md">STYLE.md</a> · 路线：<a href="../ROADMAP.md">ROADMAP.md</a>
+  </footer>
+
+</div>
+
+<script>
+
+
+/* ==========================================================================
+   测验模板 · 只改这一段
+   ==========================================================================
+   用法：
+     1. 复制本文件为 <模块>-recap.html，例如 m2-recap.html
+     2. 替换下方 M2 / 芯片架构基础 / m2 / 计数占位符
+     3. 填 DATA：每模块 3 段（基础题 / 认陷阱 / 自评），共 12–15 题
+     4. 逐条过 STYLE.md 第二部分检查清单
+     5. 按 STYLE.md「交付前必须实测的场景」跑一遍
+
+   字段说明（每道题）：
+     q      题干。一句话，不绕。
+     sai    这道题对应第几条自评（从 0 开始）。
+            必须真的对得上——不能按题号猜。
+     opts   四个选项。长度接近、结构一致、每项都是真实存在的误解。
+     a      正确选项下标（0–3）。
+     e      解析。为什么对，并说明正确项为什么成立。
+     wrong  逐项解释每个错误选项错在哪。键为下标。
+     src    来源，写到章节号。格式：库 · 路径 · 章节
+     rv     回看原文。从课文抽 2–3 句，正好解决这题。
+            必须是课文里真实存在的句子，不能现场改写。
+
+   自评项（SA）：
+     k      知识点名称。每条必须至少有一道题对应，否则删掉这条。
+   ========================================================================== */
+
+const DATA = [
+  { group: "一、基础与应用", note: "每题只有一项正确。覆盖三课：芯片子系统、CPU 与内存、外设概览，含概念题和应用题。选完立即显示答案、解析和来源。", type: "单选", items: [
+    {
+      q: "SoC（System on Chip）与单纯的 CPU 有什么区别？",
+      sai: 0,
+      opts: [
+        "SoC 只是把多个 CPU 核心集成在一起",
+        "SoC 集成了 CPU、内存控制器、外设等多种功能，是一个完整系统",
+        "SoC 是 CPU 的升级版本，性能更强",
+        "SoC 专门用于移动设备，CPU 用于服务器"
+      ],
+      a: 1,
+      e: "SoC 不是单纯的处理器，而是集成了多种功能的完整系统。K3 包含 11 个子系统：CPU、内存、图像、视频、显示、音频、互联、安全、外设、时钟、启动。",
+      wrong: {
+        0: { t: "SoC 不只是多核 CPU，还包含内存控制器、外设、显示等多个子系统。", why: "看到「System」会以为只是多个 CPU" },
+        2: "SoC 不是性能升级，而是功能集成。一个低端 SoC 性能可能不如高端单核 CPU。",
+        3: "SoC 既用于移动设备也用于服务器。K3 就是服务器级 SoC，V100 也是 SoC。"
+      },
+      src: "docs-chip · key_stone/k3/k3_docs/k3_ds.md · 2. 规格参数",
+      rv: "SoC（System on Chip，系统级芯片）不是一个纯粹的处理器，而是一个集成了多种功能的完整系统。K3 芯片包含 11 个子系统（Subsystem）。💡 深入了解：<a href='../GLOSSARY.md#soc'>SoC vs CPU 的详细解释</a>"
+    },
+    {
+      q: "下面哪个不属于 K3 的 11 个子系统？",
+      sai: 0,
+      opts: [
+        "CPU 子系统",
+        "图像子系统",
+        "电源管理子系统",
+        "安全子系统"
+      ],
+      a: 2,
+      e: "K3 的 11 个子系统是：CPU、内存与存储、图像、视频、显示、音频、互联、安全、系统外设、时钟与复位、启动模式。电源管理芯片（P 系列）是独立的芯片，不是 K3 内部的子系统。",
+      wrong: {
+        0: "CPU 子系统是 K3 的核心，包含 8 个 X100 通用核和 8 个 A100 AI 核。",
+        1: "图像子系统负责摄像头输入和 ISP 处理。",
+        3: "安全子系统负责安全启动、TEE、密钥管理。"
+      },
+      src: "docs-chip · key_stone/k3/k3_docs/k3_ds.md · 2. 规格参数",
+      rv: "K3 芯片包含 11 个子系统（Subsystem）：CPU 子系统、内存与存储、图像子系统、视频子系统、显示子系统、音频子系统、互联子系统、安全子系统、系统外设、时钟与复位、启动模式。"
+    },
+    {
+      q: "K3 芯片支持 4 个 CSI 摄像头接口，但 CoM260 产品只引出 2 个。这说明什么？",
+      sai: 1,
+      opts: [
+        "芯片规格是能力上限，产品按目标场景取舍接口",
+        "芯片手册写错了，实际只有 2 个 CSI",
+        "CoM260 的载板设计有缺陷",
+        "另外 2 个 CSI 被 USB 占用了"
+      ],
+      a: 0,
+      e: "芯片规格记录芯片本身的能力上限，产品规格记录实际引出的接口。芯片留 4 个 CSI 覆盖不同客户场景，每多引出一个接口就多占面积、连接器和成本。目标场景用不到 4 路就只引 2 路。",
+      wrong: {
+        1: { t: "芯片手册和产品资料一致，没有矛盾。K3 确实支持 4 个 CSI。", why: "看到数量不匹配会怀疑规格写错" },
+        2: "这不是缺陷，而是成本与场景的权衡。客户可以定制载板引出更多接口。",
+        3: "CSI 用的是 MIPI D-PHY，与 USB 是独立的物理层。"
+      },
+      src: "docs-chip · key_stone/k3/k3_docs/k3_ds.md · 2.3.1 / docs-product · k3_series/k3_com260/root_overview.md · 产品规格",
+      rv: "芯片规格是芯片本身支持的最大能力。产品规格是某个具体产品实际引出的接口。芯片留 4 个 CSI 覆盖不同客户场景；每多引出一个接口就多占面积、连接器和成本。目标场景用不到 4 路就只引 2 路。"
+    },
+    {
+      q: "X100 核的 L1 缓存与 L2 缓存有什么区别？",
+      sai: 3,
+      opts: [
+        "L1 每核独立 64KB，L2 每簇共享 4MB",
+        "L1 存放指令，L2 存放数据",
+        "L1 是静态内存，L2 是动态内存",
+        "L1 在芯片内部，L2 在芯片外部"
+      ],
+      a: 0,
+      e: "X100 的 L1 缓存每核独立（64KB I-Cache + 64KB D-Cache），L2 缓存每簇共享（4 个核共用 4MB）。缓存层次：L1 最快但最小，L2 更大但稍慢，内存最大但最慢。",
+      wrong: {
+        1: { t: "L1 分为 I-Cache（指令）和 D-Cache（数据），L2 同时缓存指令和数据。", why: "看到 I-Cache 会以为 L1 只存指令" },
+        2: "L1 和 L2 都是 SRAM（静态内存），LPDDR5 才是 DRAM（动态内存）。",
+        3: "L1 和 L2 都在芯片内部。芯片外部是 LPDDR5 主存。"
+      },
+      src: "docs-chip · key_stone/k3/k3_docs/k3_ds.md · 2.1.1 X100 核",
+      rv: "每个 X100 核心配备：L1 指令缓存 64 KB、L1 数据缓存 64 KB（每核独立），L2 缓存 4 MB（每簇共享，4 个核共用）。缓存层次：L1 最快但最小，L2 更大但稍慢，内存最大但最慢。"
+    },
+    {
+      q: "X100 和 A100 的分工是什么？",
+      sai: 2,
+      opts: [
+        "X100 负责 AI 推理，A100 负责通用计算",
+        "X100 运行操作系统和应用，A100 执行神经网络推理",
+        "X100 处理整数运算，A100 处理浮点运算",
+        "X100 和 A100 功能相同，只是主频不同"
+      ],
+      a: 1,
+      e: "X100 是通用核，运行操作系统、调度任务、处理控制逻辑。A100 是 AI 核，集成 IME 指令集扩展，执行神经网络层的密集计算（卷积、矩阵乘法）。X100 把模型加载到内存，A100 从内存读取并计算，结果写回内存。",
+      wrong: {
+        0: { t: "分工正好相反：X100 是通用核，A100 是 AI 核。", why: "看到 X100 数量多会以为它负责 AI" },
+        2: "X100 和 A100 都可以处理整数和浮点。区别在于 A100 有 IME 指令专门加速矩阵运算。",
+        3: "功能不同。A100 的 IME 指令一条指令可以完成 X100 需要几十条指令才能完成的矩阵乘法。"
+      },
+      src: "docs-chip · key_stone/k3/k3_docs/k3_ds.md · 2.1.1 X100 核 / 2.1.2 A100 核",
+      rv: "X100 运行操作系统、调度任务、处理控制逻辑。A100 执行神经网络层的密集计算（卷积、矩阵乘法、激活函数）。X100 把模型加载到内存，A100 从内存读取模型和数据并计算，结果写回内存。💡 深入了解：<a href='../GLOSSARY.md#ime'>IME 指令集扩展</a>"
+    },
+    {
+      q: "K3 的内存分为哪三层？",
+      sai: 4,
+      opts: [
+        "L1 缓存、L2 缓存、L3 缓存",
+        "片上 SRAM、LPDDR5、eMMC",
+        "寄存器、缓存、主存",
+        "DDR4、DDR5、eMMC"
+      ],
+      a: 1,
+      e: "K3 的内存分三层：512 KB 片上 SRAM（最快，启动代码和临时数据）、最高 32 GB LPDDR5（快，操作系统和应用）、最高 2 TB eMMC（慢，持久化存储）。三层的速度与容量成反比。",
+      wrong: {
+        0: { t: "K3 只有 L1 和 L2 缓存，没有 L3。这三层指的是更大范围的内存层次。", why: "看到「三层」会想到三级缓存" },
+        2: "这是通用的内存层次概念，但 K3 具体的三层是 SRAM、LPDDR5、eMMC。",
+        3: "K3 不支持 DDR4，只支持 LPDDR4x 和 LPDDR5。"
+      },
+      src: "docs-chip · key_stone/k3/k3_docs/k3_ds.md · 2.2.1 片上存储 / 2.2.2 LPDDR5 / 2.2.4 eMMC",
+      rv: "K3 的内存分三层：片上 SRAM 512 KB（芯片内部，最快）、LPDDR5 最高 32 GB（外部动态内存，快）、eMMC 最高 2 TB（外部闪存，慢，持久化存储）。"
+    },
+    {
+      q: "K3 的 LPDDR5 双通道、每通道 32 位、6400 MT/s，理论带宽是多少？",
+      sai: 5,
+      opts: [
+        "25.6 GB/s",
+        "51.2 GB/s",
+        "102.4 GB/s",
+        "204.8 GB/s"
+      ],
+      a: 1,
+      e: "计算公式：2 通道 × 32 位 × 6400 MT/s = 2 × 4 字节 × 6400 = 51.2 GB/s。32 位 = 4 字节，MT/s 是每秒百万次传输。",
+      wrong: {
+        0: { t: "这是单通道的带宽。K3 有双通道，要乘以 2。", why: "忘记乘以通道数" },
+        2: "这是把 32 位当成 32 字节了。32 位 = 4 字节。",
+        3: "这是把 4 字节写成 8 字节了。"
+      },
+      src: "docs-chip · key_stone/k3/k3_docs/k3_ds.md · 2.2.2 LPDDR5",
+      rv: "LPDDR5 双通道架构，每通道 32 位数据宽度，最高数据速率 6400 MT/s。理论带宽为：2 通道 × 32 位 × 6400 MT/s = 2 × 4 字节 × 6400 = 51.2 GB/s。"
+    },
+    {
+      q: "为什么 LPDDR5 的速率用 MT/s 而不是 MHz？",
+      sai: 6,
+      opts: [
+        "MT/s 是新标准，MHz 是旧标准",
+        "MT/s 计数数据传输次数，LPDDR5 每个时钟周期传输多次数据",
+        "MT/s 用于内存，MHz 用于 CPU",
+        "MT/s 和 MHz 是一样的，只是写法不同"
+      ],
+      a: 1,
+      e: "MT/s 计数数据传输次数，MHz 计数时钟周期。LPDDR5 每个时钟周期传输多次数据，所以用 MT/s 更准确。如果一个时钟周期传输 2 次，1600 MHz = 3200 MT/s。",
+      wrong: {
+        0: { t: "不是新旧标准的区别，而是计数方式不同。DDR3 时代就开始用 MT/s 了。", why: "看到新技术会以为是新标准" },
+        2: "MT/s 和 MHz 都可以用于内存和 CPU，只是内存多用 MT/s 因为有多倍数据率。",
+        3: "不一样。MT/s 数值通常是 MHz 的 2 倍或更多（DDR 的双倍数据率）。"
+      },
+      src: "docs-chip · key_stone/k3/k3_docs/k3_ds.md · 2.2.2 LPDDR5",
+      rv: "MT/s 计数数据传输次数，MHz 计数时钟周期。LPDDR5 每个时钟周期传输多次数据，所以用 MT/s 更准确。"
+    },
+    {
+      q: "图像子系统、视频子系统、显示子系统各自负责什么？",
+      sai: 7,
+      opts: [
+        "图像负责摄像头输入，视频负责编解码，显示负责屏幕输出",
+        "三个子系统功能相同，只是处理不同分辨率",
+        "图像负责静态图片，视频负责动态视频，显示负责文字",
+        "图像和视频是一个子系统，显示是另一个子系统"
+      ],
+      a: 0,
+      e: "三个子系统分工明确：图像子系统负责摄像头输入和 ISP 处理（RAW → YUV），视频子系统负责编码与解码（YUV ↔ H.264/H.265），显示子系统负责屏幕输出（帧缓冲 → MIPI-DSI/DP）。",
+      wrong: {
+        1: { t: "三个子系统功能不同，不是按分辨率分工。", why: "看到都支持 4K 会以为只是分辨率不同" },
+        2: "不是按内容类型分工。视频子系统也可以编码静态图片序列，显示子系统也可以显示视频。",
+        3: "图像和视频是两个独立的子系统，分别负责不同的处理阶段。"
+      },
+      src: "docs-chip · key_stone/k3/k3_docs/k3_ds.md · 2.3 图像子系统 / 2.4 视频子系统 / 2.5 显示子系统",
+      rv: "K3 的多媒体处理分三个子系统：图像子系统负责摄像头输入、ISP 处理（原始图像 RAW → 处理后的图像 YUV）；视频子系统负责编码与解码（原始视频 YUV → 压缩视频 H.264/H.265）；显示子系统负责屏幕输出（帧缓冲 Framebuffer → MIPI-DSI 或 DP/eDP 信号）。"
+    },
+    {
+      q: "ISP（Image Signal Processor）的作用是什么？",
+      sai: 8,
+      opts: [
+        "把摄像头的 RAW 格式转换成 YUV 格式，并进行去噪、白平衡等处理",
+        "把 YUV 格式编码成 H.264 格式",
+        "把图像数据传输到内存",
+        "控制摄像头的曝光和对焦"
+      ],
+      a: 0,
+      e: "ISP 把摄像头传感器输出的 RAW 格式（每个像素只记录一个颜色分量）转换成 YUV 格式（Y 亮度、U 和 V 色度），并进行去噪、白平衡、曝光补偿、颜色校正等处理。",
+      wrong: {
+        1: { t: "YUV 编码成 H.264 是视频子系统（VPU）的工作，不是 ISP 的工作。", why: "看到格式转换会混淆 ISP 和 VPU" },
+        2: "数据传输是 DMA 控制器的工作，不是 ISP 的核心功能。",
+        3: "曝光和对焦控制通常由摄像头模组或独立的 ISP 芯片完成，K3 的 ISP 主要负责图像处理。"
+      },
+      src: "docs-chip · key_stone/k3/k3_docs/k3_ds.md · 2.3.2 ISP",
+      rv: "ISP（Image Signal Processor，图像信号处理器）把摄像头的原始图像（RAW 格式）转换成可用的图像（YUV 格式）：去噪（Noise Reduction）、白平衡（White Balance）、曝光补偿（Exposure Compensation）、颜色校正（Color Correction）。"
+    }
+  ]},
+
+  { group: "二、认陷阱", note: "下面每题都有一句话是错的,或有一个数字被误读。四项都像真的,请挑出正确的那项。", type: "单选", items: [
+    {
+      q: "关于 VPU（视频处理单元）的编码能力，哪个表述成立？",
+      sai: 10,
+      opts: [
+        "VPU 最高运行频率 1 GHz,所以所有视频编码都很快",
+        "VPU 支持 4K@90fps 编码,因此 1080p 视频一定能达到 180fps 以上",
+        "VPU 的编码速度取决于视频分辨率、码率、复杂度等多个因素",
+        "VPU 频率高于 X100,所以 VPU 也能运行操作系统"
+      ],
+      a: 2,
+      e: "VPU 的实际编码速度不仅取决于频率,还取决于视频分辨率、码率、场景复杂度、编码参数等。4K@90fps 是在特定条件下的峰值能力,不代表所有场景都能达到这个速度。",
+      wrong: {
+        0: { t: "频率高不等于所有场景都快。编码速度还取决于视频复杂度、码率设置等。", why: "看到高频率会以为所有编码都快" },
+        1: { t: "帧率不能简单按分辨率线性换算。降低分辨率不一定带来成比例的帧率提升。", why: "看到 4K@90fps 会以为 1080p 能快 4 倍" },
+        3: "VPU 是专用视频加速器,只能编解码视频,不能运行操作系统。频率高不等于功能通用。"
+      },
+      src: "docs-chip · key_stone/k3/k3_docs/k3_ds.md · 2.4.1 VPU 简介",
+      rv: "VPU 最高运行频率可达 1 GHz,典型并发处理能力包括:4K@60fps 同编同解、4K@90fps H.264/H.265 编码、4K@180fps H.264/H.265 解码。实际编码速度取决于视频分辨率、码率、场景复杂度、编码参数等多个因素。"
+    },
+    {
+      q: "关于 X100 的 L2 缓存，哪个表述成立？",
+      sai: 3,
+      opts: [
+        "每个 X100 核心有 4 MB L2 缓存",
+        "K3 有 8 个核心,所以总共有 32 MB L2 缓存",
+        "L2 缓存每簇共享 4 MB,K3 有 2 个簇,总共 8 MB L2",
+        "L2 缓存容量比 LPDDR5 小,所以速度比 LPDDR5 慢"
+      ],
+      a: 2,
+      e: "L2 缓存是每簇共享的,不是每核独立。K3 有 2 个 CPU 簇,每簇 4 个核心,每簇共享 4 MB L2,所以总共 8 MB L2 缓存。L2 虽然容量小,但速度比 LPDDR5 快得多。",
+      wrong: {
+        0: { t: "L2 是每簇共享,不是每核独立。4 个核心共用 4 MB L2。", why: "看到「每核」会误以为 L2 也是每核独立的" },
+        1: { t: "8 个核心分成 2 个簇,每簇 4 MB,总共 8 MB,不是 32 MB。", why: "忘记 L2 是共享的,按 8×4 计算" },
+        3: "容量小不等于速度慢。L2 是 SRAM,比 LPDDR5 的 DRAM 快很多倍。"
+      },
+      src: "docs-chip · key_stone/k3/k3_docs/k3_ds.md · 2.1.1 X100 核",
+      rv: "每个 X100 核心配备:L1 指令缓存 64 KB、L1 数据缓存 64 KB(每核独立),L2 缓存 4 MB(每簇共享,4 个核共用)。K3 有 2 个 CPU 簇,每簇 4 个核心。"
+    },
+    {
+      q: "关于内存带宽与任务性能，哪个表述成立？",
+      sai: 5,
+      opts: [
+        "K3 的 LPDDR5 带宽 51.2 GB/s,所以所有任务都比 LPDDR4x 快",
+        "带宽高了,AI 推理一定更快",
+        "带宽、算力、容量三者中最紧的那个决定任务能否跑快",
+        "内存带宽只影响 AI 任务,不影响 CPU 任务"
+      ],
+      a: 2,
+      e: "一个任务能不能跑快,取决于算力、带宽、容量三者中最紧的那个。带宽高不等于所有任务都快,还要看任务本身是否受带宽瓶颈限制。有些任务受算力限制,有些受容量限制。",
+      wrong: {
+        0: { t: "带宽高不等于所有任务都快。有些任务受算力限制,有些受容量限制,带宽不是瓶颈。", why: "看到带宽大会以为所有任务都快" },
+        1: { t: "AI 推理可能受带宽、算力或容量限制。只提高带宽不一定让 AI 更快。", why: "看到 AI 需要大带宽会以为带宽高就快" },
+        3: "内存带宽影响所有需要频繁访问内存的任务,包括 CPU 计算、多媒体处理等。"
+      },
+      src: "docs-chip · key_stone/k3/k3_docs/k3_ds.md · 2.2.2 LPDDR5",
+      rv: "内存带宽是指单位时间内 CPU 可以从内存读取或写入的数据量。AI 推理时,A100 从内存读取模型权重和输入数据。如果内存带宽不足,A100 会空转等待数据,算力发挥不出来。算力再高,数据送不到计算单元也没用。瓶颈判断:一个任务能不能跑快,取决于算力、带宽、容量三者中最紧的那个。"
+    },
+    {
+      q: "关于芯片支持的接口与产品实际引出的接口，哪个表述成立？",
+      sai: 1,
+      opts: [
+        "芯片支持 4 个 CSI,产品就必须引出 4 个",
+        "产品只引出 2 个 CSI 是设计缺陷",
+        "芯片规格是能力上限,产品按场景和成本取舍接口数量",
+        "产品资料和芯片手册的接口数量不一致,说明文档有错误"
+      ],
+      a: 2,
+      e: "芯片规格记录芯片本身的能力上限,产品规格记录实际引出的接口。芯片留 4 个 CSI 覆盖不同客户场景,每多引出一个接口就多占面积、连接器和成本。目标场景用不到 4 路就只引 2 路,这是正常的设计权衡。",
+      wrong: {
+        0: { t: "芯片支持不等于产品必须引出。产品按目标场景和成本取舍接口数量。", why: "看到芯片支持会以为产品必须全部引出" },
+        1: { t: "不是缺陷,而是成本与场景的权衡。客户可以定制载板引出更多接口。", why: "看到只引出一半会以为是设计问题" },
+        3: "芯片手册和产品资料记录的是不同层面的规格,数量不同是正常的。"
+      },
+      src: "docs-chip · key_stone/k3/k3_docs/k3_ds.md · 2.3.1 / docs-product · k3_series/k3_com260/root_overview.md",
+      rv: "芯片规格是芯片本身支持的最大能力。产品规格是某个具体产品实际引出的接口。举例(K3 CoM260):芯片支持 4 个 CSI 摄像头接口,但 CoM260 载板只引出 2 个;芯片支持 2 个 DP/eDP 显示输出,但 CoM260 只引出 1 个 DP。为什么不全引出?目标场景用不到 4 路摄像头,引出更多会增加面积、连接器和成本。客户可以定制载板,按需选择要引出的接口。"
+    },
+    {
+      q: "关于 LPDDR5 速度与 AI 推理性能，哪个表述成立？",
+      sai: 12,
+      opts: [
+        "LPDDR5 比 LPDDR4x 快,所以配 LPDDR5 的板子 AI 一定跑得更快",
+        "AI 推理性能只取决于 A100 核心数量,与内存速度无关",
+        "LPDDR5 带宽更高,但 AI 能否跑快还取决于模型大小、算力、量化方式等",
+        "内存速度只影响启动时间,不影响推理速度"
+      ],
+      a: 2,
+      e: "LPDDR5 带宽更高,但 AI 推理性能不仅取决于内存带宽,还取决于模型大小(能否放进内存)、算力(A100 核心数量和频率)、量化方式(影响内存占用和计算量)、数据流(是否频繁访问内存)等多个因素。",
+      wrong: {
+        0: { t: "LPDDR5 快不等于 AI 一定快。有些模型受算力限制,有些受容量限制,带宽不是瓶颈。", why: "看到 LPDDR5 比 LPDDR4x 快会以为 AI 一定快" },
+        1: { t: "AI 推理性能取决于算力、带宽、容量三者。只看核心数量是不够的。", why: "只关注 A100 核心会忽略内存瓶颈" },
+        3: "内存速度影响推理速度。推理时需要从内存读取模型权重,带宽不足会导致 A100 空转。"
+      },
+      src: "docs-chip · key_stone/k3/k3_docs/k3_ds.md · 2.2.2 LPDDR5 / 2.1.2 A100 核",
+      rv: "LPDDR5 双通道、每通道 32 位、6400 MT/s,理论带宽 51.2 GB/s。AI 推理时,A100 从内存读取模型权重和输入数据。如果内存带宽不足,A100 会空转等待数据,算力发挥不出来。一个任务能不能跑快,取决于算力、带宽、容量三者中最紧的那个。"
+    }
+  ]},
+
+  { group: "三、自评", note: "按知识点逐条选择。这些只作记录，帮你知道下次该回看哪一节，不参与判分。", type: "自评", items: [
+    { k: "SoC 的 11 个子系统分别是什么", act: "说出 11 个子系统的名称，并说出每个子系统的核心职责" },
+    { k: "芯片规格与产品规格的区别", act: "给一个例子：芯片支持 X 个接口，但产品只引出 Y 个，并解释为什么" },
+    { k: "X100 与 A100 的分工", act: "用一句话说清楚：X100 负责什么，A100 负责什么，它们如何协作" },
+    { k: "X100 的缓存层次（L1/L2）", act: "写出 K3 的缓存配置：L1 多大、每核独立还是共享，L2 多大、每核独立还是共享" },
+    { k: "内存三层的速度与容量权衡", act: "画一个表格，列出 SRAM、LPDDR5、eMMC 的容量和速度特点" },
+    { k: "带宽计算公式", act: "给定通道数、位宽、MT/s，计算出 GB/s 带宽" },
+    { k: "MT/s 与 MHz 的区别", act: "解释为什么 LPDDR5 用 MT/s 而不是 MHz" },
+    { k: "图像/视频/显示三个子系统的分工", act: "画一条数据流：从摄像头到屏幕，经过哪三个子系统，每个做什么转换" },
+    { k: "ISP 的作用", act: "说出 ISP 把什么格式转换成什么格式，并举出至少 2 个处理步骤" },
+    { k: "RAW vs YUV", act: "解释 RAW 和 YUV 的区别，以及为什么需要 ISP 转换" },
+    { k: "VPU 的价值", act: "解释为什么需要 VPU 硬件加速，而不是用 X100 软件编码" },
+    { k: "编码压缩比", act: "举例说明原始 4K 30fps YUV420 视频一分钟多大，H.265 编码后多大" },
+    { k: "MIPI-DSI vs DP/eDP", act: "说出 MIPI-DSI 和 DP/eDP 各自的典型应用场景" },
+    { k: "AFBC 的作用", act: "解释 AFBC 是什么，以及它如何减少内存带宽占用" }
+  ]}
+];
+const LETTERS = ["A", "B", "C", "D"];
+const MODULE_LABEL = "M2";
+const MODULE_TITLE = "芯片架构基础";
+const SA_GROUP = DATA.find(g => g.type === "自评");
+const SA_ITEMS = SA_GROUP ? SA_GROUP.items : [];
+const state = { total: 0, answered: 0, correct: 0, groups: [] };
+const FLAT = [];
+
+DATA.forEach((g, gi) => {
+  if (g.type === "自评") return;
+  state.groups.push({ name: g.group.replace(/^[一二三]、/, ""), total: g.items.length, correct: 0 });
+  g.items.forEach(it => FLAT.push({ ...it, gi: state.groups.length - 1 }));
+});
+state.total = FLAT.length;
+
+const quizEl = document.getElementById("quiz");
+
+function esc(s) {
+  return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+}
+
+function build() {
+  let html = "";
+  let n = 0;
+  DATA.forEach((g) => {
+    html += `<h2 class="group">${g.group}</h2>`;
+    html += `<p class="group-note">${g.note}</p>`;
+
+    if (g.type === "自评") {
+      html += `<div class="sa">`;
+      g.items.forEach((it, si) => {
+        html += `<div class="sa-row">
+          <div class="sa-label">${it.k}</div>
+          <div class="sa-opts" data-sa="${si}">
+            <button class="sa-btn" data-v="ok" aria-pressed="false">懂了</button>
+            <button class="sa-btn" data-v="q" aria-pressed="false">有疑问</button>
+            <button class="sa-btn" data-v="no" aria-pressed="false">没懂</button>
+          </div>
+        </div>`;
+      });
+      html += `</div>`;
+      return;
+    }
+
+    g.items.forEach(it => {
+      html += `<div class="q" id="q${n}">
+        <div class="q-head">
+          <div class="q-num">${n + 1}</div>
+          <div class="q-text">${it.q}<span class="q-type">${g.type}</span></div>
+        </div>
+        <div class="opts" role="group">`;
+      it.opts.forEach((o, oi) => {
+        html += `<div class="opt" tabindex="0" role="button" data-q="${n}" data-o="${oi}">
+          <div class="opt-main">
+            <div class="key">${LETTERS[oi]}</div>
+            <div class="label">${esc(o)}</div>
+          </div>
+        </div>`;
+      });
+      html += `</div>
+        <div class="feedback" id="f${n}">
+          <div class="fb-verdict" id="fv${n}"></div>
+          <div class="fb-body">
+            <b>解析：</b>${esc(it.e)}
+            <ul id="fu${n}"></ul>
+            <div class="fb-src">来源：${esc(it.src)}</div>
+            <div id="snip${n}"></div>
+          </div>
+        </div>
+      </div>`;
+      n++;
+    });
+  });
+  quizEl.innerHTML = html;
+}
+
+function choose(qi, oi) {
+  const card = document.getElementById("q" + qi);
+  if (card.classList.contains("answered-correct") || card.classList.contains("answered-wrong")) return;
+
+  const it = FLAT[qi];
+  const correct = oi === it.a;
+  const opts = card.querySelectorAll(".opt");
+
+  opts.forEach((el, idx) => {
+    el.classList.add("locked");
+    el.setAttribute("tabindex", "-1");
+    if (idx === it.a) el.classList.add("is-correct");
+    else if (idx === oi) el.classList.add("is-wrong");
+    else el.classList.add("dimmed");
+  });
+
+  card.classList.add(correct ? "answered-correct" : "answered-wrong");
+
+  const fv = document.getElementById("fv" + qi);
+  fv.textContent = correct ? "✓ 回答正确" : "✗ 回答错误，正确答案是 " + LETTERS[it.a];
+  fv.className = "fb-verdict " + (correct ? "ok" : "bad");
+
+  const ul = document.getElementById("fu" + qi);
+  let li = "";
+  if (it.wrong) {
+    Object.keys(it.wrong).forEach(k => {
+      const entry = it.wrong[k];
+      const text = typeof entry === 'string' ? entry : entry.t;
+      li += `<li><b>${LETTERS[k]}</b>：${esc(text)}</li>`;
+    });
+  }
+  ul.innerHTML = li;
+  
+  if (!correct && it.wrong && it.wrong[oi]) {
+    const entry = it.wrong[oi];
+    if (typeof entry === 'object' && entry.why) {
+      const optEl = opts[oi];
+      const whySpan = document.createElement('div');
+      whySpan.className = 'opt-why';
+      whySpan.textContent = '💡 ' + entry.why;
+      optEl.appendChild(whySpan);
+    }
+  }
+  const snipEl = document.getElementById("snip" + qi);
+  if (snipEl) snipEl.innerHTML = it.rv ? '<div class="rv-snippet">' + it.rv + '</div>' : "";
+
+  document.getElementById("f" + qi).classList.add("show");
+
+  state.answered++;
+  if (correct) { state.correct++; state.groups[it.gi].correct++; }
+  refresh();
+}
+
+function refresh() {
+  document.getElementById("s-answered").textContent = state.answered;
+  document.getElementById("s-correct").textContent = state.correct;
+  document.getElementById("s-rate").textContent =
+    state.answered ? Math.round(state.correct / state.answered * 100) + "%" : "—";
+  document.getElementById("prog").style.width =
+    (state.answered / state.total * 100) + "%";
+  if (state.answered === state.total) showResult();
+}
+
+function selfEval() {
+  const rows = document.querySelectorAll("[data-sa]");
+  const need = [];
+  rows.forEach((row, i) => {
+    const on = row.querySelector('.sa-btn[aria-pressed="true"]');
+    if (on && on.dataset.v !== "ok") {
+      need.push({ i, k: SA_ITEMS[i].k, v: on.dataset.v });
+    }
+  });
+  return need;
+}
+
+const HIST_KEY = "spacemit.m2.history";
+
+function loadHist() {
+  try { return JSON.parse(localStorage.getItem(HIST_KEY)) || { attempts: 0, wrongCount: {}, lastWrong: [] }; }
+  catch (e) { return { attempts: 0, wrongCount: {}, lastWrong: [] }; }
+}
+function saveHist(h) {
+  try { localStorage.setItem(HIST_KEY, JSON.stringify(h)); } catch (e) {}
+}
+
+function buildRevisit() {
+  const box = document.getElementById("r-revisit");
+  const hist = loadHist();
+  const saRows = document.querySelectorAll("[data-sa]");
+
+  const wrong = [];
+  document.querySelectorAll(".q").forEach((c, i) => {
+    if (c.classList.contains("answered-wrong")) wrong.push(i);
+  });
+
+  const items = [];
+
+  wrong.forEach(i => {
+    const row = saRows[FLAT[i].sai];
+    const btn = row ? row.querySelector('.sa-btn[aria-pressed="true"]') : null;
+    const markedOk = btn && btn.dataset.v === "ok";
+    const times = hist.wrongCount[i] || 1;
+    items.push({ pri: markedOk ? 1 : 2, i, times, markedOk });
+  });
+
+  saRows.forEach((row, si) => {
+    const btn = row.querySelector('.sa-btn[aria-pressed="true"]');
+    if (!btn || btn.dataset.v === "ok") return;
+    if (items.some(it => FLAT[it.i].sai === si)) return;
+    const item = SA_ITEMS[si];
+    items.push({ pri: 3, si, v: btn.dataset.v, label: item.k, act: item.act });
+  });
+
+  if (!items.length) {
+    box.innerHTML = wrong.length === 0
+      ? `<h3>不需要回看</h3><div class="rv-item p3"><div class="rv-head"><span class="rv-title">全部答对，自评也没有标出疑问。</span></div><div class="rv-snippet">过几天再重做一次，确认不是靠短期记忆答对的。</div></div>`
+      : "";
+    return items;
+  }
+
+  items.sort((a, b) => a.pri - b.pri || (b.times || 0) - (a.times || 0));
+
+  let html = `<h3>需回看（按优先级）</h3>`;
+  items.forEach(it => {
+    if (it.pri === 3) {
+      const badge = it.v === "no" ? "bad" : "warn";
+      const badgeTxt = it.v === "no" ? "没懂" : "有疑问";
+      html += `<div class="rv-item p3">
+        <div class="rv-head">
+          <span class="rv-badge ${badge}">${badgeTxt}</span>
+          <span class="rv-title">${esc(it.label)}</span>
+        </div>`;
+      if (it.act) {
+        html += `<div class="rv-act">可以这样验证：${esc(it.act)}</div>`;
+      }
+      html += `</div>`;
+      return;
+    }
+    const q = FLAT[it.i];
+    const cls = it.pri === 1 ? "p1" : "p2";
+    const badge = it.pri === 1 ? "bad" : "warn";
+    const badgeTxt = it.pri === 1 ? "答错且标了懂了" : "答错";
+    html += `<div class="rv-item ${cls}">
+      <div class="rv-head">
+        <span class="rv-badge ${badge}">${badgeTxt}</span>
+        <span class="rv-title">Q${it.i + 1} ${esc(q.q)}</span>
+        <span class="rv-count">错第 ${it.times} 次</span>
+      </div>`;
+    if (it.times >= 2) {
+      html += `<div class="rv-rewrite">⚠ 同一题已错 ${it.times} 次 —— 更可能是这一节的讲解需要换个说法，而不是再读一遍</div>`;
+    }
+    if (q.rv) html += `<div class="rv-snippet">${esc(q.rv)}</div>`;
+    html += `</div>`;
+  });
+
+  box.innerHTML = html;
+  return items;
+}
+
+function commitHistory() {
+  const hist = loadHist();
+  hist.attempts = (hist.attempts || 0) + 1;
+  const wrongNow = [];
+  document.querySelectorAll(".q").forEach((c, i) => {
+    if (c.classList.contains("answered-wrong")) {
+      hist.wrongCount[i] = (hist.wrongCount[i] || 0) + 1;
+      wrongNow.push(i);
+    }
+  });
+  hist.lastWrong = wrongNow;
+  hist.lastAt = new Date().toISOString().slice(0, 16).replace("T", " ");
+  saveHist(hist);
+  return hist;
+}
+
+function buildDiag(items) {
+  const hist = loadHist();
+  const wrong = [];
+  document.querySelectorAll(".q").forEach((c, i) => {
+    if (c.classList.contains("answered-wrong")) wrong.push(i);
+  });
+  const need = [];
+  document.querySelectorAll("[data-sa]").forEach((row, si) => {
+    const b = row.querySelector('.sa-btn[aria-pressed="true"]');
+    if (b && b.dataset.v !== "ok") need.push(SA_ITEMS[si].k + (b.dataset.v === "no" ? "（没懂）" : "（有疑问）"));
+  });
+
+  const lines = [];
+  lines.push(`${MODULE_LABEL} 测验 第 ${hist.attempts} 次 | ${state.correct}/${state.total}`);
+  if (wrong.length) {
+    lines.push("错：" + wrong.map(i => `Q${i + 1} ${FLAT[i].q}（错第 ${hist.wrongCount[i]} 次）`).join("、"));
+  } else {
+    lines.push("错：无");
+  }
+  if (need.length) lines.push("自评疑问：" + need.join("、"));
+  const contradiction = wrong.filter(i => {
+    const row = document.querySelectorAll("[data-sa]")[FLAT[i].sai];
+    const b = row ? row.querySelector('.sa-btn[aria-pressed="true"]') : null;
+    return b && b.dataset.v === "ok";
+  });
+  if (contradiction.length) lines.push("矛盾（标懂了但答错）：" + contradiction.map(i => "Q" + (i + 1)).join("、"));
+  const rewrite = wrong.filter(i => hist.wrongCount[i] >= 2);
+  if (rewrite.length) lines.push("建议重写讲解：" + rewrite.map(i => "Q" + (i + 1)).join("、"));
+  return lines.join("\n");
+}
+
+function updateHint() {
+  const hint = document.getElementById("r-hint");
+  const rated = document.querySelectorAll('.sa-btn[aria-pressed="true"]').length;
+  const wrong = [];
+  document.querySelectorAll(".q").forEach((c, i) => {
+    if (c.classList.contains("answered-wrong")) wrong.push(i);
+  });
+  const saRows = document.querySelectorAll("[data-sa]");
+  const contradiction = wrong.filter(i => {
+    const row = saRows[FLAT[i].sai];
+    const b = row ? row.querySelector('.sa-btn[aria-pressed="true"]') : null;
+    return b && b.dataset.v === "ok";
+  });
+
+  let html = "";
+  if (!rated) {
+    html = `<b>还没有做自评。</b>在第三段按知识点点选，这里会把疑问和错题一起排序。`;
+  } else if (contradiction.length) {
+    html = `<b style="color:var(--bad)">⚠ ${contradiction.length} 道题答错、但自评标了「懂了」：</b><br>` +
+      contradiction.map(i => "· Q" + (i + 1)).join("<br>") +
+      `<br><span style="font-size:13px">读的时候以为懂了，做题才发现有偏差。这类优先回看。</span>`;
+  } else if (wrong.length) {
+    html = `<b>答错 ${wrong.length} 题。</b>按上面清单回看对应小节即可。`;
+  } else {
+    html = `<b>全对。</b>自评里的疑问也已列在上面。`;
+  }
+  hint.innerHTML = html;
+}
+function showResult() {
+  const pct = Math.round(state.correct / state.total * 100);
+  document.getElementById("r-score").textContent = state.correct;
+
+  let tier;
+  if (pct === 100) tier = "全对。基础概念没有混淆。";
+  else if (pct >= 93) tier = "基本清楚，看一处错题即可。";
+  else if (pct >= 64) tier = "有几处要回看，重点看错题对应的那一课。";
+  else tier = "建议重读三篇课，再回来做一遍。";
+  document.getElementById("r-tier").textContent = `${pct}% — ${tier}`;
+
+  document.getElementById("r-brk").innerHTML = state.groups
+    .map(g => {
+      const p = Math.round(g.correct / g.total * 100);
+      return `<div class="brk-item">
+        <div class="n">${g.name}</div>
+        <div class="v">${g.correct}/${g.total} <span style="font-size:12px;font-weight:400;color:var(--text-dim)">${p}%</span></div>
+      </div>`;
+    }).join("");
+
+  commitHistory();
+  buildRevisit();
+  updateHint();
+
+  const r = document.getElementById("result");
+  r.classList.add("show");
+  r.scrollIntoView({ behavior: "smooth", block: "nearest" });
+}
+
+function reset() {
+  state.answered = 0;
+  state.correct = 0;
+  state.groups.forEach(g => g.correct = 0);
+  document.getElementById("result").classList.remove("show");
+  document.getElementById("r-revisit").innerHTML = "";
+  document.getElementById("r-hint").innerHTML = "";
+  document.getElementById("copy-note").classList.remove("show");
+  build();
+  bind();
+  refresh();
+  document.getElementById("prog").style.width = "0%";
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function bind() {
+  quizEl.querySelectorAll(".opt").forEach(el => {
+    const act = () => choose(+el.dataset.q, +el.dataset.o);
+    el.addEventListener("click", act);
+    el.addEventListener("keydown", ev => {
+      if (ev.key === "Enter" || ev.key === " ") { ev.preventDefault(); act(); }
+    });
+  });
+
+  quizEl.querySelectorAll(".sa-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const group = btn.parentElement;
+      group.querySelectorAll(".sa-btn").forEach(b => b.setAttribute("aria-pressed", "false"));
+      btn.setAttribute("aria-pressed", "true");
+      if (state.answered === state.total) { buildRevisit(); updateHint(); }
+    });
+  });
+}
+
+build();
+bind();
+document.getElementById("btn-reset").addEventListener("click", reset);
+
+document.getElementById("btn-copy").addEventListener("click", async () => {
+  const text = buildDiag();
+  const note = document.getElementById("copy-note");
+  try {
+    await navigator.clipboard.writeText(text);
+  } catch (e) {
+    const ta = document.createElement("textarea");
+    ta.value = text;
+    ta.style.position = "fixed";
+    ta.style.opacity = "0";
+    document.body.appendChild(ta);
+    ta.select();
+    try { document.execCommand("copy"); } catch (err) {}
+    document.body.removeChild(ta);
+  }
+  note.classList.add("show");
+  setTimeout(() => note.classList.remove("show"), 2600);
+});
+</script>
+</body>
+</html>
+
+
+

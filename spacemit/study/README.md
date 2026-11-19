@@ -63,14 +63,16 @@ updated: 2026-11-18
 1. 按 [ROADMAP.md](./ROADMAP.md) 的顺序走，模块一讲一讲来。
 2. 每讲读完，先自己复述一遍，再做题。题目用来找概念混淆，不是门槛。
 3. 讲不清就回看那一讲，不用重做整套题。
-4. 遇到术语，查 `spacemit/glossary/` 和 `spacemit/atoms/`。
+4. 遇到术语，查 [GLOSSARY.md](./GLOSSARY.md)（本课程配套术语表）或 `spacemit/glossary/`、`spacemit/atoms/`。
 5. 跨会话或换机器继续，先读 [HANDOFF.md](./HANDOFF.md)。
 
 课程怎么写、测验怎么出，见 [STYLE.md](./STYLE.md)。那份文件是硬性规范，编写时逐条对照。
 
 ## 现状
 
-**M1 已完成**，三篇课加一份测验：
+**M1 和 M2 已完成**：
+
+### M1：产品概览
 
 | 文件 | 内容 |
 |---|---|
@@ -79,6 +81,22 @@ updated: 2026-11-18
 | [m1-03-reading-specs.md](./m1-03-reading-specs.md) | 读懂规格表里的数字 |
 | [quiz/m1-recap.html](./quiz/m1-recap.html) | 15 道选择题（基础与应用 10 + 认陷阱 5）+ 14 个知识点的分点自评，含错题计数与回看清单 |
 
-M2 之后的模块按 [ROADMAP.md](./ROADMAP.md) 逐个编写。
+### M2：芯片架构基础
+
+| 文件 | 内容 |
+|---|---|
+| [m2-01-chip-subsystems.md](./m2-01-chip-subsystems.md) | 芯片由哪些子系统组成：CPU、内存、图像、视频、显示、外设 |
+| [m2-02-cpu-and-memory.md](./m2-02-cpu-and-memory.md) | X100 与 A100 的区别、内存层次、带宽计算 |
+| [m2-03-peripherals-overview.md](./m2-03-peripherals-overview.md) | 图像子系统、视频子系统、显示子系统的分工 |
+| [quiz/m2-recap.html](./quiz/m2-recap.html) | 15 道选择题（基础与应用 10 + 认陷阱 5）+ 14 个知识点的分点自评，含错题计数与回看清单 |
+
+### 配套资源
+
+| 文件 | 内容 |
+|---|---|
+| [GLOSSARY.md](./GLOSSARY.md) | 术语表：带宽、内存与存储、虚拟机、RVA23、RVV 1.0、RVH 1.0、IME、SoC、LPDDR5、ISP、VPU、簇、编码压缩比、AFBC |
+| [quiz/_template.html](./quiz/_template.html) | 测验模板，用于创建新模块的测验 |
+
+M3 之后的模块按 [ROADMAP.md](./ROADMAP.md) 逐个编写。
 
 早期按「一天一份库」写的 `day1-*` ~ `day4-*` 已全部删除，不再保留。
