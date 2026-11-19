@@ -70,7 +70,7 @@ K3 是 60 TOPS（@INT4 sparse）。
 
 TOPS 是 Tera Operations Per Second，每秒万亿次运算。
 
-K1 的 2 TOPS 也是 AI 算力。产品资料的原话是「CPU融合 2 TOPS@INT8 AI 算力」——它说的就是 AI，只不过这个 AI 能力做在 CPU 簇里。
+K1 的 2 TOPS 也是 AI 算力。产品资料的原话是「CPU融合 2 TOPS@INT8 AI 算力」——它说的就是 AI，只不过这个 AI 能力做在 CPU [簇](GLOSSARY.md#簇)里。
 
 所以不能说「一个是 CPU 算力、一个是 AI 算力」。两者都是 AI 算力，都是 TOPS。
 
