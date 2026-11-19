@@ -121,7 +121,7 @@
 
   .opts { display: flex; flex-direction: column; gap: 7px; }
   .opt {
-    display: flex; align-items: flex-start; gap: 11px;
+    display: flex; flex-direction: column; gap: 0;
     padding: 11px 13px; border-radius: 8px;
     border: 1px solid var(--border); background: var(--panel-2);
     cursor: pointer; user-select: none;
@@ -130,6 +130,9 @@
   .opt:hover:not(.locked) { border-color: var(--accent); }
   .opt:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
   .opt.locked { cursor: default; }
+  .opt-main {
+    display: flex; align-items: flex-start; gap: 11px;
+  }
   .opt .key {
     flex: 0 0 auto; width: 21px; height: 21px; border-radius: 5px;
     display: grid; place-items: center;
@@ -138,6 +141,12 @@
     border: 1px solid var(--border); margin-top: 2px;
   }
   .opt .label { flex: 1; font-size: 14px; }
+  .opt-why {
+    margin-top: 8px; padding: 8px 11px; margin-left: 32px;
+    background: var(--panel); border-left: 2px solid var(--accent);
+    font-size: 12.5px; font-style: italic;
+    color: var(--text-dim); border-radius: 0 4px 4px 0;
+  }
 
   .opt.is-correct { border-color: var(--ok); background: var(--ok-bg); }
   .opt.is-correct .key { background: var(--ok); color: #fff; border-color: var(--ok); }
@@ -261,6 +270,20 @@
   }
   .rv-snippet {
     font-size: 13px; color: var(--text); line-height: 1.65;
+    background: var(--panel); padding: 10px 12px;
+    border-radius: 6px; margin-top: 7px;
+  }
+  .rv-act {
+    font-size: 13px; color: var(--text-dim); line-height: 1.65;
+    padding: 9px 12px; margin-top: 7px;
+    background: var(--panel); border-left: 2px solid var(--accent);
+    border-radius: 0 6px 6px 0;
+  }
+  .rv-act::before {
+    content: '✓ ';
+    color: var(--accent);
+    font-weight: 600;
+  }
     padding: 9px 12px; margin-top: 4px;
     background: var(--bg); border-radius: 6px;
     border-left: 2px solid var(--accent);
@@ -340,9 +363,9 @@ const DATA = [
       a: 1,
       e: "P 系列是电源芯片，现有 P1、P3。芯片库的章节标题就是「P 系列电源芯片」，与 K 系列、V 系列并列。",
       wrong: {
-        0: "这是 K 系列（Key Stone）的定位：AI CPU。",
-        2: "这是 V 系列（Vital Stone）的定位：服务器芯片。",
-        3: "显示处理单元（DPU）是 SoC 内部的模块，不是独立芯片系列。"
+        0: { t: "这是 K 系列（Key Stone）的定位：AI CPU。", why: "看到「应用处理器」会联想到 K1/K3，但 P 是电源芯片" },
+        2: { t: "这是 V 系列（Vital Stone）的定位：服务器芯片。", why: "看到「通用 CPU」容易选 V，但 P 是电源芯片" },
+        3: { t: "显示处理单元（DPU）是 SoC 内部的模块，不是独立芯片系列。" }
       },
       src: "docs-chip · power_stone/index.md · 全文",
       rv: "P 系列是电源芯片，现有 P1、P3。三个系列并列：K 系列是 AI CPU，P 系列是电源芯片，V 系列是服务器芯片。"
@@ -359,7 +382,7 @@ const DATA = [
       a: 1,
       e: "V 系列（Vital Stone）现有 V100，后续规划 V200、V300。三位整数递增是这一系列的命名规则。",
       wrong: {
-        0: "一位奇数递增是 K 系列的规律（K1、K3、K5），不是 V 系列。",
+        0: { t: "一位奇数递增是 K 系列的规律（K1、K3、K5），不是 V 系列。", why: "看到奇数会想起 K1、K3，但 V 系列是三位数" },
         2: "V 系列按代际递增编号，不按年份命名。",
         3: "V 系列没有这种编号方式。现有的是 V100。"
       },
@@ -378,8 +401,8 @@ const DATA = [
       a: 1,
       e: "K1 簇 0 有 4 个 A60 智算核；K3 有 8 个 A100 AI 核；V100 是服务器级 CPU，本身无 AI 核，G5201 靠外接最多 8 张 PCIe 加速卡。",
       wrong: {
-        0: "正好反过来：K1、K3 内置 AI 核，V100 靠外接卡。",
-        2: "A60 配 K1、A100 配 K3，这里配对反了；而且 V100 没有内置 AI 核。",
+        0: { t: "正好反过来：K1、K3 内置 AI 核，V100 靠外接卡。", why: "看到「外接加速卡」会想起 V100，但选项把配对关系反了" },
+        2: { t: "A60 配 K1、A100 配 K3，这里配对反了；而且 V100 没有内置 AI 核。", why: "A60 和 A100 的配对容易记混" },
         3: "V100 本身不含 AI 核，这是它和 K 系列的根本差别。"
       },
       src: "docs-chip · key_stone/k1/k1_docs/k1_ds.md · 2.1 / docs-chip · key_stone/k3/k3_docs/k3_ds.md · 2.1.2 / docs-product · v100_series/v100_g5201/root_overview.md · 概述、特性",
@@ -397,9 +420,9 @@ const DATA = [
       a: 2,
       e: "芯片型号是 K1、K3、V100、P1、P3；产品型号是 K3 Pico-ITX、C2201、G5201 这类整机名。一颗芯片可以做多个产品。",
       wrong: {
-        0: "这三个都是芯片型号。K1、K3 属 Key Stone，V100 属 Vital Stone。",
+        0: { t: "这三个都是芯片型号。K1、K3 属 Key Stone，V100 属 Vital Stone。", why: "K1/K3/V100 常出现在产品名称里，容易误认为是产品" },
         1: "P1、P3 是电源芯片型号，不是产品型号。",
-        3: "这三个是核（core）的型号，比芯片更小一级。"
+        3: { t: "这三个是核（core）的型号，比芯片更小一级。", why: "X60/X100 在规格表里频繁出现，容易和芯片型号混淆" }
       },
       src: "docs-chip · key_stone/index.md、power_stone/index.md、vital_stone/index.md · 全文 / docs-product · v100_series/index.md · 全文",
       rv: "芯片型号：K1、K3、V100、P1、P3。产品型号：K3 Pico-ITX、C2201、G5201。核型号：X60、X100、A60、A100。三级要分清。"
@@ -416,7 +439,7 @@ const DATA = [
       a: 1,
       e: "判断依据是「谁负责设计板子」。CoM260 卖的是核心模组，芯片、内存、存储已封在小板上，客户拿回去插到自己的载板上。另外三种都是 SpacemiT 做好的成品。",
       wrong: {
-        0: "Pico-ITX 是整块单板，不需要客户设计电路板。",
+        0: { t: "Pico-ITX 是整块单板，不需要客户设计电路板。", why: "看到「单板计算机」会觉得需要自己做板子" },
         2: "Shelf 是成品机架服务器，插到机柜里就能跑。",
         3: "RV2768 也是成品机架服务器。"
       },
@@ -436,7 +459,7 @@ const DATA = [
       e: "两者都是机架服务器、都装多个 K3，区别只在负载：Shelf 面向编译集群与软件兼容性测试，RV2768 面向大规模 AI 推理。",
       wrong: {
         0: "两者都是机架服务器，都不是单板也不是模组。",
-        1: "节点数只是表象，两者面向的负载完全不同。",
+        1: { t: "节点数只是表象，两者面向的负载完全不同。", why: "看到节点数会以为只是规模差别" },
         3: "两者都用 K3 芯片。"
       },
       src: "docs-product · k3_series/k3_shelf/root_overview.md · 简介、特性 / docs-product · k3_series/k3_rv2768/root_overview.md · 简介",
@@ -454,7 +477,7 @@ const DATA = [
       a: 0,
       e: "编译找 Shelf。它的卖点正是原生编译比 x86 上跑 QEMU 快 10 倍以上。RV2768 虽然节点更多，但定位是 AI 推理。",
       wrong: {
-        1: "节点多不等于合适。RV2768 是给 AI 推理用的，编译场景不看 TOPS。",
+        1: { t: "节点多不等于合适。RV2768 是给 AI 推理用的，编译场景不看 TOPS。", why: "看到「节点数多、总算力高」会觉得更适合编译" },
         2: "CoM260 是模组，需要客户自己做载板和整机，不适合直接拿来用。",
         3: "Pico-ITX 是单板计算机，不是机架服务器。"
       },
@@ -473,7 +496,7 @@ const DATA = [
       a: 1,
       e: "18W 是最轻负载，35W 是最重负载。设计要按最不利情况，即以上限 35W 为设计点，再留余量。",
       wrong: {
-        0: "按 18W 设计、再留 20% 也才 21.6W，离 35W 差得远，满载时会供电塌陷或散热不足。",
+        0: { t: "按 18W 设计、再留 20% 也才 21.6W，离 35W 差得远，满载时会供电塌陷或散热不足。", why: "看到「最轻负载」会觉得可以按它设计再留余量" },
         2: "取平均值没有依据，满载时会超出。",
         3: "区间仍然可用，只是要按上限取值。"
       },
@@ -533,9 +556,9 @@ const DATA = [
       a: 0,
       e: "芯片留 4 个 CSI 覆盖不同客户场景；每多引出一个接口就多占面积、连接器和成本。目标场景用不到 4 路就只引 2 路。",
       wrong: {
-        1: "芯片手册和产品资料一致，没有矛盾。",
+        1: { t: "芯片手册和产品资料一致，没有矛盾。", why: "看到接口数量不匹配会怀疑规格写错" },
         2: "CSI 用的是 MIPI D-PHY，与 USB/PCIe 共享的 PHY 是两回事。",
-        3: "载板可以按需设计，定制载板就能引出更多。"
+        3: { t: "载板可以按需设计，定制载板就能引出更多。", why: "看到「只引出 2 个」会以为是硬件能力限制" }
       },
       src: "docs-chip · key_stone/k3/k3_docs/k3_ds.md · 2.3.1 / docs-product · k3_series/k3_com260/root_overview.md · 参考载板",
       rv: "芯片留 4 个 CSI 覆盖不同客户场景；每多引出一个接口就多占面积、连接器和成本。目标场景用不到 4 路就只引 2 路。要更多可以定制载板。"
@@ -552,7 +575,7 @@ const DATA = [
       a: 0,
       e: "K1 系列 8 个产品都用 K1 芯片，形态包括 MUSE Book 笔记本、MUSE Pi 单板、MUSE Shelf 集群服务器等。产品资料称 MUSE Book 是「全球首款可量产的 RISC-V 笔记本电脑」。",
       wrong: {
-        1: "K1 是一个芯片型号，系列下的 8 个是产品。",
+        1: { t: "K1 是一个芯片型号，系列下的 8 个是产品。", why: "看到「K1 系列有 8 个产品」会以为有 8 个芯片型号" },
         2: "芯片相同，但板级接口、内存容量、功耗都不一样。",
         3: "MUSE Book 明确是 K1 产品，产品资料就写在 k1_series 目录下。"
       },
@@ -571,7 +594,7 @@ const DATA = [
       a: 1,
       e: "规格表写「最多总计有 384 个 CPU 核心和 384 个通用 AI 核心」，48 节点 × 16 核 = 768。2880 = 48 × 60 TOPS，是理论峰值相加，产品资料没有给实测值。",
       wrong: {
-        0: "通用核只有 384 个；而且 2880 TOPS 是理论值，不是实测。",
+        0: { t: "通用核只有 384 个；而且 2880 TOPS 是理论值，不是实测。", why: "看到「768 核」会以为都是通用核" },
         2: "2880 是 48 个节点相加，不是单个节点。",
         3: "AI 核是 384 个，通用核也是 384 个；2880 也非实测。"
       },
@@ -609,7 +632,7 @@ const DATA = [
       a: 1,
       e: "两者单位都是 TOPS，没有区别，K1 的 2 TOPS 也明确是 AI 算力。不能相除是因为「一次运算」在不同精度下含义不同：INT4 一个数 4 位、INT8 一个数 8 位，同样的硬件规模在 INT4 下能塞进两倍的数；sparse 又额外跳过权重里的零值。",
       wrong: {
-        0: "这是最容易选错的一项。K1 的 2 TOPS 就是 AI 算力，产品资料原话是「CPU融合 2 TOPS@INT8 AI 算力」——AI 做在 CPU 簇里，但算的还是 AI。两者单位都是 TOPS。",
+        0: { t: "这是最容易选错的一项。K1 的 2 TOPS 就是 AI 算力，产品资料原话是「CPU融合 2 TOPS@INT8 AI 算力」——AI 做在 CPU 簇里，但算的还是 AI。两者单位都是 TOPS。", why: "看到「CPU融合」会以为是 CPU 算力而不是 AI 算力" },
         2: "资料里没有这种区分。两者都是厂商标称的峰值，差别不在实测/理论，在位宽和稀疏。",
         3: "规格表没有这种取整说明。这不是原因。"
       },
@@ -619,20 +642,20 @@ const DATA = [
   ]},
 
   { group: "三、自评", note: "按知识点逐条选择，覆盖三课共 14 个要点。这些只作记录，帮你知道下次该回看哪一节，不参与判分。", type: "自评", items: [
-    { k: "K、P、V 三个系列各是什么芯片" },
-    { k: "K 系列与 V 系列的编号规律" },
-    { k: "三个系列 AI 能力的来源" },
-    { k: "芯片型号与产品型号的区别" },
-    { k: "K1 是 4×X60 加 4×A60，K3 是 8×X100 加 8×A100" },
-    { k: "K3 的四种形态各给谁用" },
-    { k: "Shelf 与 RV2768 的定位差别" },
-    { k: "K1 的 8 个产品形态" },
-    { k: "芯片能力与产品引出接口的取舍" },
-    { k: "规划型号（K5/K7/K9、V200/V300）不得描述参数" },
-    { k: "RV2768 的 768 核与 2880 TOPS 怎么算" },
-    { k: "功耗区间为什么按上限设计" },
-    { k: "为什么 2 TOPS 与 60 TOPS 不能直接比" },
-    { k: "规格表与手册不一致怎么办" }
+    { k: "K、P、V 三个系列各是什么芯片", act: "不看资料，说出 K 系列、P 系列、V 系列各是什么，各举一个型号" },
+    { k: "K 系列与 V 系列的编号规律", act: "写出 K 系列未来三个型号、V 系列未来两个型号，然后对照课文验证" },
+    { k: "三个系列 AI 能力的来源", act: "说出 K1、K3、V100 的 AI 能力各来自哪里（内置什么核 / 外接什么）" },
+    { k: "芯片型号与产品型号的区别", act: "举一个芯片型号和它对应的两个产品型号，说明它们的区别" },
+    { k: "K1 是 4×X60 加 4×A60，K3 是 8×X100 加 8×A100", act: "画个表格：K1 和 K3 各有多少个通用核、多少个 AI 核，核的型号是什么" },
+    { k: "K3 的四种形态各给谁用", act: "用三个判断问题（要不要设计板子、板还是机器、编译还是推理）筛选一遍，说出每个产品" },
+    { k: "Shelf 与 RV2768 的定位差别", act: "说出 Shelf 和 RV2768 各面向什么负载，用一句话记住怎么选" },
+    { k: "K1 的 8 个产品形态", act: "列出 K1 系列的 8 个产品名称（不要求记住全部参数差异）" },
+    { k: "芯片能力与产品引出接口的取舍", act: "举一个例子：芯片支持某接口，但某个产品没引出来" },
+    { k: "规划型号（K5/K7/K9、V200/V300）不得描述参数", act: "解释为什么未发布型号只能讲编号规则，不能写参数" },
+    { k: "RV2768 的 768 核与 2880 TOPS 怎么算", act: "写出 768 和 2880 的计算式，说明通用核与 AI 核各多少" },
+    { k: "功耗区间为什么按上限设计", act: "说出为什么不能按 18W 留余量，而要按 35W 设计" },
+    { k: "为什么 2 TOPS 与 60 TOPS 不能直接比", act: "说出 K1 的 2 TOPS 和 K3 的 60 TOPS 是不是同一种单位，为什么不能相除" },
+    { k: "规格表与手册不一致怎么办", act: "说出以哪个为准，以及三条理由" }
   ]}
 ];
 
@@ -687,8 +710,10 @@ function build() {
         <div class="opts" role="group">`;
       it.opts.forEach((o, oi) => {
         html += `<div class="opt" tabindex="0" role="button" data-q="${n}" data-o="${oi}">
-          <div class="key">${LETTERS[oi]}</div>
-          <div class="label">${esc(o)}</div>
+          <div class="opt-main">
+            <div class="key">${LETTERS[oi]}</div>
+            <div class="label">${esc(o)}</div>
+          </div>
         </div>`;
       });
       html += `</div>
@@ -734,10 +759,23 @@ function choose(qi, oi) {
   let li = "";
   if (it.wrong) {
     Object.keys(it.wrong).forEach(k => {
-      li += `<li><b>${LETTERS[k]}</b>：${esc(it.wrong[k])}</li>`;
+      const entry = it.wrong[k];
+      const text = typeof entry === 'string' ? entry : entry.t;
+      li += `<li><b>${LETTERS[k]}</b>：${esc(text)}</li>`;
     });
   }
   ul.innerHTML = li;
+  
+  if (!correct && it.wrong && it.wrong[oi]) {
+    const entry = it.wrong[oi];
+    if (typeof entry === 'object' && entry.why) {
+      const optEl = opts[oi];
+      const whySpan = document.createElement('div');
+      whySpan.className = 'opt-why';
+      whySpan.textContent = '💡 ' + entry.why;
+      optEl.appendChild(whySpan);
+    }
+  }
   const snipEl = document.getElementById("snip" + qi);
   if (snipEl) snipEl.innerHTML = it.rv ? '<div class="rv-snippet">' + esc(it.rv) + '</div>' : "";
 
@@ -804,7 +842,8 @@ function buildRevisit() {
     const btn = row.querySelector('.sa-btn[aria-pressed="true"]');
     if (!btn || btn.dataset.v === "ok") return;
     if (items.some(it => FLAT[it.i].sai === si)) return;
-    items.push({ pri: 3, si, v: btn.dataset.v, label: SA_ITEMS[si].k });
+    const item = SA_ITEMS[si];
+    items.push({ pri: 3, si, v: btn.dataset.v, label: item.k, act: item.act });
   });
 
   if (!items.length) {
@@ -825,8 +864,11 @@ function buildRevisit() {
         <div class="rv-head">
           <span class="rv-badge ${badge}">${badgeTxt}</span>
           <span class="rv-title">${esc(it.label)}</span>
-        </div>
-      </div>`;
+        </div>`;
+      if (it.act) {
+        html += `<div class="rv-act">可以这样验证：${esc(it.act)}</div>`;
+      }
+      html += `</div>`;
       return;
     }
     const q = FLAT[it.i];
