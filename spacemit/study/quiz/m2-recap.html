@@ -393,7 +393,7 @@ const DATA = [
         3: "SoC 既用于移动设备也用于服务器。K3 就是服务器级 SoC，V100 也是 SoC。"
       },
       src: "docs-chip · key_stone/k3/k3_docs/k3_ds.md · 2. 规格参数",
-      rv: "SoC（System on Chip，系统级芯片）不是一个纯粹的处理器，而是一个集成了多种功能的完整系统。K3 芯片包含 11 个子系统（Subsystem）。"
+      rv: "SoC（System on Chip，系统级芯片）不是一个纯粹的处理器，而是一个集成了多种功能的完整系统。K3 芯片包含 11 个子系统（Subsystem）。💡 深入了解：<a href='../GLOSSARY.md#soc'>SoC vs CPU 的详细解释</a>"
     },
     {
       q: "下面哪个不属于 K3 的 11 个子系统？",
@@ -469,7 +469,7 @@ const DATA = [
         3: "功能不同。A100 的 IME 指令一条指令可以完成 X100 需要几十条指令才能完成的矩阵乘法。"
       },
       src: "docs-chip · key_stone/k3/k3_docs/k3_ds.md · 2.1.1 X100 核 / 2.1.2 A100 核",
-      rv: "X100 运行操作系统、调度任务、处理控制逻辑。A100 执行神经网络层的密集计算（卷积、矩阵乘法、激活函数）。X100 把模型加载到内存，A100 从内存读取模型和数据并计算，结果写回内存。"
+      rv: "X100 运行操作系统、调度任务、处理控制逻辑。A100 执行神经网络层的密集计算（卷积、矩阵乘法、激活函数）。X100 把模型加载到内存，A100 从内存读取模型和数据并计算，结果写回内存。💡 深入了解：<a href='../GLOSSARY.md#ime'>IME 指令集扩展</a>"
     },
     {
       q: "K3 的内存分为哪三层？",
@@ -803,7 +803,7 @@ function choose(qi, oi) {
     }
   }
   const snipEl = document.getElementById("snip" + qi);
-  if (snipEl) snipEl.innerHTML = it.rv ? '<div class="rv-snippet">' + esc(it.rv) + '</div>' : "";
+  if (snipEl) snipEl.innerHTML = it.rv ? '<div class="rv-snippet">' + it.rv + '</div>' : "";
 
   document.getElementById("f" + qi).classList.add("show");
 
