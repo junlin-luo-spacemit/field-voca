@@ -37,8 +37,9 @@ updated: 2026-11-17
 |---|---|---|
 | M1 产品线全景 | [课一：产品系列与命名规律](./m1-01-series-naming.md) · [课二：同一颗芯片的多种形态](./m1-02-form-factors.md) · [课三：读懂规格表里的数字](./m1-03-reading-specs.md) · [测验](./quiz/m1-recap.html) | ✅ 已完成，按 STYLE.md 编写并实测过交互 |
 | M2 芯片架构基础 | [课一：一颗芯片里有什么](./m2-01-chip-subsystems.md) · [课二：CPU 子系统与内存子系统](./m2-02-cpu-and-memory.md) · [课三：外设子系统概览](./m2-03-peripherals-overview.md) · [测验](./quiz/m2-recap.html) | ✅ 已完成，按 STYLE.md 编写并实测过交互，测验 15 题 + 14 自评 |
+| M3 内存与存储 | [课一：LPDDR 与内存带宽](./m3-01-lpddr-and-bandwidth.md) · [课二：存储接口](./m3-02-storage-interfaces.md) · [课三：片上存储与启动](./m3-03-onchip-memory-and-boot.md) · [测验](./quiz/m3-recap.html) | ✅ 已完成，按技术写作人员深度校准（删除 SPL/U-Boot/Rank 等实现细节），测验 15 题 + 14 自评 |
 | 配套资源 | [GLOSSARY.md](./GLOSSARY.md) · [quiz/_template.html](./quiz/_template.html) | ✅ GLOSSARY 包含 13 个术语（带宽、内存与存储、虚拟机、RVA23、RVV 1.0、RVH 1.0、IME、SoC、LPDDR5、ISP、VPU、簇、编码压缩比、AFBC），测验模板支持 8 个参数化占位符 |
-| M3 起 | 无 | 待编写 |
+| M4 起 | 无 | 待编写 |
 
 2026-11-18 已删除早期按「一天一份库」写的 `day1-*` ~ `day4-*` 共 13 篇课程和 4 份测验，未经备份，无法恢复。**需要那些内容时按 STYLE.md 重写，不要试图找回旧文件。**
 
@@ -163,6 +164,22 @@ updated: 2026-11-17
 
 15 题（基础与应用 10 + 认陷阱 5）+ 14 条自评。所有 `sai` 均有题目对应，所有题均有 `rv`（部分包含 GLOSSARY 链接），已实测验证。
 
+## M3 内存与存储（2026-11-19 完成）
+
+**三篇课程**：
+- [m3-01-lpddr-and-bandwidth.md](./m3-01-lpddr-and-bandwidth.md)：LPDDR4x（4266 MT/s）vs LPDDR5（6400 MT/s）规格对比、带宽计算（2×4字节×速率）、AI 推理三个瓶颈（算力/带宽/容量）、DFS 动态频率调节
+- [m3-02-storage-interfaces.md](./m3-02-storage-interfaces.md)：eMMC（HS400 400MB/s）vs UFS（全双工 HS-GEAR3）vs SD/MMC（SDR104 104MB/s，可热插拔）vs Quad-SPI（启动固件、XIP 模式），含选型决策树
+- [m3-03-onchip-memory-and-boot.md](./m3-03-onchip-memory-and-boot.md)：Boot ROM（128KB，只读，出厂固化）与 SRAM（512KB，主CPU/RCPU共享），多级启动流程（高层描述），启动模式选择（eMMC/UFS/SD/QSPI/USB/UART），安全启动与 eFuse
+
+**深度校准**：按技术写作人员需求删除实现细节：
+- 删除 Rank（内存模组内部结构）
+- 删除 eMMC/SD 详细速度模式列表（保留最高速度）
+- 删除 SPL/U-Boot/FSBL 多级启动细节（保留高层流程）
+- 删除"LPDDR5 训练（Training）"等工程术语
+
+**测验验证**：
+- JS 语法 ✅、15 题 + 14 自评 ✅、sai 对齐 ✅（0–13 全覆盖）、过时术语清零 ✅
+
 ## 测验模板（2026-11-18 建立）
 
 - `spacemit/study/quiz/_template.html`：骨架已含全部交互（判分、锁定、键盘、内嵌回看原文、三级优先级清单、跨次计数、复制诊断、重做策略）。**新模块只填 `DATA` 数组。**
@@ -170,9 +187,9 @@ updated: 2026-11-17
 - 已用示例数据实测模板：渲染、判分、内嵌片段、优先级清单、复制诊断、localStorage 计数均正常。测试产生的历史已清除。
 - 模板修掉了 M1 里 `DATA[2]` 硬编码自评组位置的隐患，改为 `DATA.find(g => g.type === "自评")`。**M1 仍用旧的硬编码写法，若 M1 的题目分组顺序变动会出错**，暂未回改。
 
-## 后续计划## 后续计划
+## 后续计划
 
-从 M2 开始，按 [ROADMAP.md](./ROADMAP.md) 逐模块编写。每模块 3 篇课 + 1 份三段式测验，遵循 [STYLE.md](./STYLE.md)。
+从 M4 开始，按 [ROADMAP.md](./ROADMAP.md) 逐模块编写。每模块 3 篇课 + 1 份三段式测验，遵循 [STYLE.md](./STYLE.md)。
 
 ## M1 的关键事实（后续课程沿用）
 

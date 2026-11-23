@@ -70,7 +70,7 @@ updated: 2026-11-18
 
 ## 现状
 
-**M1 和 M2 已完成**：
+**M1、M2 和 M3 已完成**：
 
 ### M1：产品概览
 
@@ -90,6 +90,15 @@ updated: 2026-11-18
 | [m2-03-peripherals-overview.md](./m2-03-peripherals-overview.md) | 图像子系统、视频子系统、显示子系统的分工 |
 | [quiz/m2-recap.html](./quiz/m2-recap.html) | 15 道选择题（基础与应用 10 + 认陷阱 5）+ 14 个知识点的分点自评，含错题计数与回看清单 |
 
+### M3：内存与存储
+
+| 文件 | 内容 |
+|---|---|
+| [m3-01-lpddr-and-bandwidth.md](./m3-01-lpddr-and-bandwidth.md) | LPDDR4x/LPDDR5 规格对比、带宽计算公式、AI 推理瓶颈分析、DFS 动态频率调节 |
+| [m3-02-storage-interfaces.md](./m3-02-storage-interfaces.md) | 四种存储接口（eMMC、UFS、SD/MMC、Quad-SPI）的特点、用途和选型原则 |
+| [m3-03-onchip-memory-and-boot.md](./m3-03-onchip-memory-and-boot.md) | Boot ROM、SRAM 用途，多级启动流程（高层），启动模式选择，安全启动 |
+| [quiz/m3-recap.html](./quiz/m3-recap.html) | 15 道选择题（基础与应用 10 + 认陷阱 5）+ 14 个知识点的分点自评，含错题计数与回看清单 |
+
 ### 配套资源
 
 | 文件 | 内容 |
@@ -97,6 +106,6 @@ updated: 2026-11-18
 | [GLOSSARY.md](./GLOSSARY.md) | 术语表：带宽、内存与存储、虚拟机、RVA23、RVV 1.0、RVH 1.0、IME、SoC、LPDDR5、ISP、VPU、簇、编码压缩比、AFBC |
 | [quiz/_template.html](./quiz/_template.html) | 测验模板，用于创建新模块的测验 |
 
-M3 之后的模块按 [ROADMAP.md](./ROADMAP.md) 逐个编写。
+M4 之后的模块按 [ROADMAP.md](./ROADMAP.md) 逐个编写。
 
 早期按「一天一份库」写的 `day1-*` ~ `day4-*` 已全部删除，不再保留。
