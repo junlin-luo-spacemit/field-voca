@@ -47,7 +47,7 @@ K3 使用 4 个 Boot Strap 引脚（GPIO_69、GPIO_68、GPIO_66、GPIO_65）决�
 
 ## 三、固件布局
 
-K3 以 GPT（GUID Partition Table）分区方式组织固件。以 eMMC 为例，典型分区布局：
+K3 以 GPT（GUID Partition Table，标准磁盘分区格式）分区方式组织固件。以 eMMC 为例，典型分区布局：
 
 | 分区 | 偏移/说明 | 内容 |
 |---|---|---|
@@ -67,7 +67,7 @@ K3 以 GPT（GUID Partition Table）分区方式组织固件。以 eMMC 为例�
 ### 进入 U-Boot Fastboot 模式的三种方法
 
 **方法 1：按键组合（无系统时使用）**
-- 按下板子上的 FEL 键 + RESET 键，进入 BROM-Fastboot 模式
+- 按下板子上的 FEL 键 + RESET 键，进入 BROM（Boot ROM）Fastboot 模式
 - 然后通过 PC 加载 FSBL 和 U-Boot，进入 U-Boot Fastboot 模式
 
 **方法 2：ADB 命令（已有系统时使用）**
@@ -81,25 +81,11 @@ adb reboot bootloader
 
 ### 验证连接
 
-进入 Fastboot 模式后，在 PC 执行：
-```
-fastboot devices
-```
-看到设备列出即表示连接成功。
+进入 Fastboot 模式后，在 PC 执行 `fastboot devices`，看到设备列出即表示连接成功。
 
 ### 刷写镜像
 
-以 eMMC 为例，完整刷写顺序：
-```
-fastboot flash gpt partition_universal.json   # 创建 GPT 分区表
-fastboot flash bootinfo factory/bootinfo_block.bin
-fastboot flash fsbl factory/FSBL.bin
-fastboot flash opensbi fw_dynamic.itb
-fastboot flash uboot u-boot.itb
-fastboot flash bootfs bootfs.img
-fastboot flash rootfs rootfs.img
-fastboot reboot
-```
+以 eMMC 为例，完整刷写需要按顺序写入以下内容：GPT 分区表、bootinfo 索引、FSBL、OpenSBI、U-Boot、内核文件系统、根文件系统。每一步通过 `fastboot flash` 命令把对应的文件写入对应的分区，完成后重启设备即可。
 
 ### 卡量产 vs 卡启动
 
