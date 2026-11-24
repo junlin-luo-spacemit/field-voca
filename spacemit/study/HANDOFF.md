@@ -37,7 +37,7 @@ updated: 2026-11-17
 |---|---|---|
 | M1 产品线全景 | [课一：产品系列与命名规律](./m1-01-series-naming.md) · [课二：同一颗芯片的多种形态](./m1-02-form-factors.md) · [课三：读懂规格表里的数字](./m1-03-reading-specs.md) · [测验](./quiz/m1-recap.html) | ✅ 已完成，按 STYLE.md 编写并实测过交互 |
 | M2 芯片架构基础 | [课一：一颗芯片里有什么](./m2-01-chip-subsystems.md) · [课二：CPU 子系统与内存子系统](./m2-02-cpu-and-memory.md) · [课三：外设子系统概览](./m2-03-peripherals-overview.md) · [测验](./quiz/m2-recap.html) | ✅ 已完成，按 STYLE.md 编写并实测过交互，测验 15 题 + 14 自评 |
-| M3 内存与存储 | [课一](./m3-01-memory-hierarchy.md) · [课二](./m3-02-storage-interfaces.md) · [课三](./m3-03-onchip-memory-and-boot.md) · [测验](./quiz/m3-recap.html) | ✅ 已完成并合并到 main |
+| M3 内存与存储 | [课一](./m3-01-lpddr-and-bandwidth.md) · [课二](./m3-02-storage-interfaces.md) · [课三](./m3-03-onchip-memory-and-boot.md) · [测验](./quiz/m3-recap.html) | ✅ 已完成并合并到 main |
 | M4 启动流程 | [课一：启动流程](./m4-01-boot-flow.md) · [课二：启动模式与固件刷写](./m4-02-boot-modes-and-flashing.md) · [课三：安全启动与固件保护](./m4-03-secure-boot-and-opensbi.md) · [测验](./quiz/m4-recap.html) | ✅ 已完成，课文按入门级标准重写，测验已对齐 |
 | 配套资源 | [GLOSSARY.md](./GLOSSARY.md) · [quiz/_template.html](./quiz/_template.html) | ✅ GLOSSARY 包含 13 个术语，测验模板支持 8 个参数化占位符 |
 

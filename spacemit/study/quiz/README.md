@@ -30,22 +30,22 @@ Copy-Item spacemit\study\quiz\_template.html spacemit\study\quiz\m2-recap.html
 
 ### 2. 替换占位符
 
-在文件里全局替换这六处：
+在文件里全局替换这八处：
 
 | 占位符 | 替换成 | 例 |
 |---|---|---|
-| `__MODULE__` | 模块编号 | `M2` |
-| `__MODULE_TITLE__` | 模块主题 | `一颗芯片里有什么` |
-| `__MODULE_KEY__` | 历史存储键（小写、无空格） | `m2` |
-| `__N_BASIC__` | 基础题数量 | `5` |
-| `__N_TRAP__` | 认陷阱数量 | `7` |
-| `__N_SA__` | 自评项数量 | `16` |
-| `__N_TOTAL__` | 选择题总数（基础 + 认陷阱） | `12` |
-| `__LESSON_LINKS__` | 课程链接（HTML） | `\u003ca href="../m2-01-xxx.md"\u003e标题\u003c/a\u003e · …` |
+| `__MODULE__` | 模块编号 | `M3` |
+| `__MODULE_TITLE__` | 模块主题 | `内存与存储` |
+| `__MODULE_KEY__` | 历史存储键（小写、无空格） | `m3` |
+| `__N_BASIC__` | 基础与应用题数量 | `10` |
+| `__N_TRAP__` | 认陷阱数量 | `5` |
+| `__N_SA__` | 自评项数量 | `14` |
+| `__N_TOTAL__` | 选择题总数（基础 + 认陷阱） | `15` |
+| `__LESSON_LINKS__` | 课程链接（HTML） | `<a href="../m3-01-xxx.md">标题</a> · …` |
 
 ### 3. 填写 DATA
 
-三段结构：`一、基础题` → `二、认陷阱` → `三、自评`。
+三段结构：`一、基础与应用` → `二、认陷阱` → `三、自评`。
 
 **每道选择题的字段：**
 
@@ -56,20 +56,26 @@ Copy-Item spacemit\study\quiz\_template.html spacemit\study\quiz\m2-recap.html
 | `opts` | 是 | 四个选项 |
 | `a` | 是 | 正确项下标 0–3 |
 | `e` | 是 | 解析：为什么这个对 |
-| `wrong` | 是 | 逐项说明每个错误选项错在哪，键为下标 |
+| `wrong` | 是 | 逐项说明每个错误选项错在哪，键为下标。可以是字符串，或 `{t: "错误原因", why: "为什么会选这个"}` 对象（有 `why` 时显示误解提示） |
 | `src` | 是 | 库 · 路径 · 章节 |
-| `rv` | 是 | 从课文抽 2–3 句原文（抄，不要改写） |
+| `rv` | 是 | 从课文抽 2–3 句原文（抄，不要改写）。可以包含 HTML 链接指向 GLOSSARY |
 
-**自评项只有一个字段：** `k`（知识点名称）。
+**自评项字段：**
+
+| 字段 | 必填 | 内容 |
+|---|---|---|
+| `k` | 是 | 知识点名称 |
+| `act` | 是 | 具体验证动作，让学习者知道怎么自测这个知识点 |
 
 ### 4. 对齐检查
 
-填完后确认两件事：
+填完后确认三件事：
 
 - **每条自评至少有一道题对应。** 有悬空的就删掉那条自评，或者补一道题。
 - **`sai` 值与自评项下标真的对应。** 最容易错在这里：题号不是自评序号。
+- **`rv` 中的 GLOSSARY 链接格式正确。** 若 `rv` 包含指向 GLOSSARY 的链接，格式为 `<a href='../GLOSSARY.md#术语锚点'>显示文字</a>`，需确认锚点存在于 [GLOSSARY.md](../GLOSSARY.md)。
 
-用这条命令快速核对：
+用这条命令快速核对 `sai` 对齐：
 
 ```powershell
 Select-String -LiteralPath spacemit\study\quiz\m2-recap.html -Pattern 'sai:|k: "'
@@ -88,12 +94,15 @@ Select-String -LiteralPath spacemit\study\quiz\m2-recap.html -Pattern 'sai:|k: "
 - 自评从「懂了」改成「没懂」（清单应重排）
 - 复制诊断摘要
 - 重做（页面清空、历史保留）
+- **答错后 `rv` 片段中的 GLOSSARY 链接可以点击**（确认 `../GLOSSARY.md` 路径正确）
 
 **先清掉测试产生的历史**，否则学习者第一次做会看到"错第 N 次"：
 
 ```javascript
-localStorage.removeItem('spacemit.m2.history')
+localStorage.removeItem('spacemit.m3.history')
 ```
+
+> 注意替换 `m3` 为对应的 `__MODULE_KEY__`。
 
 ## 模板里已经做好的事
 

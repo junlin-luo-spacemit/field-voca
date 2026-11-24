@@ -94,7 +94,7 @@ updated: 2026-11-18
 
 | 文件 | 内容 |
 |---|---|
-| [m3-01-memory-hierarchy.md](./m3-01-memory-hierarchy.md) | 内存层次：SRAM、LPDDR5、eMMC 各自的角色 |
+| [m3-01-lpddr-and-bandwidth.md](./m3-01-lpddr-and-bandwidth.md) | LPDDR5 与带宽：内存速度怎么算、为什么是 AI 的瓶颈 |
 | [m3-02-storage-interfaces.md](./m3-02-storage-interfaces.md) | 四种存储接口：QSPI、eMMC、SD、UFS 各自给谁用 |
 | [m3-03-onchip-memory-and-boot.md](./m3-03-onchip-memory-and-boot.md) | 片上存储与启动：Boot ROM、SRAM 在启动中的作用 |
 | [quiz/m3-recap.html](./quiz/m3-recap.html) | 15 道选择题（基础与应用 10 + 认陷阱 5）+ 14 个知识点的分点自评 |

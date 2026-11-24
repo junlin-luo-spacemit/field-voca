@@ -184,7 +184,10 @@ M1–M6 建议不动，它们是地基。M7 之后可以按团队实际需要调
 | 模块 | 状态 |
 |---|---|
 | M1 产品线全景 | ✅ 已完成：[课一](./m1-01-series-naming.md) · [课二](./m1-02-form-factors.md) · [课三](./m1-03-reading-specs.md) · [测验](./quiz/m1-recap.html) |
-| M2 起 | 待编写 |
+| M2 芯片架构基础 | ✅ 已完成：[课一](./m2-01-chip-subsystems.md) · [课二](./m2-02-cpu-and-memory.md) · [课三](./m2-03-peripherals-overview.md) · [测验](./quiz/m2-recap.html) |
+| M3 内存与存储 | ✅ 已完成：[课一](./m3-01-lpddr-and-bandwidth.md) · [课二](./m3-02-storage-interfaces.md) · [课三](./m3-03-onchip-memory-and-boot.md) · [测验](./quiz/m3-recap.html) |
+| M4 启动流程 | ✅ 已完成：[课一](./m4-01-boot-flow.md) · [课二](./m4-02-boot-modes-and-flashing.md) · [课三](./m4-03-secure-boot-and-opensbi.md) · [测验](./quiz/m4-recap.html) |
+| M5 起 | 待编写 |
 
 早期按「一天一份库」写的 `day1-*` ~ `day4-*` 共 13 篇课程和 4 份测验已于 2026-11-18 删除，不再保留。需要旧内容时按 M1 的写法重写，不要从已删文件恢复。
 

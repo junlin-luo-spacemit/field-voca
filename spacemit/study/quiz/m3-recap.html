@@ -1,0 +1,1087 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SpacemiT M3 测验 · 内存与存储</title>
+<style>
+  :root {
+    --bg: #0f1115;
+    --panel: #171a21;
+    --panel-2: #1e222b;
+    --border: #2c3240;
+    --text: #e4e7ee;
+    --text-dim: #9aa3b4;
+    --accent: #4d9dff;
+    --ok: #2ecc8f;
+    --ok-bg: rgba(46, 204, 143, 0.12);
+    --bad: #ff5f6d;
+    --bad-bg: rgba(255, 95, 109, 0.12);
+    --warn: #e8b339;
+    --warn-bg: rgba(232, 179, 57, 0.1);
+    --src: #8b93a7;
+  }
+  @media (prefers-color-scheme: light) {
+    :root {
+      --bg: #f5f6f9;
+      --panel: #ffffff;
+      --panel-2: #f0f2f6;
+      --border: #dce0e8;
+      --text: #1c2029;
+      --text-dim: #666f80;
+      --accent: #1f6feb;
+      --ok: #1a8f5f;
+      --ok-bg: rgba(26, 143, 95, 0.09);
+      --bad: #d92d3c;
+      --bad-bg: rgba(217, 45, 60, 0.08);
+      --warn: #a97c10;
+      --warn-bg: rgba(169, 124, 16, 0.09);
+      --src: #7a8296;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; padding: 32px 20px 80px;
+    background: var(--bg); color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft YaHei", sans-serif;
+    line-height: 1.7; font-size: 15px;
+  }
+  .wrap { max-width: 860px; margin: 0 auto; }
+
+  header { margin-bottom: 26px; }
+  h1 { font-size: 23px; margin: 0 0 8px; letter-spacing: -0.01em; }
+  .sub { color: var(--text-dim); font-size: 13.5px; margin: 0; }
+
+  .bar {
+    position: sticky; top: 0; z-index: 20;
+    display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
+    padding: 11px 16px; margin: 0 -16px 22px;
+    background: color-mix(in srgb, var(--bg) 90%, transparent);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border);
+  }
+  .bar .stat { font-size: 13px; color: var(--text-dim); }
+  .bar .stat b { color: var(--text); font-variant-numeric: tabular-nums; }
+  .bar .spacer { flex: 1; }
+  .btn {
+    font: inherit; font-size: 13px; cursor: pointer;
+    padding: 6px 14px; border-radius: 7px;
+    border: 1px solid var(--border);
+    background: var(--panel-2); color: var(--text);
+    transition: border-color .15s;
+  }
+  .btn:hover { border-color: var(--accent); }
+  .btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  .progress-track {
+    height: 3px; background: var(--border); border-radius: 2px;
+    width: 100%; overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%; width: 0%;
+    background: var(--accent); transition: width .25s ease;
+  }
+
+  h2.group {
+    font-size: 12.5px; letter-spacing: .09em;
+    color: var(--text-dim); font-weight: 600;
+    margin: 34px 0 6px; padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+  .group-note {
+    font-size: 13px; color: var(--text-dim);
+    margin: 0 0 16px; padding-left: 2px;
+  }
+
+  .q {
+    background: var(--panel); border: 1px solid var(--border);
+    border-radius: 11px; padding: 18px 20px; margin-bottom: 13px;
+    transition: border-color .2s;
+  }
+  .q.answered-correct { border-color: color-mix(in srgb, var(--ok) 50%, var(--border)); }
+  .q.answered-wrong { border-color: color-mix(in srgb, var(--bad) 50%, var(--border)); }
+
+  .q-head { display: flex; gap: 10px; margin-bottom: 15px; }
+  .q-num {
+    flex: 0 0 auto; width: 26px; height: 26px; border-radius: 7px;
+    background: var(--panel-2); border: 1px solid var(--border);
+    display: grid; place-items: center;
+    font-size: 12.5px; font-weight: 600; color: var(--text-dim);
+    font-variant-numeric: tabular-nums;
+  }
+  .q.answered-correct .q-num { background: var(--ok-bg); color: var(--ok); border-color: transparent; }
+  .q.answered-wrong .q-num { background: var(--bad-bg); color: var(--bad); border-color: transparent; }
+  .q-text { font-size: 15px; font-weight: 500; padding-top: 1px; }
+  .q-type {
+    font-size: 11px; font-weight: 600; padding: 1px 7px;
+    border-radius: 20px; margin-left: 8px; vertical-align: 1px;
+    background: var(--panel-2); color: var(--text-dim);
+    border: 1px solid var(--border);
+  }
+
+  .opts { display: flex; flex-direction: column; gap: 7px; }
+  .opt {
+    display: flex; flex-direction: column; gap: 0;
+    padding: 11px 13px; border-radius: 8px;
+    border: 1px solid var(--border); background: var(--panel-2);
+    cursor: pointer; user-select: none;
+    transition: border-color .12s, background .12s;
+  }
+  .opt:hover:not(.locked) { border-color: var(--accent); }
+  .opt:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .opt.locked { cursor: default; }
+  .opt-main {
+    display: flex; align-items: flex-start; gap: 11px;
+  }
+  .opt .key {
+    flex: 0 0 auto; width: 21px; height: 21px; border-radius: 5px;
+    display: grid; place-items: center;
+    font-size: 11.5px; font-weight: 700;
+    background: var(--bg); color: var(--text-dim);
+    border: 1px solid var(--border); margin-top: 2px;
+  }
+  .opt .label { flex: 1; font-size: 14px; }
+  .opt-why {
+    margin-top: 8px; padding: 8px 11px; margin-left: 32px;
+    background: var(--panel); border-left: 2px solid var(--accent);
+    font-size: 12.5px; font-style: italic;
+    color: var(--text-dim); border-radius: 0 4px 4px 0;
+  }
+
+  .opt.is-correct { border-color: var(--ok); background: var(--ok-bg); }
+  .opt.is-correct .key { background: var(--ok); color: #fff; border-color: var(--ok); }
+  .opt.is-wrong { border-color: var(--bad); background: var(--bad-bg); }
+  .opt.is-wrong .key { background: var(--bad); color: #fff; border-color: var(--bad); }
+  .opt.dimmed { opacity: .5; }
+
+  .feedback {
+    margin-top: 14px; display: none;
+    border-left: 3px solid var(--accent);
+    padding-left: 0;
+  }
+  .feedback.show { display: block; }
+  .fb-verdict {
+    font-size: 13px; font-weight: 600;
+    padding: 4px 0 8px;
+  }
+  .fb-verdict.ok { color: var(--ok); }
+  .fb-verdict.bad { color: var(--bad); }
+  .fb-body {
+    background: var(--panel-2); border-radius: 0 8px 8px 0;
+    padding: 12px 15px; font-size: 13.5px; color: var(--text-dim);
+  }
+  .fb-body b { color: var(--text); font-weight: 600; }
+  .fb-body ul { margin: 6px 0 0; padding-left: 19px; }
+  .fb-body li { margin-bottom: 4px; }
+  .fb-src {
+    margin-top: 10px; padding-top: 9px;
+    border-top: 1px dashed var(--border);
+    font-size: 12.5px; color: var(--src);
+    font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+    word-break: break-all;
+  }
+
+  /* self-assessment */
+  .sa {
+    background: var(--panel); border: 1px solid var(--border);
+    border-radius: 11px; padding: 6px 20px 18px; margin-bottom: 13px;
+  }
+  .sa-row {
+    display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+    padding: 13px 0; border-bottom: 1px solid var(--border);
+  }
+  .sa-row:last-child { border-bottom: none; }
+  .sa-label { flex: 1 1 260px; font-size: 14px; }
+  .sa-opts { display: flex; gap: 6px; }
+  .sa-btn {
+    font: inherit; font-size: 12.5px; cursor: pointer;
+    padding: 4px 12px; border-radius: 20px;
+    border: 1px solid var(--border);
+    background: transparent; color: var(--text-dim);
+    transition: all .15s;
+  }
+  .sa-btn:hover { border-color: var(--text-dim); color: var(--text); }
+  .sa-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .sa-btn[aria-pressed="true"][data-v="ok"] { border-color: var(--ok); background: var(--ok-bg); color: var(--ok); }
+  .sa-btn[aria-pressed="true"][data-v="q"] { border-color: var(--warn); background: var(--warn-bg); color: var(--warn); }
+  .sa-btn[aria-pressed="true"][data-v="no"] { border-color: var(--bad); background: var(--bad-bg); color: var(--bad); }
+
+  .result {
+    display: none; margin-top: 30px; padding: 24px;
+    background: var(--panel); border: 1px solid var(--border);
+    border-radius: 13px;
+  }
+  .result.show { display: block; }
+  .result .big {
+    font-size: 40px; font-weight: 700; letter-spacing: -0.02em;
+    font-variant-numeric: tabular-nums; line-height: 1.15;
+  }
+  .result .big small { font-size: 16px; font-weight: 500; color: var(--text-dim); }
+  .result .tier { font-size: 14.5px; margin-top: 6px; }
+  .result .brk {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 10px; margin-top: 18px;
+  }
+  .brk-item {
+    background: var(--panel-2); border: 1px solid var(--border);
+    border-radius: 9px; padding: 11px 14px;
+  }
+  .brk-item .n { font-size: 12px; color: var(--text-dim); }
+  .brk-item .v { font-size: 17px; font-weight: 600; font-variant-numeric: tabular-nums; margin-top: 2px; }
+  .review-hint {
+    margin-top: 18px; padding: 14px 16px;
+    background: var(--warn-bg); border-left: 3px solid var(--warn);
+    border-radius: 0 8px 8px 0; font-size: 13.5px;
+  }
+  .review-hint b { color: var(--text); }
+
+  .revisit { margin-top: 18px; }
+  .revisit h3 {
+    font-size: 12.5px; text-transform: uppercase; letter-spacing: .08em;
+    color: var(--text-dim); font-weight: 600;
+    margin: 0 0 12px; padding-bottom: 7px;
+    border-bottom: 1px solid var(--border);
+  }
+  .rv-item {
+    background: var(--panel-2); border: 1px solid var(--border);
+    border-radius: 9px; padding: 13px 15px; margin-bottom: 9px;
+    border-left: 3px solid var(--border);
+  }
+  .rv-item.p1 { border-left-color: var(--bad); }
+  .rv-item.p2 { border-left-color: var(--warn); }
+  .rv-item.p3 { border-left-color: var(--accent); }
+  .rv-head {
+    display: flex; align-items: baseline; gap: 9px; flex-wrap: wrap;
+    font-size: 13.5px; margin-bottom: 8px;
+  }
+  .rv-badge {
+    font-size: 11px; font-weight: 600; padding: 1px 8px;
+    border-radius: 20px; white-space: nowrap;
+  }
+  .rv-badge.bad { background: var(--bad-bg); color: var(--bad); }
+  .rv-badge.warn { background: var(--warn-bg); color: var(--warn); }
+  .rv-badge.info { background: var(--accent); color: #fff; background: var(--ok-bg); color: var(--ok); }
+  .rv-title { flex: 1 1 200px; font-weight: 500; }
+  .rv-count { font-size: 12px; color: var(--text-dim); white-space: nowrap; }
+  .rv-rewrite {
+    margin-top: 7px; padding: 6px 10px; font-size: 12.5px;
+    background: var(--bad-bg); color: var(--bad);
+    border-radius: 6px; font-weight: 500;
+  }
+  .rv-snippet {
+    font-size: 13px; color: var(--text); line-height: 1.65;
+    background: var(--panel); padding: 10px 12px;
+    border-radius: 6px; margin-top: 7px;
+  }
+  .rv-act {
+    font-size: 13px; color: var(--text-dim); line-height: 1.65;
+    padding: 9px 12px; margin-top: 7px;
+    background: var(--panel); border-left: 2px solid var(--accent);
+    border-radius: 0 6px 6px 0;
+  }
+  .rv-act::before {
+    content: '✓ ';
+    color: var(--accent);
+    font-weight: 600;
+  }
+  }
+  .rv-snippet::before {
+    content: "回看这段"; display: block;
+    font-size: 11px; font-weight: 600; letter-spacing: .05em;
+    color: var(--text-dim); margin-bottom: 5px;
+  }
+
+  .diag-actions { display: flex; gap: 8px; margin-top: 16px; flex-wrap: wrap; align-items: center; }
+  .diag-actions .btn.primary {
+    border-color: var(--accent); color: var(--accent);
+  }
+  .copy-note { font-size: 12.5px; color: var(--ok); display: none; }
+  .copy-note.show { display: inline; }
+
+  footer {
+    margin-top: 38px; padding-top: 18px;
+    border-top: 1px solid var(--border);
+    font-size: 12.5px; color: var(--text-dim);
+  }
+  footer a { color: var(--accent); text-decoration: none; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <h1>M3 测验 · 内存与存储</h1>
+    <p class="sub">基础题 10 · 认陷阱 5 · 自评 14 个知识点 — 全部点选，不用写字</p>
+  </header>
+
+  <div class="bar">
+    <span class="stat">已答 <b id="s-answered">0</b>/15</span>
+    <span class="stat">正确 <b id="s-correct">0</b></span>
+    <span class="stat">正确率 <b id="s-rate">—</b></span>
+    <span class="spacer"></span>
+    <button class="btn" id="btn-reset">重做</button>
+  </div>
+
+  <div class="progress-track"><div class="progress-fill" id="prog"></div></div>
+
+  <div id="quiz"></div>
+
+  <div class="result" id="result">
+    <div class="big"><span id="r-score">0</span><small> / 15</small></div>
+    <div class="tier" id="r-tier"></div>
+    <div class="brk" id="r-brk"></div>
+    <div class="revisit" id="r-revisit"></div>
+    <div class="review-hint" id="r-hint"></div>
+    <div class="diag-actions">
+      <button class="btn primary" id="btn-copy">复制诊断摘要</button>
+      <span class="copy-note" id="copy-note">已复制，可直接粘贴给助教</span>
+    </div>
+  </div>
+
+  <footer>
+    课程：<a href="../m3-01-lpddr-and-bandwidth.md">LPDDR 与内存带宽</a> · <a href="../m3-02-storage-interfaces.md">存储接口：eMMC、UFS、SD 和 QSPI</a> · <a href="../m3-03-onchip-memory-and-boot.md">片上存储与启动流程</a><br>
+    规范：<a href="../STYLE.md">STYLE.md</a> · 路线：<a href="../ROADMAP.md">ROADMAP.md</a>
+  </footer>
+
+</div>
+
+<script>
+
+
+/* ==========================================================================
+   测验模板 · 只改这一段
+   ==========================================================================
+   用法：
+     1. 复制本文件为 <模块>-recap.html，例如 m2-recap.html
+     2. 替换下方 M3 / 内存与存储 / m3 / 计数占位符
+     3. 填 DATA：每模块 3 段（基础题 / 认陷阱 / 自评），共 12–15 题
+     4. 逐条过 STYLE.md 第二部分检查清单
+     5. 按 STYLE.md「交付前必须实测的场景」跑一遍
+
+   字段说明（每道题）：
+     q      题干。一句话，不绕。
+     sai    这道题对应第几条自评（从 0 开始）。
+            必须真的对得上——不能按题号猜。
+     opts   四个选项。长度接近、结构一致、每项都是真实存在的误解。
+     a      正确选项下标（0–3）。
+     e      解析。为什么对，并说明正确项为什么成立。
+     wrong  逐项解释每个错误选项错在哪。键为下标。
+     src    来源，写到章节号。格式：库 · 路径 · 章节
+     rv     回看原文。从课文抽 2–3 句，正好解决这题。
+            必须是课文里真实存在的句子，不能现场改写。
+
+   自评项（SA）：
+     k      知识点名称。每条必须至少有一道题对应，否则删掉这条。
+   ========================================================================== */
+
+const DATA = [
+  { group: "一、基础与应用", note: "每题只有一项正确。覆盖三课：LPDDR 与带宽、存储接口、片上存储与启动。选完立即显示答案、解析和来源。", type: "单选", items: [
+    {
+      q: "K3 支持哪两种外部内存类型？",
+      sai: 0,
+      opts: [
+        "DDR4 和 DDR5",
+        "LPDDR4x 和 LPDDR5",
+        "LPDDR5 和 HBM2",
+        "LPDDR4 和 LPDDR4x"
+      ],
+      a: 1,
+      e: "K3 支持 LPDDR4x（最高 4266 MT/s）和 LPDDR5（最高 6400 MT/s）两种外部内存类型。DDR4/DDR5 是桌面和服务器内存，不是 K3 支持的类型。HBM2 是高端 GPU 使用的内存，K3 不支持。",
+      wrong: {
+        0: { t: "DDR4/DDR5 是桌面和服务器内存，K3 是嵌入式 SoC，使用低功耗的 LPDDR 系列。", why: "看到「内存」会联想到电脑常用的 DDR4/DDR5" },
+        2: "HBM2（High Bandwidth Memory）是高端 GPU 的内存，成本极高，不用于嵌入式 SoC。",
+        3: "LPDDR4（非 4x）不在 K3 的支持列表中，K3 支持的是 LPDDR4x 和 LPDDR5。"
+      },
+      src: "docs-chip · key_stone/k3/k3_docs/k3_ds.md · 2.2.2 LPDDR4x/5",
+      rv: "K3 支持 LPDDR4x 与 LPDDR5 内存类型：LPDDR4x 最高数据速率 4266 MT/s；LPDDR5 最高数据速率 6400 MT/s。"
+    },
+    {
+      q: "K3 的 LPDDR5 理论带宽是多少？",
+      sai: 1,
+      opts: [
+        "25.6 GB/s",
+        "34.1 GB/s",
+        "51.2 GB/s",
+        "102.4 GB/s"
+      ],
+      a: 2,
+      e: "LPDDR5 理论带宽 = 2 通道 × 32 位 × 6400 MT/s = 2 × 4 字节 × 6400 = 51.2 GB/s。25.6 GB/s 是单通道带宽，34.1 GB/s 是 LPDDR4x 的带宽，102.4 GB/s 是把位宽算成字节的结果。",
+      wrong: {
+        0: { t: "25.6 GB/s 是单通道带宽。K3 是双通道，要乘以 2。", why: "忘记乘以通道数" },
+        1: "34.1 GB/s 是 LPDDR4x（4266 MT/s）的带宽，不是 LPDDR5 的带宽。",
+        3: "这是把 32 位当成 32 字节计算了。32 位 = 4 字节，不是 32 字节。"
+      },
+      src: "docs-chip · key_stone/k3/k3_docs/k3_ds.md · 2.2.2 LPDDR4x/5",
+      rv: "LPDDR5 双通道架构，每通道 32 位数据宽度，最高数据速率 6400 MT/s。理论带宽为：2 通道 × 32 位 × 6400 MT/s = 2 × 4 字节 × 6400 = 51.2 GB/s。"
+    },
+    {
+      q: "eMMC 和 UFS 最核心的区别是什么？",
+      sai: 2,
+      opts: [
+        "eMMC 更快，UFS 更慢",
+        "eMMC 可以热插拔，UFS 不可以",
+        "eMMC 是并行接口，UFS 是串行全双工接口",
+        "eMMC 用于主存储，UFS 只用于启动"
+      ],
+      a: 2,
+      e: "eMMC 使用并行总线，读写不能同时进行；UFS 使用串行差分接口，支持全双工（读写同时进行），因此 UFS 吞吐量更高。两者都可以用于主存储，不可热插拔。",
+      wrong: {
+        0: { t: "UFS 比 eMMC 更快，不是更慢。UFS 支持全双工并发，eMMC 不支持。", why: "看到 eMMC 是老技术会以为更快" },
+        1: "eMMC 和 UFS 都是直接焊在板上的，都不可热插拔。SD 卡才是可热插拔的。",
+        3: "eMMC 和 UFS 都可以用于主存储，也都支持从中启动系统。"
+      },
+      src: "docs-chip · key_stone/k3/k3_docs/k3_ds.md · 2.2.4 eMMC 接口 / 2.2.6 UFS 接口",
+      rv: "eMMC 接口：符合 8 位 eMMC 5.1 规范，HS400 模式最高 400 MB/s。UFS 接口：符合 JEDEC UFS 2.2 规范，支持串行全双工通信，最多 2 TX + 2 RX 通道。"
+    },
+    {
+      q: "Quad-SPI 接口的主要用途是什么？",
+      sai: 3,
+      opts: [
+        "存储操作系统和应用程序",
+        "高速视频数据传输",
+        "存储启动固件和配置文件",
+        "扩展用户数据存储"
+      ],
+      a: 2,
+      e: "Quad-SPI 是低速串行接口，时钟频率 13.25-102 MHz，容量小（几 MB 到几十 MB），主要用于存储 Bootloader 等启动固件。支持 XIP 模式，CPU 可以直接在 Flash 上执行代码。",
+      wrong: {
+        0: { t: "操作系统和应用程序需要几十 GB 的空间，Quad-SPI Flash 容量通常只有几 MB，不够用。", why: "看到「存储」会以为可以存系统" },
+        1: "Quad-SPI 速度慢，不适合高速数据传输。视频数据通常存在 eMMC 或 UFS 中。",
+        3: "扩展用户数据存储通常使用 SD 卡，容量更大，可热插拔。"
+      },
+      src: "docs-chip · key_stone/k3/k3_docs/k3_ds.md · 2.2.3 Quad-SPI",
+      rv: "Quad-SPI 接口用于 SoC 与外部串行 Flash 存储器之间的通信。支持 XIP（Execute-In-Place）模式与 Page 模式。时钟频率范围：13.25 MHz 至 102 MHz。"
+    },
+    {
+      q: "SD/MMC 接口最高支持哪种速度模式？",
+      sai: 4,
+      opts: [
+        "高速模式：25 MB/s",
+        "SDR50：100 MHz 时钟",
+        "SDR104：208 MHz 时钟，对应约 104 MB/s",
+        "DDR50：50 MHz 时钟"
+      ],
+      a: 2,
+      e: "K3 的 SD/MMC 接口符合 SD 3.0 UHS-I 规范，最高速度模式是 SDR104（时钟频率 208 MHz），对应约 104 MB/s 的数据速率。",
+      wrong: {
+        0: { t: "高速模式 25 MB/s 是较早的速度等级，SD 3.0 UHS-I 规范已支持更高速度。", why: "记住了早期 SD 卡的速度" },
+        1: "SDR50 时钟频率 100 MHz，不是最高的速度模式。SDR104（208 MHz）更高。",
+        3: "DDR50 时钟 50 MHz，低于 SDR104，不是最高速度模式。"
+      },
+      src: "docs-chip · key_stone/k3/k3_docs/k3_ds.md · 2.2.5 SD/MMC 接口",
+      rv: "K3 的 SD/MMC 接口符合 4 位 SD 3.0 UHS-I 规范。支持速度模式：SDR104（时钟频率高达 208 MHz，信号电压 1.8 V）为最高速度模式。"
+    },
+    {
+      q: "K3 的 Boot ROM 有多大？存放什么内容？",
+      sai: 5,
+      opts: [
+        "512 KB，存放操作系统内核",
+        "128 KB，存放一级引导代码",
+        "4 MB，存放引导程序",
+        "1 GB，存放完整系统镜像"
+      ],
+      a: 1,
+      e: "Boot ROM 是 128 KB 的只读存储器，出厂固化，存放最初的一级引导代码。它支持从多种介质（eMMC、UFS、SD、QSPI、USB、UART）启动，并支持安全启动。",
+      wrong: {
+        0: { t: "512 KB 是 SRAM 的容量，不是 Boot ROM。Boot ROM 是 128 KB。", why: "混淆了 Boot ROM 和 SRAM 的容量" },
+        2: "引导程序通常有几百 KB 到几 MB，放不进 128 KB 的 Boot ROM。引导程序存放在 eMMC 或 QSPI Flash 中。",
+        3: "Boot ROM 只有 128 KB，放不下 1 GB 的系统镜像。完整系统镜像存在 eMMC 或 UFS 中。"
+      },
+      src: "docs-chip · key_stone/k3/k3_docs/k3_ds.md · 2.2.1 片上存储",
+      rv: "K3 集成了：128 KB Boot ROM，用于存放一级引导代码，支持从多种外部介质启动，并支持基于 eFuse 的安全启动。"
+    },
+    {
+      q: "K3 片上 SRAM 的用途是什么？",
+      sai: 6,
+      opts: [
+        "永久存储用户数据",
+        "存放操作系统内核",
+        "主 CPU 和 RCPU 共享，用于启动早期的临时数据和代码",
+        "存放视频编解码缓冲区"
+      ],
+      a: 2,
+      e: "K3 有 512 KB 片上 SRAM，由主 CPU（X100/A100）和实时核（RCPU）共享使用。上电后立即可用，不需要初始化，主要用于启动早期的临时数据和代码（LPDDR5 未就绪前）。",
+      wrong: {
+        0: { t: "SRAM 是易失性存储，断电后数据丢失，不能用于永久存储。", why: "看到「存储」会以为可以永久保存" },
+        1: "操作系统内核通常有几十 MB，512 KB 的 SRAM 放不下。内核加载后运行在 LPDDR5 中。",
+        3: "视频编解码缓冲区需要大量内存（几十 MB 到几 GB），512 KB 的 SRAM 完全不够。"
+      },
+      src: "docs-chip · key_stone/k3/k3_docs/k3_ds.md · 2.2.1 片上存储",
+      rv: "K3 集成了：512 KB SRAM，由主 CPU 与 RCPU 共享使用。"
+    },
+    {
+      q: "为什么 SoC 需要多级引导（Multi-stage Boot）？",
+      sai: 7,
+      opts: [
+        "为了让系统启动更慢，增加安全性",
+        "Boot ROM 容量小（128 KB），且 LPDDR5 需要训练才能使用",
+        "Linux 内核不支持直接从 Flash 启动",
+        "多级引导是法规要求，不是技术需求"
+      ],
+      a: 1,
+      e: "多级引导是因为：Boot ROM 只有 128 KB，放不下完整的 Bootloader 和操作系统；LPDDR5 在上电后需要初始化才能使用，而初始化代码需要先运行在片上 SRAM 中。",
+      wrong: {
+        0: { t: "多级引导不是为了让启动变慢，而是因为容量和初始化顺序的技术限制。", why: "把安全性和启动速度混淆" },
+        2: "Linux 内核可以从外部存储启动，但 128 KB 的 Boot ROM 放不下内核，需要多阶段加载。",
+        3: "多级引导是纯粹的技术需求，由存储容量限制和内存初始化顺序决定。"
+      },
+      src: "docs-chip · key_stone/k3/k3_docs/k3_ds.md · 2.2.1 片上存储",
+      rv: "Boot ROM 128 KB，用于存放一级引导代码，支持从多种外部介质启动。512 KB SRAM 由主 CPU 与 RCPU 共享使用，启动早期 LPDDR5 未初始化时使用。"
+    },
+    {
+      q: "DFS（Dynamic Frequency Scaling）在内存中的作用是什么？",
+      sai: 8,
+      opts: [
+        "提高内存的最高频率上限",
+        "根据带宽需求实时调整内存频率，在低负载时节省功耗",
+        "自动检测并修复内存错误",
+        "在多个内存通道之间均衡负载"
+      ],
+      a: 1,
+      e: "DFS（动态频率调节）允许内存控制器根据当前的带宽需求实时调整运行频率。高负载时运行在最高频率，低负载时降频以节省功耗。这对移动和嵌入式设备非常重要。",
+      wrong: {
+        0: { t: "DFS 是调节频率，不是提高上限。最高频率由芯片规格决定。", why: "看到「调节」会以为是提升上限" },
+        2: "DFS 是频率调节功能，不是错误检测或修复功能。内存错误纠正由 ECC 负责。",
+        3: "负载均衡是多通道架构本身的特性，不是 DFS 的功能。"
+      },
+      src: "docs-chip · key_stone/k3/k3_docs/k3_ds.md · 2.2.2 LPDDR4x/5",
+      rv: "支持动态频率调节（DFS），可根据带宽需求实时调整频率以优化功耗。"
+    },
+    {
+      q: "K3 的 UFS 接口最多支持多少条通道？",
+      sai: 9,
+      opts: [
+        "1 TX + 1 RX（半双工）",
+        "2 TX + 2 RX（全双工）",
+        "4 TX + 4 RX",
+        "8 位并行通道"
+      ],
+      a: 1,
+      e: "K3 的 UFS 接口在高速模式（HS-GEAR3）下支持最多 2 TX + 2 RX 通道，实现全双工通信（读写同时进行）。这也是 UFS 比 eMMC 更快的原因之一。",
+      wrong: {
+        0: { t: "UFS 支持全双工，可以同时有 2 TX 和 2 RX，不是半双工。", why: "对 UFS 全双工特性不熟悉" },
+        2: "K3 的 UFS 接口最多 2 TX + 2 RX，不是 4 条。",
+        3: "8 位并行是 eMMC 的接口，不是 UFS。UFS 是串行接口。"
+      },
+      src: "docs-chip · key_stone/k3/k3_docs/k3_ds.md · 2.2.6 UFS 接口",
+      rv: "UFS 通过串行接口支持最多 2 条通道，提供 2 路发送（TX）和 2 路接收（RX），实现全双工通信。支持高速模式（HS-GEAR3）与低速模式（PWM-GEAR1）。"
+    }
+  ]},
+
+  { group: "二、认陷阱", note: "下面每题都有一句话是错的，或有一个数字被误读。四项都像真的，请挑出正确的那项。", type: "单选", items: [
+    {
+      q: "关于 LPDDR5 与 AI 推理性能，哪个表述成立？",
+      sai: 12,
+      opts: [
+        "换成 LPDDR5 后 AI 推理一定比 LPDDR4x 快",
+        "LPDDR5 带宽更高，但 AI 是否变快取决于瓶颈在哪里",
+        "LPDDR5 速率是 LPDDR4x 的两倍，AI 性能也是两倍",
+        "LPDDR5 只影响内存带宽，对 AI 推理没有任何影响"
+      ],
+      a: 1,
+      e: "LPDDR5 带宽（51.2 GB/s）高于 LPDDR4x（34.1 GB/s），但 AI 推理性能取决于算力、带宽、容量三者中最紧的那个。如果模型本身受算力限制，换更快的内存不会有帮助。",
+      wrong: {
+        0: { t: "带宽提升只在带宽是瓶颈时才有效。如果 AI 推理受算力限制，换 LPDDR5 没有明显效果。", why: "看到规格更高会以为性能一定更好" },
+        2: "LPDDR5 速率约是 LPDDR4x 的 1.5 倍（6400/4266≈1.5），即使全部是带宽瓶颈，AI 性能也不可能是两倍。",
+        3: "LPDDR5 对 AI 推理有影响——当 AI 推理是带宽瓶颈时，更高的带宽会明显提升性能。"
+      },
+      src: "docs-chip · key_stone/k3/k3_docs/k3_ds.md · 2.2.2 LPDDR4x/5",
+      rv: "LPDDR4x 最高数据速率：4266 MT/s；LPDDR5 最高数据速率：6400 MT/s。理论带宽分别约 34.1 GB/s 和 51.2 GB/s。AI 推理速度取决于算力、带宽、容量三者中最紧的那个。"
+    },
+    {
+      q: "关于 eMMC HS400 模式，哪个表述成立？",
+      sai: 2,
+      opts: [
+        "HS400 是 eMMC 的最慢模式，用于省电",
+        "HS400 最高 400 MB/s，是 eMMC 5.1 的最高速度模式",
+        "HS400 比 UFS HS-GEAR3 更快",
+        "HS400 需要 SD 卡插槽才能使用"
+      ],
+      a: 1,
+      e: "HS400 是 eMMC 5.1 规范定义的最高速度模式，最高带宽 400 MB/s。比 HS400 低的模式还有 HS200（200 MB/s）等，从低到高逐渐提升。",
+      wrong: {
+        0: { t: "HS400 是最快的模式，不是最慢的。", why: "看到「400」会以为是高数值对应低速" },
+        2: "UFS HS-GEAR3 的速度高于 eMMC HS400，这也是 UFS 比 eMMC 更适合高性能场景的原因。",
+        3: "HS400 是 eMMC 内部速度模式，与 SD 卡插槽无关。eMMC 是直接焊在板上的。"
+      },
+      src: "docs-chip · key_stone/k3/k3_docs/k3_ds.md · 2.2.4 eMMC 接口",
+      rv: "eMMC 5.1 定义的速度模式：HS400（带宽高达 400 MB/s，信号电压 1.8 V）为最高速度模式。"
+    },
+    {
+      q: "关于安全启动（Secure Boot），哪个表述成立？",
+      sai: 11,
+      opts: [
+        "安全启动会降低系统启动速度，不建议在量产设备上使用",
+        "安全启动基于 eFuse 存储公钥哈希，逐级验证每个引导阶段的签名",
+        "安全启动只验证操作系统内核，不验证 Bootloader",
+        "安全启动需要网络连接才能验证签名"
+      ],
+      a: 1,
+      e: "K3 支持基于 eFuse 的安全启动。eFuse 中存储公钥哈希值，出厂后不可修改。每个引导阶段都验证下一阶段的签名，确保代码没有被篡改，启动失败时停止运行。",
+      wrong: {
+        0: { t: "安全启动对启动速度影响很小（验证时间通常在毫秒级），量产设备通常都会开启安全启动。", why: "认为验证会显著增加时间" },
+        2: "安全启动从 Boot ROM 开始，逐级验证每个阶段，不只验证内核。",
+        3: "安全启动是本地验证，使用 eFuse 中存储的公钥哈希，不需要网络连接。"
+      },
+      src: "docs-chip · key_stone/k3/k3_docs/k3_ds.md · 2.2.1 片上存储",
+      rv: "Boot ROM：用于存放一级引导代码，支持从多种外部介质启动，并支持通过 USB 与 UART 下载程序；支持基于 eFuse 的安全启动。"
+    },
+    {
+      q: "关于 SD 卡和 eMMC 的区别，哪个表述成立？",
+      sai: 10,
+      opts: [
+        "SD 卡比 eMMC 速度更快",
+        "eMMC 和 SD 卡都支持热插拔",
+        "SD 卡可以热插拔，eMMC 焊死在板上不可更换",
+        "eMMC 和 SD 卡使用相同的物理接口"
+      ],
+      a: 2,
+      e: "SD 卡的核心优势是可以热插拔和用户更换，适合扩展存储、现场升级、数据采集。eMMC 直接焊在 PCB 上，不可热插拔，但可靠性更高，适合量产设备的主存储。",
+      wrong: {
+        0: { t: "eMMC HS400（400 MB/s）通常比 SD 卡 SDR104（104 MB/s）快。SD 卡的优势不在速度，在于可热插拔。", why: "认为 SD 卡速度也很快" },
+        1: "eMMC 焊死在板上，不支持热插拔；只有 SD 卡支持热插拔。",
+        3: "eMMC 是 8 位并行接口，SD 卡通常是 4 位并行接口，物理接口不同。"
+      },
+      src: "docs-chip · key_stone/k3/k3_docs/k3_ds.md · 2.2.4 eMMC 接口 / 2.2.5 SD/MMC 接口",
+      rv: "eMMC 接口：符合 8 位 eMMC 5.1 规范。SD/MMC 接口：符合 4 位 SD 3.0 UHS-I 规范，通过 GPIO 模式支持卡插拔检测。"
+    },
+    {
+      q: "关于 K3 内存容量，哪个表述成立？",
+      sai: 13,
+      opts: [
+        "K3 最大支持 64 GB LPDDR5",
+        "K3 的内存容量由 Boot ROM 决定",
+        "K3 最大寻址空间 32 GB，实际产品可以配置更少",
+        "K3 只支持 8 GB 内存，更多容量需要外接扩展卡"
+      ],
+      a: 2,
+      e: "K3 的 LPDDR 控制器最大寻址空间为 32 GB，这是芯片能支持的上限。实际产品会根据成本和应用场景选择更小的容量（如 4 GB、8 GB、16 GB）。",
+      wrong: {
+        0: { t: "K3 最大寻址空间是 32 GB，不是 64 GB。这是芯片规格的上限。", why: "对 32 GB 上限记忆不准确" },
+        1: "Boot ROM 是启动代码存储，与内存容量无关。内存容量由 LPDDR 控制器规格和实际配置的颗粒决定。",
+        3: "K3 最大支持 32 GB LPDDR，远不止 8 GB。外接扩展卡是另一种扩展方案，不是容量限制。"
+      },
+      src: "docs-chip · key_stone/k3/k3_docs/k3_ds.md · 2.2.2 LPDDR4x/5",
+      rv: "K3 的 LPDDR 控制器：最大寻址空间 32 GB，双通道架构，每通道 32 位数据宽度。"
+    }
+  ]},
+
+  { group: "三、自评", note: "按知识点逐条选择。这些只作记录，帮你知道下次该回看哪一节，不参与判分。", type: "自评", items: [
+    { k: "K3 支持的内存类型（LPDDR4x vs LPDDR5）", act: "说出两种内存的最高速率，并说出各自的典型使用场景" },
+    { k: "内存带宽计算（通道数 × 位宽 × 速率）", act: "给定 2 通道、32 位、6400 MT/s，不看资料算出理论带宽" },
+    { k: "带宽是 AI 瓶颈的原因", act: "解释：当 AI 推理受带宽限制时，提高算力为什么没用" },
+    { k: "DFS 动态频率调节的作用", act: "说出 DFS 在什么情况下降频，对性能和功耗各有什么影响" },
+    { k: "eMMC 的速度模式（HS400 是最高）", act: "说出 eMMC 最高速度模式的名称和对应带宽，以及它比 UFS 慢的原因" },
+    { k: "UFS 与 eMMC 的核心区别（全双工 vs 单工）", act: "解释为什么 UFS 在读写并发场景下比 eMMC 快" },
+    { k: "SD/MMC 可热插拔的用途", act: "举出三个实际使用场景，说明为什么这三个场景需要可热插拔" },
+    { k: "Quad-SPI 的用途（启动固件、XIP 模式）", act: "解释什么是 XIP 模式，以及为什么 Bootloader 适合存在 QSPI Flash 中" },
+    { k: "Boot ROM 和 SRAM 的用途区别", act: "说出 Boot ROM 和 SRAM 的容量、是否掉电丢失、各自用于什么阶段" },
+    { k: "多级引导的必要性", act: "解释为什么不能直接从 Boot ROM 加载操作系统，说出两个技术原因" },
+    { k: "启动模式选择（eMMC/UFS/SD/QSPI/USB/UART）", act: "说出量产设备和开发调试分别用哪种启动模式，原因是什么" },
+    { k: "安全启动与 eFuse", act: "解释 eFuse 中存了什么，Boot ROM 验证的是什么" },
+    { k: "四种存储接口的选型原则", act: "画一个决策树，从「需不需要热插拔」开始，逐步选出合适的接口" },
+    { k: "内存最大容量（32 GB 寻址上限）", act: "解释芯片的「最大寻址空间」和实际产品配置的容量有什么关系" }
+  ]}
+];
+const LETTERS = ["A", "B", "C", "D"];
+const MODULE_LABEL = "M3";
+const MODULE_TITLE = "内存与存储";
+const SA_GROUP = DATA.find(g => g.type === "自评");
+const SA_ITEMS = SA_GROUP ? SA_GROUP.items : [];
+const state = { total: 0, answered: 0, correct: 0, groups: [] };
+const FLAT = [];
+
+DATA.forEach((g, gi) => {
+  if (g.type === "自评") return;
+  state.groups.push({ name: g.group.replace(/^[一二三]、/, ""), total: g.items.length, correct: 0 });
+  g.items.forEach(it => FLAT.push({ ...it, gi: state.groups.length - 1 }));
+});
+state.total = FLAT.length;
+
+const quizEl = document.getElementById("quiz");
+
+function esc(s) {
+  return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+}
+
+function build() {
+  let html = "";
+  let n = 0;
+  DATA.forEach((g) => {
+    html += `<h2 class="group">${g.group}</h2>`;
+    html += `<p class="group-note">${g.note}</p>`;
+
+    if (g.type === "自评") {
+      html += `<div class="sa">`;
+      g.items.forEach((it, si) => {
+        html += `<div class="sa-row">
+          <div class="sa-label">${it.k}</div>
+          <div class="sa-opts" data-sa="${si}">
+            <button class="sa-btn" data-v="ok" aria-pressed="false">懂了</button>
+            <button class="sa-btn" data-v="q" aria-pressed="false">有疑问</button>
+            <button class="sa-btn" data-v="no" aria-pressed="false">没懂</button>
+          </div>
+        </div>`;
+      });
+      html += `</div>`;
+      return;
+    }
+
+    g.items.forEach(it => {
+      html += `<div class="q" id="q${n}">
+        <div class="q-head">
+          <div class="q-num">${n + 1}</div>
+          <div class="q-text">${it.q}<span class="q-type">${g.type}</span></div>
+        </div>
+        <div class="opts" role="group">`;
+      it.opts.forEach((o, oi) => {
+        html += `<div class="opt" tabindex="0" role="button" data-q="${n}" data-o="${oi}">
+          <div class="opt-main">
+            <div class="key">${LETTERS[oi]}</div>
+            <div class="label">${esc(o)}</div>
+          </div>
+        </div>`;
+      });
+      html += `</div>
+        <div class="feedback" id="f${n}">
+          <div class="fb-verdict" id="fv${n}"></div>
+          <div class="fb-body">
+            <b>解析：</b>${esc(it.e)}
+            <ul id="fu${n}"></ul>
+            <div class="fb-src">来源：${esc(it.src)}</div>
+            <div id="snip${n}"></div>
+          </div>
+        </div>
+      </div>`;
+      n++;
+    });
+  });
+  quizEl.innerHTML = html;
+}
+
+function choose(qi, oi) {
+  const card = document.getElementById("q" + qi);
+  if (card.classList.contains("answered-correct") || card.classList.contains("answered-wrong")) return;
+
+  const it = FLAT[qi];
+  const correct = oi === it.a;
+  const opts = card.querySelectorAll(".opt");
+
+  opts.forEach((el, idx) => {
+    el.classList.add("locked");
+    el.setAttribute("tabindex", "-1");
+    if (idx === it.a) el.classList.add("is-correct");
+    else if (idx === oi) el.classList.add("is-wrong");
+    else el.classList.add("dimmed");
+  });
+
+  card.classList.add(correct ? "answered-correct" : "answered-wrong");
+
+  const fv = document.getElementById("fv" + qi);
+  fv.textContent = correct ? "✓ 回答正确" : "✗ 回答错误，正确答案是 " + LETTERS[it.a];
+  fv.className = "fb-verdict " + (correct ? "ok" : "bad");
+
+  const ul = document.getElementById("fu" + qi);
+  let li = "";
+  if (it.wrong) {
+    Object.keys(it.wrong).forEach(k => {
+      const entry = it.wrong[k];
+      const text = typeof entry === 'string' ? entry : entry.t;
+      li += `<li><b>${LETTERS[k]}</b>：${esc(text)}</li>`;
+    });
+  }
+  ul.innerHTML = li;
+  
+  if (!correct && it.wrong && it.wrong[oi]) {
+    const entry = it.wrong[oi];
+    if (typeof entry === 'object' && entry.why) {
+      const optEl = opts[oi];
+      const whySpan = document.createElement('div');
+      whySpan.className = 'opt-why';
+      whySpan.textContent = '💡 ' + entry.why;
+      optEl.appendChild(whySpan);
+    }
+  }
+  const snipEl = document.getElementById("snip" + qi);
+  if (snipEl) snipEl.innerHTML = it.rv ? '<div class="rv-snippet">' + esc(it.rv) + '</div>' : "";
+
+  document.getElementById("f" + qi).classList.add("show");
+
+  state.answered++;
+  if (correct) { state.correct++; state.groups[it.gi].correct++; }
+  refresh();
+}
+
+function refresh() {
+  document.getElementById("s-answered").textContent = state.answered;
+  document.getElementById("s-correct").textContent = state.correct;
+  document.getElementById("s-rate").textContent =
+    state.answered ? Math.round(state.correct / state.answered * 100) + "%" : "—";
+  document.getElementById("prog").style.width =
+    (state.answered / state.total * 100) + "%";
+  if (state.answered === state.total) showResult();
+}
+
+function selfEval() {
+  const rows = document.querySelectorAll("[data-sa]");
+  const need = [];
+  rows.forEach((row, i) => {
+    const on = row.querySelector('.sa-btn[aria-pressed="true"]');
+    if (on && on.dataset.v !== "ok") {
+      need.push({ i, k: SA_ITEMS[i].k, v: on.dataset.v });
+    }
+  });
+  return need;
+}
+
+const HIST_KEY = "spacemit.m3.history";
+
+function loadHist() {
+  try { return JSON.parse(localStorage.getItem(HIST_KEY)) || { attempts: 0, wrongCount: {}, lastWrong: [] }; }
+  catch (e) { return { attempts: 0, wrongCount: {}, lastWrong: [] }; }
+}
+function saveHist(h) {
+  try { localStorage.setItem(HIST_KEY, JSON.stringify(h)); } catch (e) {}
+}
+
+function buildRevisit() {
+  const box = document.getElementById("r-revisit");
+  const hist = loadHist();
+  const saRows = document.querySelectorAll("[data-sa]");
+
+  const wrong = [];
+  document.querySelectorAll(".q").forEach((c, i) => {
+    if (c.classList.contains("answered-wrong")) wrong.push(i);
+  });
+
+  const items = [];
+
+  wrong.forEach(i => {
+    const row = saRows[FLAT[i].sai];
+    const btn = row ? row.querySelector('.sa-btn[aria-pressed="true"]') : null;
+    const markedOk = btn && btn.dataset.v === "ok";
+    const times = hist.wrongCount[i] || 1;
+    items.push({ pri: markedOk ? 1 : 2, i, times, markedOk });
+  });
+
+  saRows.forEach((row, si) => {
+    const btn = row.querySelector('.sa-btn[aria-pressed="true"]');
+    if (!btn || btn.dataset.v === "ok") return;
+    if (items.some(it => it.i !== undefined && FLAT[it.i].sai === si)) return;
+    const item = SA_ITEMS[si];
+    items.push({ pri: 3, si, v: btn.dataset.v, label: item.k, act: item.act });
+  });
+
+  if (!items.length) {
+    box.innerHTML = wrong.length === 0
+      ? `<h3>不需要回看</h3><div class="rv-item p3"><div class="rv-head"><span class="rv-title">全部答对，自评也没有标出疑问。</span></div><div class="rv-snippet">过几天再重做一次，确认不是靠短期记忆答对的。</div></div>`
+      : "";
+    return items;
+  }
+
+  items.sort((a, b) => a.pri - b.pri || (b.times || 0) - (a.times || 0));
+
+  let html = `<h3>需回看（按优先级）</h3>`;
+  items.forEach(it => {
+    if (it.pri === 3) {
+      const badge = it.v === "no" ? "bad" : "warn";
+      const badgeTxt = it.v === "no" ? "没懂" : "有疑问";
+      html += `<div class="rv-item p3">
+        <div class="rv-head">
+          <span class="rv-badge ${badge}">${badgeTxt}</span>
+          <span class="rv-title">${esc(it.label)}</span>
+        </div>`;
+      if (it.act) {
+        html += `<div class="rv-act">可以这样验证：${esc(it.act)}</div>`;
+      }
+      html += `</div>`;
+      return;
+    }
+    const q = FLAT[it.i];
+    const cls = it.pri === 1 ? "p1" : "p2";
+    const badge = it.pri === 1 ? "bad" : "warn";
+    const badgeTxt = it.pri === 1 ? "答错且标了懂了" : "答错";
+    html += `<div class="rv-item ${cls}">
+      <div class="rv-head">
+        <span class="rv-badge ${badge}">${badgeTxt}</span>
+        <span class="rv-title">Q${it.i + 1} ${esc(q.q)}</span>
+        <span class="rv-count">错第 ${it.times} 次</span>
+      </div>`;
+    if (it.times >= 2) {
+      html += `<div class="rv-rewrite">⚠ 同一题已错 ${it.times} 次 —— 更可能是这一节的讲解需要换个说法，而不是再读一遍</div>`;
+    }
+    if (q.rv) html += `<div class="rv-snippet">${esc(q.rv)}</div>`;
+    html += `</div>`;
+  });
+
+  box.innerHTML = html;
+  return items;
+}
+
+function commitHistory() {
+  const hist = loadHist();
+  hist.attempts = (hist.attempts || 0) + 1;
+  const wrongNow = [];
+  document.querySelectorAll(".q").forEach((c, i) => {
+    if (c.classList.contains("answered-wrong")) {
+      hist.wrongCount[i] = (hist.wrongCount[i] || 0) + 1;
+      wrongNow.push(i);
+    }
+  });
+  hist.lastWrong = wrongNow;
+  hist.lastAt = new Date().toISOString().slice(0, 16).replace("T", " ");
+  saveHist(hist);
+  return hist;
+}
+
+function buildDiag(items) {
+  const hist = loadHist();
+  const wrong = [];
+  document.querySelectorAll(".q").forEach((c, i) => {
+    if (c.classList.contains("answered-wrong")) wrong.push(i);
+  });
+  const need = [];
+  document.querySelectorAll("[data-sa]").forEach((row, si) => {
+    const b = row.querySelector('.sa-btn[aria-pressed="true"]');
+    if (b && b.dataset.v !== "ok") need.push(SA_ITEMS[si].k + (b.dataset.v === "no" ? "（没懂）" : "（有疑问）"));
+  });
+
+  const lines = [];
+  lines.push(`${MODULE_LABEL} 测验 第 ${hist.attempts} 次 | ${state.correct}/${state.total}`);
+  if (wrong.length) {
+    lines.push("错：" + wrong.map(i => `Q${i + 1} ${FLAT[i].q}（错第 ${hist.wrongCount[i]} 次）`).join("、"));
+  } else {
+    lines.push("错：无");
+  }
+  if (need.length) lines.push("自评疑问：" + need.join("、"));
+  const contradiction = wrong.filter(i => {
+    const row = document.querySelectorAll("[data-sa]")[FLAT[i].sai];
+    const b = row ? row.querySelector('.sa-btn[aria-pressed="true"]') : null;
+    return b && b.dataset.v === "ok";
+  });
+  if (contradiction.length) lines.push("矛盾（标懂了但答错）：" + contradiction.map(i => "Q" + (i + 1)).join("、"));
+  const rewrite = wrong.filter(i => hist.wrongCount[i] >= 2);
+  if (rewrite.length) lines.push("建议重写讲解：" + rewrite.map(i => "Q" + (i + 1)).join("、"));
+  return lines.join("\n");
+}
+
+function updateHint() {
+  const hint = document.getElementById("r-hint");
+  const rated = document.querySelectorAll('.sa-btn[aria-pressed="true"]').length;
+  const wrong = [];
+  document.querySelectorAll(".q").forEach((c, i) => {
+    if (c.classList.contains("answered-wrong")) wrong.push(i);
+  });
+  const saRows = document.querySelectorAll("[data-sa]");
+  const contradiction = wrong.filter(i => {
+    const row = saRows[FLAT[i].sai];
+    const b = row ? row.querySelector('.sa-btn[aria-pressed="true"]') : null;
+    return b && b.dataset.v === "ok";
+  });
+
+  let html = "";
+  if (!rated) {
+    html = `<b>还没有做自评。</b>在第三段按知识点点选，这里会把疑问和错题一起排序。`;
+  } else if (contradiction.length) {
+    html = `<b style="color:var(--bad)">⚠ ${contradiction.length} 道题答错、但自评标了「懂了」：</b><br>` +
+      contradiction.map(i => "· Q" + (i + 1)).join("<br>") +
+      `<br><span style="font-size:13px">读的时候以为懂了，做题才发现有偏差。这类优先回看。</span>`;
+  } else if (wrong.length) {
+    html = `<b>答错 ${wrong.length} 题。</b>按上面清单回看对应小节即可。`;
+  } else {
+    html = `<b>全对。</b>自评里的疑问也已列在上面。`;
+  }
+  hint.innerHTML = html;
+}
+function showResult() {
+  const pct = Math.round(state.correct / state.total * 100);
+  document.getElementById("r-score").textContent = state.correct;
+
+  let tier;
+  if (pct === 100) tier = "全对。基础概念没有混淆。";
+  else if (pct >= 93) tier = "基本清楚，看一处错题即可。";
+  else if (pct >= 64) tier = "有几处要回看，重点看错题对应的那一课。";
+  else tier = "建议重读三篇课，再回来做一遍。";
+  document.getElementById("r-tier").textContent = `${pct}% — ${tier}`;
+
+  document.getElementById("r-brk").innerHTML = state.groups
+    .map(g => {
+      const p = Math.round(g.correct / g.total * 100);
+      return `<div class="brk-item">
+        <div class="n">${g.name}</div>
+        <div class="v">${g.correct}/${g.total} <span style="font-size:12px;font-weight:400;color:var(--text-dim)">${p}%</span></div>
+      </div>`;
+    }).join("");
+
+  commitHistory();
+  buildRevisit();
+  updateHint();
+
+  const r = document.getElementById("result");
+  r.classList.add("show");
+  r.scrollIntoView({ behavior: "smooth", block: "nearest" });
+}
+
+function reset() {
+  state.answered = 0;
+  state.correct = 0;
+  state.groups.forEach(g => g.correct = 0);
+  document.getElementById("result").classList.remove("show");
+  document.getElementById("r-revisit").innerHTML = "";
+  document.getElementById("r-hint").innerHTML = "";
+  document.getElementById("copy-note").classList.remove("show");
+  build();
+  bind();
+  refresh();
+  document.getElementById("prog").style.width = "0%";
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function bind() {
+  quizEl.querySelectorAll(".opt").forEach(el => {
+    const act = () => choose(+el.dataset.q, +el.dataset.o);
+    el.addEventListener("click", act);
+    el.addEventListener("keydown", ev => {
+      if (ev.key === "Enter" || ev.key === " ") { ev.preventDefault(); act(); }
+    });
+  });
+
+  quizEl.querySelectorAll(".sa-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const group = btn.parentElement;
+      group.querySelectorAll(".sa-btn").forEach(b => b.setAttribute("aria-pressed", "false"));
+      btn.setAttribute("aria-pressed", "true");
+      if (state.answered === state.total) { buildRevisit(); updateHint(); }
+    });
+  });
+}
+
+build();
+bind();
+document.getElementById("btn-reset").addEventListener("click", reset);
+
+document.getElementById("btn-copy").addEventListener("click", async () => {
+  const text = buildDiag();
+  const note = document.getElementById("copy-note");
+  try {
+    await navigator.clipboard.writeText(text);
+  } catch (e) {
+    const ta = document.createElement("textarea");
+    ta.value = text;
+    ta.style.position = "fixed";
+    ta.style.opacity = "0";
+    document.body.appendChild(ta);
+    ta.select();
+    try { document.execCommand("copy"); } catch (err) {}
+    document.body.removeChild(ta);
+  }
+  note.classList.add("show");
+  setTimeout(() => note.classList.remove("show"), 2600);
+});
+</script>
+</body>
+</html>
+
+
+
+
