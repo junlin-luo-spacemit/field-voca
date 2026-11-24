@@ -27,7 +27,7 @@ K3 支持两种 [LPDDR](GLOSSARY.md#lpddr5) 内存类型：
 - 每通道 32 位数据宽度
 - 最大寻址空间 32 GB
 
-**动态频率调节（DFS，Dynamic Frequency Scaling）**：K3 支持根据带宽需求实时调整内存频率，在低负载时降低频率以节省功耗。
+**动态频率调节（DFS，Dynamic Frequency Scaling，动态频率调节）**：K3 支持根据带宽需求实时调整内存频率，在低负载时降低频率以节省功耗。
 
 ## 二、带宽计算
 

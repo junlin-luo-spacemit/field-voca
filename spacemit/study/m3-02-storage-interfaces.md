@@ -1,4 +1,4 @@
----
+﻿---
 tags: [study, m3, storage, emmc, ufs, sd, qspi, spacemit]
 domain: chip
 aliases: [存储接口, Storage Interfaces]
@@ -28,7 +28,7 @@ K3 支持四种外部存储接口，各自针对不同的用途：
 
 ## 二、eMMC：最常见的主存储
 
-**eMMC**（embedded Multi-Media Card，嵌入式多媒体卡）是大多数嵌入式产品的主存储。
+**[eMMC](GLOSSARY.md#emmc)**（embedded Multi-Media Card，嵌入式多媒体卡）是大多数嵌入式产品的主存储。
 
 - 符合 eMMC 5.1 规范，8 位数据宽度
 - 最高速度：HS400 模式 400 MB/s
@@ -38,11 +38,11 @@ K3 支持四种外部存储接口，各自针对不同的用途：
 
 ## 三、UFS：高性能主存储
 
-**UFS**（Universal Flash Storage，通用闪存存储）是比 eMMC 更快的存储接口，常见于高端手机和嵌入式产品。
+**[UFS](GLOSSARY.md#ufs)**（Universal Flash Storage，通用闪存存储）是比 eMMC 更快的存储接口，常见于高端手机和嵌入式产品。
 
-- 符合 JEDEC UFS 2.2 规范，最多 2 TX + 2 RX 通道（全双工）
+- 符合 JEDEC（固态技术协会）UFS 2.2 规范，最多 2 TX + 2 RX 通道（全双工）
 - 支持 HS-GEAR3 高速模式和 PWM-GEAR1 低速模式
-- 支持标准 SCSI 命令，可直接从 UFS 启动
+- 支持标准 SCSI（Small Computer System Interface，小型计算机系统接口）命令，可直接从 UFS 启动
 
 **eMMC 与 UFS 的核心区别** —— 不在于"谁更新"，而在于**能不能同时读写**：
 
@@ -66,7 +66,7 @@ K3 支持四种外部存储接口，各自针对不同的用途：
 
 ## 五、Quad-SPI：启动固件专用
 
-**Quad-SPI**（四线 SPI）是一种低速串行 Flash 接口，专门用来存**启动代码**。
+**[Quad-SPI](GLOSSARY.md#quad-spi)**（Quad Serial Peripheral Interface，四线 SPI）是一种低速串行 Flash 接口，专门用来存**启动代码**。
 
 - 时钟频率 13.25 MHz 至 102 MHz，数据线宽 1/2/4 线可配置
 - 支持 SPI NOR Flash 和 SPI NAND Flash

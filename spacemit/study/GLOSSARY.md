@@ -1,8 +1,8 @@
----
+﻿---
 tags: [study, glossary, terminology]
 status: needs_review
 created: 2026-11-19
-updated: 2026-11-19
+updated: 2026-11-24
 ---
 
 # 技术术语表
@@ -522,6 +522,199 @@ K3 的显示子系统支持 AFBC 格式的帧缓冲：
 
 ---
 
+## CoM
+
+**核心模组**（Computer-on-Module，CoM）是一种产品形态：把芯片、内存、存储封装在一块小板上出售。
+
+- 卖的是**模组**，不是整机
+- 客户买回去插到自己的载板（carrier board）上，仍需自己设计接口和外形
+- K3 的 CoM260 属于这一形态
+
+**与整机形态的区别**：Pico-ITX 是完整可用的单板计算机，买回去直接装进设备；CoM 必须配上客户自己的载板才能用。
+
+**相关概念**：SoC、Pico-ITX、产品形态
+
+---
+
+## TOPS
+
+**TOPS**（Tera Operations Per Second，每秒万亿次运算）是衡量 AI 算力的单位。
+
+- 1 TOPS = 每秒 1 万亿次运算
+- **必须带精度条件才有意义**：INT8、INT4、是否启用 sparse（稀疏计算）
+- K1 标 2 TOPS（@INT8）；K3 标 60 TOPS（@INT4 sparse）
+
+**为什么两个 TOPS 不能直接相除**：位宽和稀疏策略不同，"一次运算"不是同一件事。INT4 每个数只用 4 位，同样硬件一周期能塞进两倍的数；sparse 会跳过权重中的零值，进一步抬高理论峰值。要比较，需换算到同一精度，或直接比实测吞吐。
+
+**相关概念**：INT8、INT4、稀疏计算、算力
+
+---
+
+## SRAM
+
+**SRAM**（Static Random-Access Memory，静态随机存取存储器）是芯片内部的快速可读写内存。
+
+- K3 有 **512 KB**，由主 CPU 与实时核（RCPU）共享
+- **上电后立即可用**，不需要初始化 —— 这是它相对 LPDDR5 的关键优势
+- 掉电数据丢失，不是存储设备
+- 容量小，只够启动早期临时使用
+
+**为什么它不可替代**：LPDDR5 上电后要初始化才能用，而这段初始化代码本身必须先有地方跑，那就是 SRAM。
+
+**相关概念**：Boot ROM、LPDDR5、启动流程
+
+---
+
+## Boot ROM
+
+**Boot ROM**（启动只读存储器）是芯片出厂时固化好的只读存储，CPU 上电后执行的第一段代码来自这里。
+
+- K3 为 **128 KB**，不可修改
+- 负责决定从哪个存储介质启动，并加载下一阶段引导程序
+- 支持的来源：eMMC、UFS、SD、QSPI NOR Flash、USB、UART 下载
+
+**为什么只有 128 KB**：里面只放最小引导代码，够把下一阶段拉起来即可。这条容量限制直接决定了启动必须分阶段进行。
+
+**相关概念**：SRAM、FSBL、多阶段启动
+
+---
+
+## FSBL
+
+**FSBL**（First Stage Boot Loader，一级引导程序）是 Boot ROM 之后运行的第一个引导阶段。
+
+- 存放在 eMMC、SD、QSPI 等外部介质
+- 主要任务：**初始化内存（LPDDR5）**，并加载后续软件
+- 运行位置：此时 LPDDR5 尚未就绪，所以它先运行在片内 SRAM 里
+
+**与 U-Boot 的分工**：FSBL 负责"把内存弄好"，U-Boot 负责"把内核装进去"。
+
+**相关概念**：Boot ROM、U-Boot、OpenSBI、SRAM
+
+---
+
+## OpenSBI
+
+**OpenSBI**（Open Supervisor Binary Interface）是 RISC-V 架构特有的固件层，运行在引导程序与 U-Boot 之间。
+
+- 在操作系统与底层硬件之间提供**标准接口（SBI）**
+- 作用：Linux 内核不必针对每颗芯片写底层代码，通过 SBI 请求定时器、处理器间通信等服务
+- 类比：内核与硬件之间的"翻译官"
+
+**技术写作提示**：文档里会看到这个名词，知道它是"内核和硬件之间的中间层"就够用，不需要展开寄存器细节。
+
+**相关概念**：SBI、U-Boot、RISC-V、FSBL
+
+---
+
+## U-Boot
+
+**U-Boot**（Universal Bootloader，通用启动程序）是最常见的嵌入式引导程序。
+
+- 负责把 Linux 内核和设备树从存储介质加载到内存，然后把控制权交给内核
+- K3 中它在内存就绪之后运行，不再受 SRAM 容量限制
+- 提供命令行，供开发调试使用
+
+**与 FSBL 的区别**：FSBL 是芯片厂商提供的一级引导，负责初始化内存；U-Boot 是通用的第二阶段引导，负责加载内核。
+
+**相关概念**：FSBL、设备树、启动流程
+
+---
+
+## 设备树
+
+**设备树**（Device Tree）是一个描述文件，记录板子上有哪些硬件、各自连接在哪里。固件中常见的文件名后缀是 **DTB**（Device Tree Blob）。
+
+- 内核启动时读取它，据此初始化驱动
+- **解决的问题**：同一颗芯片装在不同板子上，接口配置各不相同。有了设备树，内核代码保持通用，换一份设备树就能支持新板子
+- 类比：房屋平面图 —— 同一套建筑结构，配不同平面图就能适配不同布局
+
+**相关概念**：U-Boot、Linux 内核、板级设计
+
+---
+
+## eMMC
+
+**eMMC**（embedded Multi-Media Card，嵌入式多媒体卡）是最常见的嵌入式主存储。
+
+- 符合 eMMC 5.1 规范，8 位数据宽度
+- 最高速度：**HS400 模式 400 MB/s**
+- 直接焊在板上，不可热插拔
+- 用途：放操作系统、应用和用户数据
+
+**与 UFS 的关键区别**：eMMC 用并行总线，读写不能同时进行（非全双工），因此吞吐量低于 UFS。
+
+**相关概念**：UFS、SD 卡、Quad-SPI、内存与存储
+
+---
+
+## UFS
+
+**UFS**（Universal Flash Storage，通用闪存存储）是比 eMMC 更快的主存储接口。
+
+- 符合 JEDEC UFS 2.2 规范，最多 2 TX + 2 RX 通道
+- **串行差分、全双工**：读写可以同时进行，这是吞吐量更高的根本原因
+- 支持直接从 UFS 启动
+- 成本高于 eMMC
+
+**相关概念**：eMMC、JEDEC、启动模式
+
+---
+
+## Quad-SPI
+
+**Quad-SPI**（Quad Serial Peripheral Interface，四线 SPI）是低速串行 Flash 接口，专门用来存放启动代码。
+
+- 时钟 13.25–102 MHz，数据线可配置为 1/2/4 线
+- 支持 SPI NOR Flash 与 SPI NAND Flash
+- 容量小（几 MB 到几十 MB），价格便宜
+- 支持 **XIP**（Execute-In-Place，就地执行）：CPU 直接在 Flash 上执行代码，不必先复制到内存
+
+**为什么需要它**：Boot ROM 之后要加载的引导程序需要一个便宜、简单、上电即可读的存放处。
+
+**相关概念**：XIP、Boot ROM、eMMC
+
+---
+
+## eFuse
+
+**eFuse**（electronic fuse，电子熔断丝）是芯片内部的一次性可编程存储，**只能写入一次**。
+
+- K3 用它存放"哪把密钥可信"的信息（根公钥的哈希值）
+- 启动时 Boot ROM 拿它来验证固件签名
+- **写入后不可逆**：设备从此只认签名固件，无法回退
+
+**为什么必须谨慎**：如果签名流程有问题或密钥丢失，设备将无法启动且无法修复。所以量产前必须充分测试签名流程。
+
+**相关概念**：安全启动、根密钥、Boot ROM
+
+---
+
+## 安全启动
+
+**安全启动**（Secure Boot）是在每次启动时验证固件来源的机制，确保设备只运行经过授权的固件。
+
+- 核心思路：**每个阶段验证下一个阶段**（Boot ROM → FSBL → U-Boot → 内核）
+- 任何一级验证失败，启动立即停止
+- 依赖 eFuse 中存放的密钥信息，**本地完成，不需要联网**
+- 与普通启动的区别：普通启动会运行介质上任何合法格式的固件
+
+**相关概念**：eFuse、根密钥、信任链
+
+---
+
+## Fastboot
+
+**Fastboot** 是 Android 生态广泛使用的设备刷写协议，K3 用它把固件从 PC 写入设备存储。
+
+- 通过 USB 连接，速度快、兼容性好
+- 进入刷写模式的方式：按键组合（FEL + RESET）、`adb reboot bootloader`、串口长按 `s`
+- **与"卡启动"的区别**：刷写是往设备存储里**写**；卡启动是**从** SD 卡运行系统
+
+**相关概念**：固件刷写、卡量产、下载模式
+
+---
+
 ## 参考来源
 
 | 术语 | 来源 | 章节 |
@@ -538,3 +731,10 @@ K3 的显示子系统支持 AFBC 格式的帧缓冲：
 | 簇（Cluster） | docs-chip · key_stone/k3/k3_docs/k3_ds.md | 2.1.1 X100 核 |
 | 编码压缩比 | docs-chip · key_stone/k3/k3_docs/k3_ds.md | 2.4 视频子系统 |
 | AFBC | docs-chip · key_stone/k3/k3_docs/k3_ds.md | 2.5.1 显示控制器 |
+| CoM | docs-product · k3_series/k3_com260/root_overview.md | 简介、产品规格 |
+| TOPS | docs-product · k1_series/k1_muse_pi/root_overview.md；docs-chip · key_stone/k3/k3_docs/k3_ds.md | 简介；2.1.2 A100 特性 |
+| SRAM、Boot ROM | docs-chip · key_stone/k3/k3_docs/k3_ds.md | 2.2.1 片上存储 |
+| FSBL、OpenSBI、U-Boot、设备树 | docs-buildroot · k3_buildroot/device/boot.md | 固件布局、U-Boot/OpenSBI |
+| eMMC、UFS、Quad-SPI | docs-chip · key_stone/k3/k3_docs/k3_ds.md | 2.2.3–2.2.6 存储接口 |
+| eFuse、安全启动 | docs-buildroot · k3_buildroot/device/secureboot.md | 安全启动机制、密钥体系 |
+| Fastboot | docs-buildroot · k3_buildroot/device/boot.md | 刷机流程 |

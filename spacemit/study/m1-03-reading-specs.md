@@ -68,7 +68,7 @@ K3 是 60 TOPS（@INT4 sparse）。
 
 **这个想法错在单位这里。** 两者的单位都是 TOPS，一模一样。
 
-TOPS 是 Tera Operations Per Second，每秒万亿次运算。
+[TOPS](GLOSSARY.md#tops) 是 Tera Operations Per Second，每秒万亿次运算。
 
 K1 的 2 TOPS 也是 AI 算力。产品资料的原话是「CPU融合 2 TOPS@INT8 AI 算力」——它说的就是 AI，只不过这个 AI 能力做在 CPU [簇](GLOSSARY.md#簇)里。
 
@@ -121,7 +121,7 @@ K1 的 2 TOPS 也是 AI 算力。产品资料的原话是「CPU融合 2 TOPS@INT
 
 有时产品资料的数字和芯片手册不一样。
 
-比如 Pico-ITX 写"内存双通道 2 × 32bit LPDDR5，6400MT/s"。
+比如 Pico-ITX 写"内存双通道 2 × 32bit [LPDDR5](GLOSSARY.md#lpddr5)，6400MT/s"。
 
 芯片手册写"LPDDR5 最高数据速率 6400 MT/s，双通道架构，每通道 32 位"。
 

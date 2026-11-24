@@ -1,4 +1,4 @@
----
+﻿---
 tags: [study, m2, chip, architecture, spacemit]
 domain: chip
 aliases: [芯片子系统, Chip Subsystems]
@@ -38,13 +38,13 @@ K3 芯片包含 11 个子系统（Subsystem）：
 | 子系统 | 英文 | 负责什么 |
 |---|---|---|
 | CPU 子系统 | CPU Subsystem | 通用计算核与 AI 核 |
-| [内存与存储](GLOSSARY.md#内存与存储) | Memory & Storage | [LPDDR5](GLOSSARY.md#lpddr5)、eMMC、SD 卡 |
+| [内存与存储](GLOSSARY.md#内存与存储) | Memory & Storage | [LPDDR5](GLOSSARY.md#lpddr5)、[eMMC](GLOSSARY.md#emmc)、SD 卡 |
 | 图像子系统 | Image Subsystem | 摄像头输入、[ISP](GLOSSARY.md#isp) 处理 |
 | 视频子系统 | Video Subsystem | 编码与解码（H.264/H.265/AV1） |
 | 显示子系统 | Display Subsystem | 屏幕输出（MIPI-DSI、DP/eDP） |
 | 音频子系统 | Audio Subsystem | 音频输入输出、编解码 |
-| 互联子系统 | Connectivity Subsystem | PCIe、USB、以太网 |
-| 安全子系统 | Security Subsystem | 安全启动、TEE、密钥管理 |
+| 互联子系统 | Connectivity Subsystem | PCIe（Peripheral Component Interconnect Express，高速串行互联）、USB、以太网 |
+| 安全子系统 | Security Subsystem | 安全启动、TEE（Trusted Execution Environment，可信执行环境）、密钥管理 |
 | 系统外设 | System Peripherals | GPIO、I2C、SPI、UART 等 |
 | 时钟与复位 | Clock & Reset | 时钟树、复位控制 |
 | 启动模式 | Boot Mode | 启动介质选择 |

@@ -47,7 +47,7 @@ K3 的内存分三层：
 
 | 层次 | 类型 | 容量 | 速度 | 用途 |
 |---|---|---|---|---|
-| 片上 SRAM | On-Chip Memory | 512 KB | 最快 | 启动代码、临时数据 |
+| 片上 [SRAM](GLOSSARY.md#sram) | On-Chip Memory | 512 KB | 最快 | 启动代码、临时数据 |
 | LPDDR5 | 外部动态内存 | 最高 32 GB | 快 | 操作系统、应用、模型 |
 | eMMC/SD | 外部闪存 | 最高 2 TB | 慢 | 持久化存储、文件系统 |
 
@@ -55,7 +55,7 @@ K3 的内存分三层：
 
 **[LPDDR5](GLOSSARY.md#lpddr5)**：外部动态内存，双通道，每通道 32 位，最高速率 6400 [MT/s](GLOSSARY.md#lpddr5)。
 
-**eMMC**：嵌入式多媒体卡，固态存储，掉电数据不丢失。支持 HS400 模式（最高 400 MB/s）。
+**[eMMC](GLOSSARY.md#emmc)**：嵌入式多媒体卡（embedded Multi-Media Card），固态存储，掉电数据不丢失。支持 HS400 模式（最高 400 MB/s）。
 
 ## 四、带宽与瓶颈
 
