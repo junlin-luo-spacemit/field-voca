@@ -389,13 +389,13 @@ const DATA = [
       e: "FSBL 在启动早期运行，此时 LPDDR5 还未初始化。FSBL 负责完成内存初始化，并加载后续所需的软件。决定从哪个存储介质启动是 Boot ROM（出厂固化）的职责。",
       wrong: {
         0: { t: "决定启动介质是 Boot ROM 的职责，Boot ROM 出厂固化、无法修改。", why: "混淆了 Boot ROM 和 FSBL 的分工" },
-        1: "FSBL 运行在启动最早期，此时 Linux 还没有启动，不可能运行应用程序。",
+        2: "FSBL 运行在启动最早期，此时 Linux 还没有启动，不可能运行应用程序。",
         3: "FSBL 是引导程序，不存储用户数据。用户数据存放在独立的用户数据分区。",
       },
       src: "docs-buildroot · k3_buildroot/device/boot.md · 固件布局",
       rv: "引导程序（FSBL）：完成内存（LPDDR5）的初始化，加载操作系统所需的软件。"
     },
-        {
+    {
       q: "K3 启动链路的正确顺序是什么？",
       sai: 0,
       opts: [
@@ -412,7 +412,7 @@ const DATA = [
         3: "OpenSBI 在 U-Boot 之前完成初始化，不是之后。"
       },
       src: "docs-buildroot · k3_buildroot/device/boot.md · 固件布局",
-      rv: "K3 的启动链路：Boot ROM → FSBL → OpenSBI → U-Boot → Linux。OpenSBI 是运行在 Boot ROM 和 U-Boot 之间的中间层，负责在最底层管理硬件资源并对上层软件提供标准接口。"
+      rv: "K3 的启动链路：Boot ROM → FSBL → OpenSBI → U-Boot → Linux。OpenSBI 运行在引导程序和 U-Boot 之间，在最底层管理硬件资源，对上层软件提供标准接口。"
     },
         {
       q: "K3 的启动为什么要分成多个阶段，而不能一步到位？",
@@ -450,7 +450,7 @@ const DATA = [
         3: "分区管理是 U-Boot 和刷机工具的职责。OpenSBI 专注于提供底层服务接口。",
       },
       src: "docs-buildroot · k3_buildroot/device/boot.md · U-Boot/OpenSBI 开发调试",
-      rv: "OpenSBI 是 RISC-V 架构特有的一个固件层，在操作系统和底层硬件之间提供一个标准接口。Linux 内核不直接操作 K3 的具体硬件寄存器，而是通过 OpenSBI 提供的标准接口来请求底层服务。"
+      rv: "OpenSBI 是 RISC-V 架构特有的固件层，运行在引导程序和 U-Boot 之间。OpenSBI 提供了一套标准接口（SBI），Linux 内核通过 SBI 请求底层服务，不需要知道具体芯片的实现细节。"
     },
     {
       q: "设备树（DTB）在启动过程中解决了什么问题？",
@@ -469,7 +469,7 @@ const DATA = [
         3: "Boot ROM 是出厂固化的引导代码，设备树不能替代它，两者作用完全不同。"
       },
       src: "docs-buildroot · k3_buildroot/device/boot.md · 固件布局",
-      rv: "设备树（DTB）描述了板子的硬件配置：有哪些外设、连接在哪个总线、使用哪个中断。同一颗 K3 芯片可能装在不同的板子上，设备树让内核代码保持通用，只需替换 DTB 就能支持不同的板级设计。"
+      rv: "设备树（Device Tree）是一个描述文件，记录了板子上有哪些硬件、各自连接在哪里。同一颗 K3 芯片可以装在不同的板子上，内核启动时读取设备树，就知道这块板子的具体配置是什么，不需要为每块板子单独写代码。"
     },
         {
       q: "K3 的固件分区中，Linux 内核和设备树存放在哪里？",
@@ -564,7 +564,7 @@ const DATA = [
         3: "卡量产不限于工厂使用，任何需要批量初始化的场景都可以用，包括现场替换设备。"
       },
       src: "docs-buildroot · k3_buildroot/device/boot.md · 刷机流程",
-      rv: "卡启动是将镜像烧写到 SD 卡里面，从 SD 卡里面启动系统。卡量产本质上也是刷机，只是数据来源于 SD 卡，刷写目标是 eMMC。"
+      rv: "卡启动：系统运行在 SD 卡上，拔卡系统就没了。卡量产：用 SD 卡当搬运工，把系统写入 eMMC，之后从 eMMC 运行。"
     }
   ]},
 
@@ -663,7 +663,6 @@ const DATA = [
       },
       src: "docs-buildroot · k3_buildroot/device/secureboot.md · 密钥体系",
       rv: "根密钥一旦泄露，影响无法挽回。发版密钥泄露后换一把重新签名即可。这就是两者保管方式差别很大的原因。"
-    }
     }
   ]},
 
@@ -868,7 +867,7 @@ function buildRevisit() {
   saRows.forEach((row, si) => {
     const btn = row.querySelector('.sa-btn[aria-pressed="true"]');
     if (!btn || btn.dataset.v === "ok") return;
-    if (items.some(it => FLAT[it.i].sai === si)) return;
+    if (items.some(it => it.i !== undefined && FLAT[it.i].sai === si)) return;
     const item = SA_ITEMS[si];
     items.push({ pri: 3, si, v: btn.dataset.v, label: item.k, act: item.act });
   });

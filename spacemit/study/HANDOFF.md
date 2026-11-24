@@ -37,8 +37,9 @@ updated: 2026-11-17
 |---|---|---|
 | M1 产品线全景 | [课一：产品系列与命名规律](./m1-01-series-naming.md) · [课二：同一颗芯片的多种形态](./m1-02-form-factors.md) · [课三：读懂规格表里的数字](./m1-03-reading-specs.md) · [测验](./quiz/m1-recap.html) | ✅ 已完成，按 STYLE.md 编写并实测过交互 |
 | M2 芯片架构基础 | [课一：一颗芯片里有什么](./m2-01-chip-subsystems.md) · [课二：CPU 子系统与内存子系统](./m2-02-cpu-and-memory.md) · [课三：外设子系统概览](./m2-03-peripherals-overview.md) · [测验](./quiz/m2-recap.html) | ✅ 已完成，按 STYLE.md 编写并实测过交互，测验 15 题 + 14 自评 |
-| 配套资源 | [GLOSSARY.md](./GLOSSARY.md) · [quiz/_template.html](./quiz/_template.html) | ✅ GLOSSARY 包含 13 个术语（带宽、内存与存储、虚拟机、RVA23、RVV 1.0、RVH 1.0、IME、SoC、LPDDR5、ISP、VPU、簇、编码压缩比、AFBC），测验模板支持 8 个参数化占位符 |
-| M3 起 | 无 | 待编写 |
+| M3 内存与存储 | [课一](./m3-01-memory-hierarchy.md) · [课二](./m3-02-storage-interfaces.md) · [课三](./m3-03-onchip-memory-and-boot.md) · [测验](./quiz/m3-recap.html) | ✅ 已完成并合并到 main |
+| M4 启动流程 | [课一：启动流程](./m4-01-boot-flow.md) · [课二：启动模式与固件刷写](./m4-02-boot-modes-and-flashing.md) · [课三：安全启动与固件保护](./m4-03-secure-boot-and-opensbi.md) · [测验](./quiz/m4-recap.html) | ✅ 已完成，课文按入门级标准重写，测验已对齐 |
+| 配套资源 | [GLOSSARY.md](./GLOSSARY.md) · [quiz/_template.html](./quiz/_template.html) | ✅ GLOSSARY 包含 13 个术语，测验模板支持 8 个参数化占位符 |
 
 2026-11-18 已删除早期按「一天一份库」写的 `day1-*` ~ `day4-*` 共 13 篇课程和 4 份测验，未经备份，无法恢复。**需要那些内容时按 STYLE.md 重写，不要试图找回旧文件。**
 
@@ -170,9 +171,9 @@ updated: 2026-11-17
 - 已用示例数据实测模板：渲染、判分、内嵌片段、优先级清单、复制诊断、localStorage 计数均正常。测试产生的历史已清除。
 - 模板修掉了 M1 里 `DATA[2]` 硬编码自评组位置的隐患，改为 `DATA.find(g => g.type === "自评")`。**M1 仍用旧的硬编码写法，若 M1 的题目分组顺序变动会出错**，暂未回改。
 
-## 后续计划## 后续计划
+## 后续计划
 
-从 M2 开始，按 [ROADMAP.md](./ROADMAP.md) 逐模块编写。每模块 3 篇课 + 1 份三段式测验，遵循 [STYLE.md](./STYLE.md)。
+从 M5 开始，按 [ROADMAP.md](./ROADMAP.md) 逐模块编写。每模块 3 篇课 + 1 份三段式测验，遵循 [STYLE.md](./STYLE.md)。
 
 ## M1 的关键事实（后续课程沿用）
 
