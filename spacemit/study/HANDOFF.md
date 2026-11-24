@@ -3,7 +3,7 @@ tags: [study, handoff, spacemit]
 domain: all
 status: needs_review
 created: 2026-11-17
-updated: 2026-11-17
+updated: 2026-11-24
 ---
 
 # 学习材料与测验：进度交接
@@ -37,7 +37,7 @@ updated: 2026-11-17
 |---|---|---|
 | M1 产品线全景 | [课一：产品系列与命名规律](./m1-01-series-naming.md) · [课二：同一颗芯片的多种形态](./m1-02-form-factors.md) · [课三：读懂规格表里的数字](./m1-03-reading-specs.md) · [测验](./quiz/m1-recap.html) | ✅ 已完成，按 STYLE.md 编写并实测过交互 |
 | M2 芯片架构基础 | [课一：一颗芯片里有什么](./m2-01-chip-subsystems.md) · [课二：CPU 子系统与内存子系统](./m2-02-cpu-and-memory.md) · [课三：外设子系统概览](./m2-03-peripherals-overview.md) · [测验](./quiz/m2-recap.html) | ✅ 已完成，按 STYLE.md 编写并实测过交互，测验 15 题 + 14 自评 |
-| M3 内存与存储 | [课一](./m3-01-lpddr-and-bandwidth.md) · [课二](./m3-02-storage-interfaces.md) · [课三](./m3-03-onchip-memory-and-boot.md) · [测验](./quiz/m3-recap.html) | ✅ 已完成并合并到 main |
+| M3 内存与存储 | [课一](./m3-01-lpddr-and-bandwidth.md) · [课二](./m3-02-storage-interfaces.md) · [课三](./m3-03-onchip-memory-and-boot.md) · [测验](./quiz/m3-recap.html) | ✅ 已完成。课三已收缩为「片上存储」，启动细节移交 M4 |
 | M4 启动流程 | [课一：启动流程](./m4-01-boot-flow.md) · [课二：启动模式与固件刷写](./m4-02-boot-modes-and-flashing.md) · [课三：安全启动与固件保护](./m4-03-secure-boot-and-opensbi.md) · [测验](./quiz/m4-recap.html) | ✅ 已完成，课文按入门级标准重写，测验已对齐 |
 | 配套资源 | [GLOSSARY.md](./GLOSSARY.md) · [quiz/_template.html](./quiz/_template.html) | ✅ GLOSSARY 包含 13 个术语，测验模板支持 8 个参数化占位符 |
 
@@ -169,7 +169,38 @@ updated: 2026-11-17
 - `spacemit/study/quiz/_template.html`：骨架已含全部交互（判分、锁定、键盘、内嵌回看原文、三级优先级清单、跨次计数、复制诊断、重做策略）。**新模块只填 `DATA` 数组。**
 - `spacemit/study/quiz/README.md`：占位符替换表、字段说明、`sai` 对齐核对方法、交付前验证清单。
 - 已用示例数据实测模板：渲染、判分、内嵌片段、优先级清单、复制诊断、localStorage 计数均正常。测试产生的历史已清除。
-- 模板修掉了 M1 里 `DATA[2]` 硬编码自评组位置的隐患，改为 `DATA.find(g => g.type === "自评")`。**M1 仍用旧的硬编码写法，若 M1 的题目分组顺序变动会出错**，暂未回改。
+- 模板修掉了 M1 里 `DATA[2]` 硬编码自评组位置的隐患，改为 `DATA.find(g => g.type === "自评")`。**2026-11-24 已核对：M1–M4 四份测验与模板全部使用 `DATA.find` 写法，无硬编码残留。**
+
+## 2026-11-24 修订记录（M3 收口 + M4 定稿 + 测验缺陷修复）
+
+**发现的缺陷（影响全部测验，已修复）**
+
+自评回看清单在**两个以上**自评项被标为「没懂／有疑问」时会抛
+`TypeError: Cannot read properties of undefined (reading 'sai')` 并中断渲染。
+原因：`items.some(it => FLAT[it.i].sai === si)` 对没有 `i` 字段的自评项取 `FLAT[undefined]`。
+修复：加 `it.i !== undefined &&` 守卫，已应用到 `_template.html` 与 M1/M2/M3/M4 四份测验。
+此前只标 1 项时不会触发，所以早先的手工测试没发现。
+
+**M3 调整**
+
+- 课三 `m3-03-onchip-memory-and-boot.md` 收缩为**只讲片上存储**（Boot ROM 128 KB / SRAM 512 KB 各是什么、为什么决定了必须多阶段启动），启动链路、启动模式、刷写、安全启动细节全部指向 M4，消除与 M4 的重复。标题改为「片上存储：Boot ROM 与 SRAM」。
+- 删掉了「通过硬件引脚选择启动介质」这类硬件级细节，与 M4-02 的深度对齐。
+- 课二 `m3-02-storage-interfaces.md` 从 125 行精简到 105 行（合并重复条目，保留测验依赖的全部事实）。
+- M3 测验未改题量（15 题 / 14 自评）：更新 4 条 `rv` 为新课文的原句，并把 Q8 正确项里的「训练」改为「初始化」以与课文用词一致。
+
+**M4 定稿（按 M1/M2 的完整度补齐）**
+
+- 课一：OpenSBI 提升为独立小节，加端到端耗时示例（0.1 s 检测介质 → 0.5 s 初始化内存 → 1–2 s 加载内核 → 5–10 s 到登录界面），补 OpenSBI 自测题。
+- 课二：补「什么时候需要刷写」四类场景（首次装系统／系统损坏／升级／工厂批量）。
+- 课三：逐级验证改为表格；eFuse 类比改为「给门上焊死一把锁」；OpenSBI 段落改为「在安全启动中的角色」并交叉链接课一，避免与课一重复。
+- 测验：修正 Q1 错误项键位（`1`→`2`）、删除替换残留的多余 `}`、更新 4 条 `rv`。
+
+**已验证**
+
+- 相对链接 0 处失效（README/ROADMAP/HANDOFF → 全部课文与测验）
+- M4 测验浏览器实测：初始渲染、正确/错误作答、💡误选提示、防重复计分、答后锁定、多自评回看清单（7 项全部渲染）、复制诊断、重做复位，**无 console 错误**
+- M3 测验浏览器实测：15/15、4 项自评回看正常，**无 console 错误**
+- 测试产生的 localStorage 历史已清除
 
 ## 后续计划
 
