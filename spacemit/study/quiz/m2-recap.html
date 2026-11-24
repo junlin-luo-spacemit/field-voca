@@ -867,7 +867,7 @@ function buildRevisit() {
   saRows.forEach((row, si) => {
     const btn = row.querySelector('.sa-btn[aria-pressed="true"]');
     if (!btn || btn.dataset.v === "ok") return;
-    if (items.some(it => FLAT[it.i].sai === si)) return;
+    if (items.some(it => it.i !== undefined && FLAT[it.i].sai === si)) return;
     const item = SA_ITEMS[si];
     items.push({ pri: 3, si, v: btn.dataset.v, label: item.k, act: item.act });
   });

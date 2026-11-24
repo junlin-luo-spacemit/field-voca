@@ -488,7 +488,7 @@ const DATA = [
         3: "Boot ROM 只有 128 KB，放不下 1 GB 的系统镜像。完整系统镜像存在 eMMC 或 UFS 中。"
       },
       src: "docs-chip · key_stone/k3/k3_docs/k3_ds.md · 2.2.1 片上存储",
-      rv: "K3 集成了：128 KB Boot ROM，用于存放一级引导代码，支持从多种外部介质启动，并支持基于 eFuse 的安全启动。"
+      rv: "Boot ROM（启动只读存储器）是芯片出厂时就固化好的只读存储。存放一级引导代码：CPU 上电后的第一条指令就来自这里。支持从多种介质启动：eMMC、UFS、SD、QSPI NOR Flash、USB、UART 下载。"
     },
     {
       q: "K3 片上 SRAM 的用途是什么？",
@@ -507,14 +507,14 @@ const DATA = [
         3: "视频编解码缓冲区需要大量内存（几十 MB 到几 GB），512 KB 的 SRAM 完全不够。"
       },
       src: "docs-chip · key_stone/k3/k3_docs/k3_ds.md · 2.2.1 片上存储",
-      rv: "K3 集成了：512 KB SRAM，由主 CPU 与 RCPU 共享使用。"
+      rv: "SRAM（静态随机存取存储器）是芯片内部的高速可读写内存。上电后立即可用：不需要初始化，这是它最大的价值。主 CPU 和实时核（RCPU）共享：同一块 512 KB，两边都能用。"
     },
     {
       q: "为什么 SoC 需要多级引导（Multi-stage Boot）？",
       sai: 7,
       opts: [
         "为了让系统启动更慢，增加安全性",
-        "Boot ROM 容量小（128 KB），且 LPDDR5 需要训练才能使用",
+        "Boot ROM 容量小（128 KB），且 LPDDR5 需要初始化才能使用",
         "Linux 内核不支持直接从 Flash 启动",
         "多级引导是法规要求，不是技术需求"
       ],
@@ -526,7 +526,7 @@ const DATA = [
         3: "多级引导是纯粹的技术需求，由存储容量限制和内存初始化顺序决定。"
       },
       src: "docs-chip · key_stone/k3/k3_docs/k3_ds.md · 2.2.1 片上存储",
-      rv: "Boot ROM 128 KB，用于存放一级引导代码，支持从多种外部介质启动。512 KB SRAM 由主 CPU 与 RCPU 共享使用，启动早期 LPDDR5 未初始化时使用。"
+      rv: "Boot ROM 只有 128 KB，放不下完整的操作系统。LPDDR5 上电后需要初始化才能用，而初始化代码本身需要一个能跑的地方 → 就是 SRAM。所以启动只能这样走：ROM 里的小段代码先跑起来 → 初始化内存 → 再从外部存储加载大系统。"
     },
     {
       q: "DFS（Dynamic Frequency Scaling）在内存中的作用是什么？",
@@ -624,7 +624,7 @@ const DATA = [
         3: "安全启动是本地验证，使用 eFuse 中存储的公钥哈希，不需要网络连接。"
       },
       src: "docs-chip · key_stone/k3/k3_docs/k3_ds.md · 2.2.1 片上存储",
-      rv: "Boot ROM：用于存放一级引导代码，支持从多种外部介质启动，并支持通过 USB 与 UART 下载程序；支持基于 eFuse 的安全启动。"
+      rv: "K3 的安全启动依赖芯片内的 eFuse（一次性可编程熔断丝）：eFuse 存放哪把密钥可信的信息（根公钥的哈希值），写入后不可逆；每个启动阶段都验证下一阶段的签名，验证失败就停止启动。"
     },
     {
       q: "关于 SD 卡和 eMMC 的区别，哪个表述成立？",
@@ -867,7 +867,7 @@ function buildRevisit() {
   saRows.forEach((row, si) => {
     const btn = row.querySelector('.sa-btn[aria-pressed="true"]');
     if (!btn || btn.dataset.v === "ok") return;
-    if (items.some(it => FLAT[it.i].sai === si)) return;
+    if (items.some(it => it.i !== undefined && FLAT[it.i].sai === si)) return;
     const item = SA_ITEMS[si];
     items.push({ pri: 3, si, v: btn.dataset.v, label: item.k, act: item.act });
   });
