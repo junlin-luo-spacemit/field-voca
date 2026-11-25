@@ -1,10 +1,10 @@
----
+﻿---
 tags: [study, m1, product]
 domain: edge_robotics
 aliases: [产品系列, 命名规律, Product Series, Naming Convention]
 status: needs_review
 created: 2026-11-18
-updated: 2026-11-18
+updated: 2026-11-25
 ---
 
 # M1 · 第一课：产品系列与命名规律
@@ -81,6 +81,8 @@ K1 的 8 个核分成两[簇](GLOSSARY.md#簇)，两[簇](GLOSSARY.md#簇)不对
 **手册在这里只写了 X60 这个名字。** 但[簇](GLOSSARY.md#簇) 0 明确「集成 AI 算力扩展单元」，实际上就是 A60 智算核所在的位置。对外讲的时候，[簇](GLOSSARY.md#簇) 0 的核按 A60 称呼、[簇](GLOSSARY.md#簇) 1 的核按 X60 称呼，是团队内部统一的口径。
 
 所以 K1 可以理解为：**4 个 X60 加 4 个 A60，共 8 核。**
+
+> ⚠️ **对外宣传口径**：K1 对外只讲**8 核**，不细分 A60 和 X60 的数量。内部理解 4+4 配置即可，对外统一说「8 核处理器」。
 
 ### K3：两种核各 8 个
 
