@@ -1,10 +1,10 @@
----
+﻿---
 tags: [study, m4, boot, boot-mode, fastboot, firmware, spacemit]
 domain: chip
 aliases: [启动模式与固件刷写, Boot Mode and Firmware Flashing]
 status: needs_review
 created: 2026-11-23
-updated: 2026-11-23
+updated: 2026-11-25
 ---
 
 # 启动模式与固件刷写
@@ -32,6 +32,22 @@ K3 有一个重要的设计规则：**始终先尝试从 SD 卡启动**。
 - 没有 SD 卡 → 从其他介质（[eMMC](GLOSSARY.md#emmc)、[UFS](GLOSSARY.md#ufs) 等）启动
 
 **这就是开发板通常用 SD 卡来切换系统的原因**：不需要修改任何设置，插卡就切换，拔卡就恢复。量产设备通常不插 SD 卡，直接从 eMMC 启动。
+
+**启动介质选择流程**：
+
+```
+上电
+  ↓
+检测 SD 卡
+  ├─ 有 SD 卡且有效 → 从 SD 卡启动
+  └─ 无 SD 卡 ────────┐
+                      ↓
+              检测其他介质
+                ├─ eMMC 有效 → 从 eMMC 启动
+                ├─ UFS 有效  → 从 UFS 启动
+                ├─ QSPI 有效 → 从 QSPI 启动
+                └─ 均无效    → 进入下载模式（等待 USB/UART）
+```
 
 ## 三、固件刷写是什么
 

@@ -17,9 +17,9 @@
 
 **What It Does**:
 Guides the creation and review of SpacemiT study materials following established conventions in `spacemit/study/`:
-- **Lesson structure**: objective → sections with examples/analogies → self-check → source table
+- **Lesson structure**: objective → sections with examples/analogies/diagrams → self-check → source table
 - **Quiz structure**: 3 groups (10 foundation + 5 trap-recognition + 14 self-eval), embedded `rv` excerpts, copy-to-clipboard diagnostic
-- **Style enforcement**: English pairs for every term, source citations to chapter level, conditions for every number, GLOSSARY links for complex terms
+- **Style enforcement**: English pairs for every term, source citations to chapter level, conditions for every number, GLOSSARY links for complex terms, visual aids (flow diagrams, tables, ASCII/mermaid/SVG) for junior audience
 - **Validation**: anchor resolution, table integrity, term coverage, quiz DATA schema (15 questions / 14 SA items / `sai` 0–13)
 
 **What It Does NOT Do**:
@@ -39,6 +39,8 @@ This skill operates on the **SpacemiT beginner study series** in `spacemit/study
 - Quiz template at `quiz/_template.html` supports 8 parameterized slots
 - GLOSSARY.md contains 28 entries (14 original + 14 added 2026-11-24)
 - Target audience: technical writers learning SpacemiT chips to document them
+
+**Critical principle**: This is a **cumulative, coherent curriculum**. Every new module must maintain consistency with all prior modules. After writing M4, you must review M1–M3 for terminology alignment, cross-references, and depth calibration. After writing M5, review M1–M4. The entire series (M1–M15 + GLOSSARY + all quizzes) must read as one unified learning path, not a collection of independent documents.
 
 ## Key Files
 
@@ -90,6 +92,13 @@ updated: YYYY-MM-DD
   - Use for terms needing depth (带宽, 簇, AFBC, Boot ROM, OpenSBI, etc.)
   - Keep lesson text concise; GLOSSARY provides deep dive
 - **Source traceability**: Only cite files you've read; include version/date for numbers
+- **Visual aids for clarity**: Target audience is junior technical staff learning unfamiliar domain
+  - Use **flow diagrams** for sequences (e.g., `Boot ROM → FSBL → OpenSBI → U-Boot → Linux`)
+  - Use **comparison tables** for similar concepts (e.g., eMMC vs UFS, 根密钥 vs 发版密钥)
+  - Use **ASCII art or mermaid diagrams** for structures (memory hierarchy,启动链路, 验证流程)
+  - Use **concrete examples with numbers** (e.g., "0.1s 检测介质 → 0.5s 初始化内存 → 1–2s 加载内核")
+  - Use **analogies** for abstract concepts (e.g., "eFuse 像给门上焊死一把锁", "OpenSBI 是翻译官")
+  - **Prefer SVG diagrams** for architecture/flow when ASCII/mermaid insufficient; store in `spacemit/study/assets/` and reference as `![alt](./assets/m4-boot-flow.svg)`
 
 **Length Target**: 70–105 lines (M1-M4 average). If a lesson exceeds 125 lines, consider splitting.
 
@@ -100,10 +109,40 @@ updated: YYYY-MM-DD
 
 ### 3. Cross-Check with Existing Modules
 
-Before writing M5+:
-- Read M1-M4 to maintain terminology consistency (e.g., "簇" always links to `GLOSSARY.md#簇`)
-- Check GLOSSARY.md: if your term exists, link it; if not, add it with what/why/K3/related structure
-- Avoid overlap: M3-03 was rewritten to defer boot details to M4; check for similar cases
+**After completing a new module**, systematically review **all prior modules** to ensure the entire series remains consistent:
+
+1. **Terminology alignment**:
+   - Search for the same concept across all lessons (e.g., "簇", "带宽", "启动")
+   - Ensure every occurrence uses the same Chinese term and links to GLOSSARY consistently
+   - If M4 introduced a new way to explain "安全启动", check if M2 or M3 mentioned it and update for consistency
+
+2. **Cross-reference updates**:
+   - If M4 adds detail that M3 previewed, add forward links from M3 → M4
+   - Example: M3-03 originally covered boot flow; after M4 was written, M3-03 was rewritten to defer to M4 with explicit links
+
+3. **Depth calibration**:
+   - If M5 targets entry-level but uses a concept explained in M2, verify M2's explanation is accessible
+   - If M4 raised the bar (e.g., added端到端耗时示例), check if M1-M3 need similar concreteness
+
+4. **GLOSSARY completeness**:
+   - Every term M5 links to must already exist in GLOSSARY
+   - If M5 reveals that "FSBL" needs deeper explanation than M4 provided, enhance the GLOSSARY entry and add a link from M4
+
+5. **Quiz alignment**:
+   - If M5 quiz references a concept from M2, verify M2's `rv` excerpt still matches the lesson text
+   - If M4 rewrites changed wording, update M4 quiz `rv` fields to stay verbatim
+
+**Example**: After writing M4 (boot process), the team discovered M3-03 duplicated boot content. M3-03 was rewritten to focus only on on-chip memory, with all boot details deferred to M4. This maintained M3's utility while eliminating overlap.
+
+**When to do this**:
+- **Mandatory**: After completing any module M(N), review M(1) through M(N-1)
+- **Incremental**: Fix only what the new module affects; don't rewrite unrelated sections
+- **Document**: Update HANDOFF.md with what was changed and why
+
+**Verification**:
+- Run `grep -r "<term>" *.md` to find all uses of key terms
+- Check GLOSSARY anchor usage: `python check_glossary.py`
+- Read through module sequence (M1 → M2 → M3 → new module) as if you're the learner
 
 ## Quiz Creation Workflow
 
@@ -227,6 +266,8 @@ When adding a term:
 - [ ] Every technical term has English pair on first use
 - [ ] Every number includes conditions (e.g., @INT8, HS400, 6400 MT/s)
 - [ ] Complex terms link to GLOSSARY.md
+- [ ] **Visual aids present for multi-step flows and comparisons**: flow diagrams for sequences, tables for similar concepts, ASCII/mermaid/SVG for structures
+- [ ] **Analogies and concrete examples** help junior audience understand abstract concepts
 - [ ] Source table lists actual file paths and chapters
 - [ ] No broken relative links (`grep -r "\.md\)" *.md` then verify each)
 - [ ] Front matter dates updated
@@ -244,7 +285,8 @@ When adding a term:
 - [ ] Run `check_glossary.py`: 0 unresolved anchors, 0 unused entries
 - [ ] Run link validator: 0 broken `./` links across all lessons
 - [ ] Table integrity: pipe count consistent in every table block
-- [ ] Update HANDOFF.md progress table
+- [ ] **Review M1–M(N-1) for consistency**: terminology alignment, cross-references added where new module builds on prior content, depth calibration (if new module raises clarity bar, consider updating older modules)
+- [ ] Update HANDOFF.md progress table and document any cross-module changes
 - [ ] Update README.md with new module links
 
 ## Common Pitfalls
@@ -255,6 +297,8 @@ When adding a term:
 4. **`sai` gaps**: Python validator catches this; also manually check 0–13 all present
 5. **Options too easy to eliminate**: Avoid absurd choices; every wrong option should map to a real misconception
 6. **Missing English pairs for new abbreviations**: DFS, ADB, TEE, PCIe, etc. must expand on first use
+7. **Text-only explanations for complex flows**: Junior audience needs visual aids; don't skip diagrams for multi-step processes (boot sequence, memory hierarchy, verification chain)
+8. **Assuming domain familiarity**: Explain "why this matters" before diving into specs; use concrete examples and analogies
 
 ## Example Session Flow
 
@@ -269,8 +313,11 @@ When adding a term:
 6. Write m5-02, m5-03 similarly
 7. Create `quiz/m5-recap.html` from template: 15Q (10+5) + 14SA, link each Q to lesson via `rv`
 8. Run `validate_m5_quiz.py` + browser test
-9. Update README.md, HANDOFF.md, ROADMAP.md progress
-10. Commit with descriptive message citing STYLE adherence
+9. **Review M1–M4 for consistency**: search for overlapping concepts (e.g., if M5 mentions "内存" or "eMMC", verify M2/M3 terminology matches), add cross-references where M5 builds on prior modules, check if any M1–M4 GLOSSARY links need updates
+10. Update README.md, HANDOFF.md, ROADMAP.md progress
+11. Commit with descriptive message citing STYLE adherence and cross-module review
+
+**After M5 is merged**, the entire M1–M5 sequence should read as a unified learning path with consistent terminology, aligned depth, and bidirectional cross-references.
 
 ## References
 
@@ -285,3 +332,9 @@ When adding a term:
 
 **Version**: 2026-11-25  
 **Maintained by**: SpacemiT Documentation Team
+
+---
+
+## Changelog
+
+**2026-11-25**: Added cross-module consistency review mandate (after M(N), review M1–M(N-1) for terminology/cross-refs/depth); added visual-aids-for-junior-audience guidance (flow diagrams, tables, ASCII/mermaid/SVG, concrete examples, analogies); emphasized M1–M15 as unified learning path, not independent documents.

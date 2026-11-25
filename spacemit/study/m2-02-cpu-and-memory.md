@@ -1,10 +1,10 @@
----
+﻿---
 tags: [study, m2, cpu, memory, spacemit]
 domain: chip
 aliases: [CPU 与内存, CPU and Memory]
 status: needs_review
 created: 2026-11-19
-updated: 2026-11-19
+updated: 2026-11-25
 ---
 
 # CPU 子系统与内存子系统
@@ -56,6 +56,26 @@ K3 的内存分三层：
 **[LPDDR5](GLOSSARY.md#lpddr5)**：外部动态内存，双通道，每通道 32 位，最高速率 6400 [MT/s](GLOSSARY.md#lpddr5)。
 
 **[eMMC](GLOSSARY.md#emmc)**：嵌入式多媒体卡（embedded Multi-Media Card），固态存储，掉电数据不丢失。支持 HS400 模式（最高 400 MB/s）。
+
+**内存层次可视化**（速度从快到慢）：
+
+```
+CPU 核心
+  ↕ (最快，1-2 周期)
+L1 缓存 (64 KB 指令 + 64 KB 数据，每个核独立)
+  ↕
+L2 缓存 (512 KB，每个核独立)
+  ↕
+L3 缓存 (8 MB，整个簇共享)
+  ↕
+片上 SRAM (512 KB，CPU + RCPU 共享，启动早期使用)
+  ↕ (快，10-20 周期)
+LPDDR5 (最高 32 GB，系统主内存)
+  ↕ (慢，100+ 周期)
+eMMC/SD (最高 2 TB，持久化存储)
+```
+
+**越靠近 CPU 的存储越快但容量越小**，越远的越慢但容量越大。
 
 ## 四、带宽与瓶颈
 
