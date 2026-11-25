@@ -1,0 +1,94 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 650" font-family="Arial, sans-serif">
+  <defs>
+    <style>
+      .stage-box { stroke: #333; stroke-width: 2; }
+      .stage-text { fill: #fff; font-size: 14px; font-weight: bold; }
+      .desc-text { font-size: 12px; fill: #333; }
+      .label-text { font-size: 11px; fill: #666; }
+      .arrow-success { stroke: #50C878; stroke-width: 3; fill: none; marker-end: url(#arrow-green); }
+      .arrow-fail { stroke: #E65540; stroke-width: 2; fill: none; marker-end: url(#arrow-red); stroke-dasharray: 4,4; }
+      .lock-icon { fill: #FFD700; stroke: #333; stroke-width: 1; }
+    </style>
+    <marker id="arrow-green" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <polygon points="0 0, 10 3, 0 6" fill="#50C878" />
+    </marker>
+    <marker id="arrow-red" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <polygon points="0 0, 10 3, 0 6" fill="#E65540" />
+    </marker>
+  </defs>
+  
+  <!-- Title -->
+  <text x="350" y="25" text-anchor="middle" font-size="18" font-weight="bold" fill="#333">K3 安全启动验证链</text>
+  <text x="350" y="45" text-anchor="middle" font-size="12" fill="#666">Chain of Trust：每一级验证下一级</text>
+  
+  <!-- eFuse (root of trust) -->
+  <rect x="275" y="70" width="150" height="60" rx="4" class="stage-box" fill="#FFD700"/>
+  <circle cx="310" cy="100" r="12" class="lock-icon"/>
+  <text x="325" cy="100" text-anchor="start" class="stage-text" fill="#333">eFuse</text>
+  <text x="350" y="115" text-anchor="middle" font-size="11" fill="#333">(芯片内部)</text>
+  <text x="460" y="95" class="desc-text">存储根密钥哈希</text>
+  <text x="460" y="110" class="label-text">一次性写入，不可逆</text>
+  
+  <!-- Arrow to Boot ROM -->
+  <path d="M 350 130 L 350 170" class="arrow-success"/>
+  <text x="365" y="155" class="label-text" fill="#50C878" font-weight="bold">验证</text>
+  
+  <!-- Stage 1: Boot ROM -->
+  <rect x="250" y="170" width="200" height="70" rx="4" class="stage-box" fill="#4A90E2"/>
+  <text x="350" y="195" text-anchor="middle" class="stage-text">Boot ROM (出厂固化)</text>
+  <text x="350" y="215" text-anchor="middle" class="desc-text" fill="#fff">验证 FSBL 签名</text>
+  <text x="350" y="230" text-anchor="middle" class="label-text" fill="#E8F4FF">用 eFuse 中的根密钥哈希</text>
+  
+  <!-- Success path -->
+  <path d="M 350 240 L 350 280" class="arrow-success"/>
+  <text x="365" y="260" class="label-text" fill="#50C878" font-weight="bold">✓ 通过</text>
+  
+  <!-- Failure path 1 -->
+  <path d="M 450 205 L 580 205" class="arrow-fail"/>
+  <text x="590" y="210" class="label-text" fill="#E65540" font-weight="bold">✗ 失败 →</text>
+  <rect x="615" y="195" width="70" height="25" rx="3" fill="#FFE0E0" stroke="#E65540" stroke-width="1"/>
+  <text x="650" y="212" text-anchor="middle" font-size="10" fill="#E65540">停止启动</text>
+  
+  <!-- Stage 2: FSBL -->
+  <rect x="250" y="280" width="200" height="70" rx="4" class="stage-box" fill="#50C878"/>
+  <text x="350" y="305" text-anchor="middle" class="stage-text">FSBL (eMMC/SD)</text>
+  <text x="350" y="325" text-anchor="middle" class="desc-text" fill="#fff">验证 OpenSBI + U-Boot 签名</text>
+  <text x="350" y="340" text-anchor="middle" class="label-text" fill="#E8F9F0">用 FSBL 内嵌的公钥</text>
+  
+  <!-- Success path -->
+  <path d="M 350 350 L 350 390" class="arrow-success"/>
+  <text x="365" y="370" class="label-text" fill="#50C878" font-weight="bold">✓ 通过</text>
+  
+  <!-- Failure path 2 -->
+  <path d="M 450 315 L 580 315" class="arrow-fail"/>
+  <text x="590" y="320" class="label-text" fill="#E65540" font-weight="bold">✗ 失败 →</text>
+  <rect x="615" y="305" width="70" height="25" rx="3" fill="#FFE0E0" stroke="#E65540" stroke-width="1"/>
+  <text x="650" y="322" text-anchor="middle" font-size="10" fill="#E65540">停止启动</text>
+  
+  <!-- Stage 3: U-Boot -->
+  <rect x="250" y="390" width="200" height="70" rx="4" class="stage-box" fill="#F5A623"/>
+  <text x="350" y="415" text-anchor="middle" class="stage-text">U-Boot (内存中)</text>
+  <text x="350" y="435" text-anchor="middle" class="desc-text" fill="#fff">验证 Linux 内核签名</text>
+  <text x="350" y="450" text-anchor="middle" class="label-text" fill="#FFF5E6">用 U-Boot 内嵌的公钥</text>
+  
+  <!-- Success path -->
+  <path d="M 350 460 L 350 500" class="arrow-success"/>
+  <text x="365" y="480" class="label-text" fill="#50C878" font-weight="bold">✓ 通过</text>
+  
+  <!-- Failure path 3 -->
+  <path d="M 450 425 L 580 425" class="arrow-fail"/>
+  <text x="590" y="430" class="label-text" fill="#E65540" font-weight="bold">✗ 失败 →</text>
+  <rect x="615" y="415" width="70" height="25" rx="3" fill="#FFE0E0" stroke="#E65540" stroke-width="1"/>
+  <text x="650" y="432" text-anchor="middle" font-size="10" fill="#E65540">停止启动</text>
+  
+  <!-- Stage 4: Linux -->
+  <rect x="250" y="500" width="200" height="60" rx="4" class="stage-box" fill="#8B4789"/>
+  <text x="350" y="525" text-anchor="middle" class="stage-text">Linux 内核</text>
+  <text x="350" y="545" text-anchor="middle" class="desc-text" fill="#fff">系统正常运行</text>
+  
+  <!-- Key points box -->
+  <rect x="30" y="580" width="640" height="60" rx="4" fill="#f9f9f9" stroke="#ccc" stroke-width="1"/>
+  <text x="40" y="600" font-size="13" font-weight="bold" fill="#333">关键点：</text>
+  <text x="40" y="618" font-size="11" fill="#333">• 任何一级验证失败，启动立即停止，防止恶意代码运行</text>
+  <text x="40" y="633" font-size="11" fill="#333">• eFuse 是信任根源：一旦写入，设备只认签名固件，无法回退</text>
+</svg>

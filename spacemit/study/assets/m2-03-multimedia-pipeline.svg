@@ -1,0 +1,124 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 850 520" font-family="Arial, sans-serif">
+  <defs>
+    <style>
+      .subsystem-box { stroke: #333; stroke-width: 2; }
+      .subsystem-text { fill: #fff; font-size: 13px; font-weight: bold; }
+      .desc-text { font-size: 11px; fill: #333; }
+      .label-text { font-size: 10px; fill: #666; }
+      .arrow-record { stroke: #4A90E2; stroke-width: 2.5; fill: none; marker-end: url(#arrow-blue); }
+      .arrow-playback { stroke: #E65540; stroke-width: 2.5; fill: none; marker-end: url(#arrow-red); }
+      .data-label { font-size: 10px; font-weight: bold; }
+    </style>
+    <marker id="arrow-blue" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <polygon points="0 0, 10 3, 0 6" fill="#4A90E2" />
+    </marker>
+    <marker id="arrow-red" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <polygon points="0 0, 10 3, 0 6" fill="#E65540" />
+    </marker>
+  </defs>
+  
+  <!-- Title -->
+  <text x="425" y="25" text-anchor="middle" font-size="18" font-weight="bold" fill="#333">K3 多媒体处理管道</text>
+  <text x="425" y="45" text-anchor="middle" font-size="12" fill="#666">录像与播放完整链路</text>
+  
+  <!-- Legend -->
+  <line x1="30" y1="65" x2="80" y2="65" class="arrow-record" stroke-width="3"/>
+  <text x="85" y="70" class="label-text">录像路径</text>
+  <line x1="150" y1="65" x2="200" y2="65" class="arrow-playback" stroke-width="3"/>
+  <text x="205" y="70" class="label-text">播放路径</text>
+  
+  <!-- ============ RECORD PATH (LEFT) ============ -->
+  <text x="210" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="#4A90E2">录像链路</text>
+  
+  <!-- Camera (external) -->
+  <circle cx="210" cy="145" r="25" fill="#FFD700" stroke="#333" stroke-width="2"/>
+  <text x="210" y="150" text-anchor="middle" font-size="20">📷</text>
+  <text x="210" y="180" text-anchor="middle" class="desc-text">摄像头</text>
+  <text x="210" y="195" text-anchor="middle" class="label-text">(外部设备)</text>
+  
+  <path d="M 210 170 L 210 220" class="arrow-record"/>
+  <text x="220" y="200" class="data-label" fill="#4A90E2">RAW12</text>
+  <text x="225" y="210" class="label-text" fill="#4A90E2">CSI-2</text>
+  
+  <!-- Image Subsystem (ISP) -->
+  <rect x="160" y="220" width="100" height="60" rx="4" class="subsystem-box" fill="#4A90E2"/>
+  <text x="210" y="242" text-anchor="middle" class="subsystem-text">图像子系统</text>
+  <text x="210" y="258" text-anchor="middle" font-size="11" fill="#fff">(ISP 处理)</text>
+  <text x="210" y="272" text-anchor="middle" class="label-text" fill="#E8F4FF">去噪、白平衡</text>
+  
+  <path d="M 210 280 L 210 320" class="arrow-record"/>
+  <text x="220" y="305" class="data-label" fill="#4A90E2">YUV</text>
+  
+  <!-- Memory (buffer) -->
+  <rect x="160" y="320" width="100" height="45" rx="4" fill="#B8E0D2" stroke="#333" stroke-width="1.5"/>
+  <text x="210" y="338" text-anchor="middle" font-size="12" font-weight="bold">内存子系统</text>
+  <text x="210" y="353" text-anchor="middle" class="label-text">(LPDDR5 缓存)</text>
+  
+  <path d="M 210 365 L 210 400" class="arrow-record"/>
+  
+  <!-- Video Subsystem (VPU encode) -->
+  <rect x="160" y="400" width="100" height="60" rx="4" class="subsystem-box" fill="#4A90E2"/>
+  <text x="210" y="422" text-anchor="middle" class="subsystem-text">视频子系统</text>
+  <text x="210" y="438" text-anchor="middle" font-size="11" fill="#fff">(VPU 编码)</text>
+  <text x="210" y="452" text-anchor="middle" class="label-text" fill="#E8F4FF">H.264/H.265</text>
+  
+  <path d="M 260 430 L 320 430" class="arrow-record"/>
+  <text x="290" y="420" class="data-label" fill="#4A90E2">压缩后</text>
+  
+  <!-- Storage -->
+  <rect x="320" y="395" width="110" height="70" rx="4" fill="#8B6F47" stroke="#333" stroke-width="2"/>
+  <text x="375" y="420" text-anchor="middle" font-size="13" font-weight="bold" fill="#fff">内存与存储</text>
+  <text x="375" y="438" text-anchor="middle" font-size="11" fill="#fff">(eMMC/UFS)</text>
+  <text x="375" y="455" text-anchor="middle" class="label-text" fill="#FFE4B5">持久化保存</text>
+  
+  <!-- ============ PLAYBACK PATH (RIGHT) ============ -->
+  <text x="640" y="110" text-anchor="middle" font-size="14" font-weight="bold" fill="#E65540">播放链路</text>
+  
+  <!-- Storage (read) -->
+  <path d="M 430 430 L 490 430" class="arrow-playback"/>
+  <text x="460" y="420" class="data-label" fill="#E65540">读取</text>
+  
+  <rect x="490" y="395" width="110" height="70" rx="4" fill="#8B6F47" stroke="#333" stroke-width="2"/>
+  <text x="545" y="420" text-anchor="middle" font-size="13" font-weight="bold" fill="#fff">内存与存储</text>
+  <text x="545" y="438" text-anchor="middle" font-size="11" fill="#fff">(eMMC/UFS)</text>
+  <text x="545" y="455" text-anchor="middle" class="label-text" fill="#FFE4B5">加载到内存</text>
+  
+  <path d="M 600 430 L 660 430" class="arrow-playback"/>
+  <text x="630" y="420" class="data-label" fill="#E65540">H.264</text>
+  
+  <!-- Video Subsystem (VPU decode) -->
+  <rect x="660" y="400" width="100" height="60" rx="4" class="subsystem-box" fill="#E65540"/>
+  <text x="710" y="422" text-anchor="middle" class="subsystem-text">视频子系统</text>
+  <text x="710" y="438" text-anchor="middle" font-size="11" fill="#fff">(VPU 解码)</text>
+  <text x="710" y="452" text-anchor="middle" class="label-text" fill="#FFE8E8">解压还原</text>
+  
+  <path d="M 710 400 L 710 365" class="arrow-playback"/>
+  
+  <!-- Memory (buffer) -->
+  <rect x="660" y="320" width="100" height="45" rx="4" fill="#FFD4D4" stroke="#333" stroke-width="1.5"/>
+  <text x="710" y="338" text-anchor="middle" font-size="12" font-weight="bold">内存子系统</text>
+  <text x="710" y="353" text-anchor="middle" class="label-text">(LPDDR5 缓存)</text>
+  
+  <path d="M 710 320 L 710 280" class="arrow-playback"/>
+  <text x="720" y="305" class="data-label" fill="#E65540">YUV</text>
+  
+  <!-- Display Subsystem (DPU) -->
+  <rect x="660" y="220" width="100" height="60" rx="4" class="subsystem-box" fill="#E65540"/>
+  <text x="710" y="242" text-anchor="middle" class="subsystem-text">显示子系统</text>
+  <text x="710" y="258" text-anchor="middle" font-size="11" fill="#fff">(DPU 合成)</text>
+  <text x="710" y="272" text-anchor="middle" class="label-text" fill="#FFE8E8">图层合成</text>
+  
+  <path d="M 710 220 L 710 170" class="arrow-playback"/>
+  <text x="720" y="200" class="label-text" fill="#E65540">MIPI-DSI</text>
+  
+  <!-- Display (external) -->
+  <circle cx="710" cy="145" r="25" fill="#B0E0E6" stroke="#333" stroke-width="2"/>
+  <text x="710" y="150" text-anchor="middle" font-size="20">🖥️</text>
+  <text x="710" y="180" text-anchor="middle" class="desc-text">屏幕</text>
+  <text x="710" y="195" text-anchor="middle" class="label-text">(外部设备)</text>
+  
+  <!-- Key observation box -->
+  <rect x="30" y="480" width="790" height="30" rx="4" fill="#f9f9f9" stroke="#ccc" stroke-width="1"/>
+  <text x="40" y="498" font-size="11" font-weight="bold" fill="#333">关键点：</text>
+  <text x="90" y="498" font-size="11" fill="#333">各子系统通过内存子系统交换数据，不直接连接 • 内存作为所有数据流的中转枢纽</text>
+</svg>
